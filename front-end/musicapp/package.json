@@ -6,11 +6,13 @@
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-redux": "^6.0.1",
+    "react-router-dom": "^4.3.1",
+    "react-s-alert": "^1.4.1",
     "react-scripts": "2.1.5",
     "redux": "^4.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set HTTPS=true&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
