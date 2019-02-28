@@ -61,7 +61,7 @@ class App extends Component {
         <div className="app-body">
           <Switch>
             <Route exact path="/" component={Home}></Route>           
-            <PrivateRoute path="/profile" 
+            <PrivateRoute  path="/profile" 
               component={ProfileContainer}></PrivateRoute>
             <Route path="/login"
               render={(props) => <LoginContainer {...props} />}></Route>

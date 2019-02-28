@@ -8,7 +8,7 @@ class AppHeader extends Component {
             <header className="app-header">
                 <div className="container">
                     <div className="app-branding">
-                        <Link to="/" className="app-title">Spring Social</Link>
+                        <NavLink to="/" className="app-title">Spring Social</NavLink>
                     </div>
                     <div className="app-options">
                         <nav className="app-nav">
@@ -18,7 +18,7 @@ class AppHeader extends Component {
                                             <NavLink to="/profile">Profile</NavLink>
                                         </li>
                                         <li>
-                                            <a onClick={this.props.onLogout}>Logout</a>
+                                            <a onClick={this.props.onLogOut}>Logout</a>
                                         </li>
                                     </ul>
                                 ): (
@@ -27,7 +27,7 @@ class AppHeader extends Component {
                                             <NavLink to="/login">Login</NavLink>        
                                         </li>
                                         <li>
-                                            <NavLink to="/signup">Signup</NavLink>        
+                                            <Link to="/signup">Signup</Link>        
                                         </li>
                                     </ul>
                                 )}
