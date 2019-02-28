@@ -9,6 +9,9 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+/*
+* Convert application from HTTP to HTTPS. Because of facebook oauth2 required
+* */
 @Configuration
 public class ConnectorConfig {
 
