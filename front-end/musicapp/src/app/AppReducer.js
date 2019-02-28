@@ -30,7 +30,7 @@ export const appReducer = (state = initialState, action) => {
                 ...state,
                 loading: false
             }
-            case LOG_OUT: 
+        case LOG_OUT:
             return {
                 authenticated: false,
                 currentUser: null
