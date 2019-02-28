@@ -3,13 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './app/App';
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter } from "react-router-dom";
-const AppMusic = () => (
-    <BrowserRouter>
-     <App/>
-    </BrowserRouter>
-  );
-ReactDOM.render(<AppMusic />, document.getElementById('root'));
+import {Provider} from 'react-redux';
+import { createStore, compose, applyMiddleware } from 'redux';
+import { rootReducer } from './app/rootReducer';
+import thunk from 'redux-thunk';
+
+var store = createStore(rootReducer,compose(applyMiddleware(thunk),
+window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+));
+
+
+ReactDOM.render(
+<Provider store ={store}>
+<App /></Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

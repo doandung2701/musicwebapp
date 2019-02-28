@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
   Route,
-  Switch
+  Switch,
+  Router
 } from 'react-router-dom';
 import AppHeader from '../common/AppHeader';
 import Home from '../home/Home';
@@ -18,6 +19,7 @@ import Alert from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import './App.css';
+import { history } from '../helpers/helpers';
 
 class App extends Component {
   constructor(props) {
@@ -70,7 +72,7 @@ class App extends Component {
     }
 
     return (
-      
+      <Router history={history}>{/*dung de routing ngoai component */}
       <div className="app">
         <div className="app-top-box">
           <AppHeader authenticated={this.state.authenticated} onLogout={this.handleLogout} />
@@ -92,6 +94,7 @@ class App extends Component {
           timeout = {3000}
           position='top-right' effect='slide' offset={65} />
       </div>
+      </Router>
     );
   }
 }
