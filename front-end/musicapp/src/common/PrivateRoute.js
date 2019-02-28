@@ -6,11 +6,11 @@ import {
   
 import {connect} from 'react-redux';
   
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const PrivateRoute = ({ component: Component,authenticated, ...rest }) => (
     <Route
       {...rest}
       render={props =>
-        props.authenticated ? (
+        authenticated ? (
           <Component {...rest} {...props} />
         ) : (
           <Redirect
