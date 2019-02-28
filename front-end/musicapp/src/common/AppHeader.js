@@ -12,7 +12,7 @@ class AppHeader extends Component {
                     </div>
                     <div className="app-options">
                         <nav className="app-nav">
-                                { this.props.authenticated ? (
+                                { this.props.authentication.authenticated ? (
                                     <ul>
                                         <li>
                                             <NavLink to="/profile">Profile</NavLink>

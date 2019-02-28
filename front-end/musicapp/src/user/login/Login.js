@@ -26,7 +26,7 @@ class Login extends Component {
     }
     
     render() {
-        if(this.props.authenticated) {
+        if(this.props.authentication.authenticated) {
             return <Redirect
                 to={{
                 pathname: "/",

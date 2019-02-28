@@ -7,24 +7,25 @@ class Profile extends Component {
         console.log(props);
     }
     render() {
+        var user = this.props.authentication.currentUser;
         return (
             <div className="profile-container">
                 <div className="container">
                     <div className="profile-info">
                         <div className="profile-avatar">
                             { 
-                                this.props.currentUser.imageUrl ? (
-                                    <img src={this.props.currentUser.imageUrl} alt={this.props.currentUser.name}/>
+                                user.imageUrl ? (
+                                    <img src={user.imageUrl} alt={user.name}/>
                                 ) : (
                                     <div className="text-avatar">
-                                        <span>{this.props.currentUser.name && this.props.currentUser.name[0]}</span>
+                                        <span>{user.name && user.name[0]}</span>
                                     </div>
                                 )
                             }
                         </div>
                         <div className="profile-name">
-                           <h2>{this.props.currentUser.name}</h2>
-                           <p className="profile-email">{this.props.currentUser.email}</p>
+                           <h2>{user.name}</h2>
+                           <p className="profile-email">{user.email}</p>
                         </div>
                     </div>
                 </div>    

@@ -10,7 +10,7 @@ import Alert from 'react-s-alert';
 
 class Signup extends Component {
     render() {
-        if(this.props.authenticated) {
+        if(this.props.authentication.authenticated) {
             return <Redirect
                 to={{
                 pathname: "/",
