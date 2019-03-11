@@ -78,7 +78,7 @@
     margin: 0 -15px;
   }
 }  
-#customheader .ant-menu-item,.ant-menu-submenu{
+#customheader .ant-menu-item,#customheader .ant-menu-submenu{
   
   background-color: #2208af78  !important;
 
