@@ -18,14 +18,13 @@ CREATE SCHEMA IF NOT EXISTS `music_web_app` DEFAULT CHARACTER SET utf8 ;
 USE `music_web_app` ;
 
 -- -----------------------------------------------------
--- Table `music_web_app`.`category`
+-- Table `music_web_app`.`author`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `music_web_app`.`category` (
-  `category_id` VARCHAR(10) NOT NULL,
-  `category_name` VARCHAR(255) NOT NULL,
-  `category_des` LONGTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`category_id`),
-  UNIQUE INDEX `category_name` (`category_name` ASC))
+CREATE TABLE IF NOT EXISTS `music_web_app`.`author` (
+  `author_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `author_name` VARCHAR(255) NOT NULL,
+  `brief_description` VARCHAR(1024) NULL DEFAULT NULL,
+  PRIMARY KEY (`author_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -42,6 +41,65 @@ CREATE TABLE IF NOT EXISTS `music_web_app`.`song` (
   `thumbnail` VARCHAR(2048) NULL DEFAULT NULL,
   `checked` TINYINT(1) NOT NULL,
   PRIMARY KEY (`song_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `music_web_app`.`author_song`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `music_web_app`.`author_song` (
+  `author_id` INT(11) NOT NULL,
+  `song_id` BIGINT(20) NOT NULL,
+  PRIMARY KEY (`author_id`, `song_id`),
+  INDEX `fk_author_has_song_song1_idx` (`song_id` ASC),
+  INDEX `fk_author_has_song_author1_idx` (`author_id` ASC),
+  CONSTRAINT `fk_author_has_song_author1`
+    FOREIGN KEY (`author_id`)
+    REFERENCES `music_web_app`.`author` (`author_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_author_has_song_song1`
+    FOREIGN KEY (`song_id`)
+    REFERENCES `music_web_app`.`song` (`song_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `music_web_app`.`category`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `music_web_app`.`category` (
+  `category_id` VARCHAR(10) NOT NULL,
+  `category_name` VARCHAR(255) NOT NULL,
+  `category_des` LONGTEXT NULL DEFAULT NULL,
+  PRIMARY KEY (`category_id`),
+  UNIQUE INDEX `category_name` (`category_name` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `music_web_app`.`category_song`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `music_web_app`.`category_song` (
+  `category_id` VARCHAR(10) NOT NULL,
+  `song_id` BIGINT(20) NOT NULL,
+  PRIMARY KEY (`category_id`, `song_id`),
+  INDEX `fk_category_has_song_song1_idx` (`song_id` ASC),
+  INDEX `fk_category_has_song_category1_idx` (`category_id` ASC),
+  CONSTRAINT `fk_category_has_song_category1`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `music_web_app`.`category` (`category_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_category_has_song_song1`
+    FOREIGN KEY (`song_id`)
+    REFERENCES `music_web_app`.`song` (`song_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -109,147 +167,6 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `music_web_app`.`roles`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `music_web_app`.`roles` (
-  `role_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `role_name` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`role_id`),
-  UNIQUE INDEX `role_name` (`role_name` ASC))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `music_web_app`.`rolesuser`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `music_web_app`.`rolesuser` (
-  `role_id` INT(11) NOT NULL,
-  `user_id` INT(11) NOT NULL,
-  PRIMARY KEY (`role_id`, `user_id`),
-  INDEX `FK_RU_USER` (`user_id` ASC),
-  CONSTRAINT `FK_RU_ROLE`
-    FOREIGN KEY (`role_id`)
-    REFERENCES `music_web_app`.`roles` (`role_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `FK_RU_USER`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `music_web_app`.`users` (`user_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `music_web_app`.`verificationtoken`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `music_web_app`.`verificationtoken` (
-  `token_id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `token` VARCHAR(1024) NOT NULL,
-  `expire_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `user_id` INT(11) NOT NULL,
-  PRIMARY KEY (`token_id`),
-  UNIQUE INDEX `token` (`token` ASC),
-  INDEX `FK_VT_USER` (`user_id` ASC),
-  CONSTRAINT `FK_VT_USER`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `music_web_app`.`users` (`user_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `music_web_app`.`author`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `music_web_app`.`author` (
-  `author_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `author_name` VARCHAR(255) NOT NULL,
-  `brief_description` VARCHAR(1024) NULL,
-  PRIMARY KEY (`author_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `music_web_app`.`author_song`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `music_web_app`.`author_song` (
-  `author_id` INT(11) NOT NULL,
-  `song_id` BIGINT(20) NOT NULL,
-  PRIMARY KEY (`author_id`, `song_id`),
-  INDEX `fk_author_has_song_song1_idx` (`song_id` ASC),
-  INDEX `fk_author_has_song_author1_idx` (`author_id` ASC),
-  CONSTRAINT `fk_author_has_song_author1`
-    FOREIGN KEY (`author_id`)
-    REFERENCES `music_web_app`.`author` (`author_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_author_has_song_song1`
-    FOREIGN KEY (`song_id`)
-    REFERENCES `music_web_app`.`song` (`song_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `music_web_app`.`singer`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `music_web_app`.`singer` (
-  `singer_id` INT(11) NOT NULL,
-  `singer_name` VARCHAR(255) NOT NULL,
-  `brief_description` VARCHAR(1024) NULL,
-  PRIMARY KEY (`singer_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `music_web_app`.`singer_song`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `music_web_app`.`singer_song` (
-  `singer_id` INT(11) NOT NULL,
-  `song_id` BIGINT(20) NOT NULL,
-  PRIMARY KEY (`singer_id`, `song_id`),
-  INDEX `fk_singer_has_song_song1_idx` (`song_id` ASC),
-  INDEX `fk_singer_has_song_singer1_idx` (`singer_id` ASC),
-  CONSTRAINT `fk_singer_has_song_singer1`
-    FOREIGN KEY (`singer_id`)
-    REFERENCES `music_web_app`.`singer` (`singer_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_singer_has_song_song1`
-    FOREIGN KEY (`song_id`)
-    REFERENCES `music_web_app`.`song` (`song_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `music_web_app`.`category_song`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `music_web_app`.`category_song` (
-  `category_id` VARCHAR(10) NOT NULL,
-  `song_id` BIGINT(20) NOT NULL,
-  PRIMARY KEY (`category_id`, `song_id`),
-  INDEX `fk_category_has_song_song1_idx` (`song_id` ASC),
-  INDEX `fk_category_has_song_category1_idx` (`category_id` ASC),
-  CONSTRAINT `fk_category_has_song_category1`
-    FOREIGN KEY (`category_id`)
-    REFERENCES `music_web_app`.`category` (`category_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_category_has_song_song1`
-    FOREIGN KEY (`song_id`)
-    REFERENCES `music_web_app`.`song` (`song_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
 -- Table `music_web_app`.`playlist_song`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `music_web_app`.`playlist_song` (
@@ -296,25 +213,128 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
+-- Table `music_web_app`.`score_type`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `music_web_app`.`score_type` (
+  `score_id` INT UNSIGNED NOT NULL,
+  `score_value` DECIMAL NOT NULL,
+  PRIMARY KEY (`score_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `music_web_app`.`rate`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `music_web_app`.`rate` (
-  `users_user_id` INT(11) NOT NULL,
-  `song_song_id` BIGINT(20) NOT NULL,
-  `rate_score` DECIMAL NOT NULL,
-  PRIMARY KEY (`users_user_id`, `song_song_id`),
-  INDEX `fk_users_has_song_song1_idx` (`song_song_id` ASC),
-  INDEX `fk_users_has_song_users1_idx` (`users_user_id` ASC),
+  `user_id` INT(11) NOT NULL,
+  `song_id` BIGINT(20) NOT NULL,
+  `score_id` INT UNSIGNED NOT NULL,
+  PRIMARY KEY (`user_id`, `song_id`, `score_id`),
+  INDEX `fk_users_has_song_song1_idx` (`song_id` ASC),
+  INDEX `fk_users_has_song_users1_idx` (`user_id` ASC),
+  INDEX `fk_rate_score_type1_idx` (`score_id` ASC),
+  CONSTRAINT `fk_users_has_song_song1`
+    FOREIGN KEY (`song_id`)
+    REFERENCES `music_web_app`.`song` (`song_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_song_users1`
-    FOREIGN KEY (`users_user_id`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `music_web_app`.`users` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_users_has_song_song1`
-    FOREIGN KEY (`song_song_id`)
+  CONSTRAINT `fk_rate_score_type1`
+    FOREIGN KEY (`score_id`)
+    REFERENCES `music_web_app`.`score_type` (`score_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `music_web_app`.`roles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `music_web_app`.`roles` (
+  `role_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `role_name` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`role_id`),
+  UNIQUE INDEX `role_name` (`role_name` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `music_web_app`.`rolesuser`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `music_web_app`.`rolesuser` (
+  `role_id` INT(11) NOT NULL,
+  `user_id` INT(11) NOT NULL,
+  PRIMARY KEY (`role_id`, `user_id`),
+  INDEX `FK_RU_USER` (`user_id` ASC),
+  CONSTRAINT `FK_RU_ROLE`
+    FOREIGN KEY (`role_id`)
+    REFERENCES `music_web_app`.`roles` (`role_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `FK_RU_USER`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `music_web_app`.`users` (`user_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `music_web_app`.`singer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `music_web_app`.`singer` (
+  `singer_id` INT(11) NOT NULL,
+  `singer_name` VARCHAR(255) NOT NULL,
+  `brief_description` VARCHAR(1024) NULL DEFAULT NULL,
+  PRIMARY KEY (`singer_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `music_web_app`.`singer_song`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `music_web_app`.`singer_song` (
+  `singer_id` INT(11) NOT NULL,
+  `song_id` BIGINT(20) NOT NULL,
+  PRIMARY KEY (`singer_id`, `song_id`),
+  INDEX `fk_singer_has_song_song1_idx` (`song_id` ASC),
+  INDEX `fk_singer_has_song_singer1_idx` (`singer_id` ASC),
+  CONSTRAINT `fk_singer_has_song_singer1`
+    FOREIGN KEY (`singer_id`)
+    REFERENCES `music_web_app`.`singer` (`singer_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_singer_has_song_song1`
+    FOREIGN KEY (`song_id`)
     REFERENCES `music_web_app`.`song` (`song_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `music_web_app`.`verificationtoken`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `music_web_app`.`verificationtoken` (
+  `token_id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `token` VARCHAR(1024) NOT NULL,
+  `expire_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `user_id` INT(11) NOT NULL,
+  PRIMARY KEY (`token_id`),
+  UNIQUE INDEX `token` (`token` ASC),
+  INDEX `FK_VT_USER` (`user_id` ASC),
+  CONSTRAINT `FK_VT_USER`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `music_web_app`.`users` (`user_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
