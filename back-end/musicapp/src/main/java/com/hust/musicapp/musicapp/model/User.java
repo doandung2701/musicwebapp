@@ -1,17 +1,19 @@
 package com.hust.musicapp.musicapp.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-})
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id")
     private Long id;
 
     @Column(nullable = false)
@@ -34,6 +36,30 @@ public class User {
     private AuthProvider provider;
 
     private String providerId;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Comment> comments;
+
+    @ManyToMany
+    @JoinTable(name = "rolesuser", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Fetch(FetchMode.JOIN)
+    private Set<Role> roles;
+
+    @ManyToMany
+    @JoinTable(name = "playlist_users",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns =
+    @JoinColumn(name = "playlist_id"))
+    private Set<PlayList> playLists;
+
+    @OneToMany(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.ALL)
+    private Set<Rate> rates;
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
 
     public Long getId() {
         return id;
