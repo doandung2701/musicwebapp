@@ -21,7 +21,6 @@ class Home extends Component {
                             <div className="graf-circle"></div>
                         </div>
                     </div>
-                    <h1 className="home-title">Spring Boot React OAuth2 Social Login Demo</h1>
                 </div>
             </div>
         )

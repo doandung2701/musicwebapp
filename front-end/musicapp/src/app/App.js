@@ -5,7 +5,6 @@ import {
   Router
 } from 'react-router-dom';
 import Home from '../home/Home';
-import Signup from '../user/signup/Signup';
 import OAuth2RedirectHandler from '../user/oauth2/OAuth2RedirectHandler';
 import NotFound from '../common/NotFound';
 import LoadingIndicator from '../common/LoadingIndicator';

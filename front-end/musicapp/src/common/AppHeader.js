@@ -8,7 +8,7 @@ class AppHeader extends Component {
             <header className="app-header">
                 <div className="container">
                     <div className="app-branding">
-                        <NavLink to="/" className="app-title">Spring Social</NavLink>
+                        <NavLink to="/" className="app-title">Music app</NavLink>
                     </div>
                     <div className="app-options">
                         <nav className="app-nav">
