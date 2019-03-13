@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Profile.css';
+import LoadingIndicator from '../../common/LoadingIndicator';
 
 class Profile extends Component {
     constructor(props) {
@@ -8,6 +9,10 @@ class Profile extends Component {
     }
     render() {
         var user = this.props.authentication.currentUser;
+        console.log(user)
+        var loading = this.props.authentication.loading;
+        if (loading)
+            return (<LoadingIndicator />)
         return (
             <div className="profile-container">
                 <div className="container">

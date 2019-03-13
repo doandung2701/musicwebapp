@@ -37,6 +37,7 @@ export const loadCurrentUser = () => {
 }
 
 export const logout = ()=>{
+    Alert.closeAll();
     localStorage.removeItem(ACCESS_TOKEN);
     Alert.success("You're safely logged out!");
     return {

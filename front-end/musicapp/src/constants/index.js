@@ -13,3 +13,7 @@ export const GITHUB_AUTH_URL = API_BASE_URL + '/oauth2/authorize/github?redirect
  export const LOADING_CURRENT_USER_SUCCESS = "LOADING_CURRENT_USER_SUCCESS";
  export const LOADING_CURRENT_USER_FAIL = "LOADING_CURRENT_USER_FAIL";
  export const LOG_OUT = "LOG_OUT";
+
+export const SIGNING_UP = "SIGNING_UP";
+export const SIGN_UP_SUCCESS= "SIGIN_UP_SUCCESS";
+export const SIGN_UP_FAIL = "SIGN_UP_FAIL";

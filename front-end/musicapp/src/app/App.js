@@ -43,7 +43,10 @@ class App extends Component {
   // }
 
   componentDidMount() {
-    this.props.loadCurrentlyLoggedInUser();
+   
+        this.props.loadCurrentlyLoggedInUser();
+    
+      
   }
 
   render() {
