@@ -42,7 +42,7 @@ class Login extends Component {
                     <div className="or-separator">
                         <span className="or-text">OR</span>
                     </div>
-                    <LoginForm {...this.props} />
+                    <LoginForm login={this.props.login} {...this.props} />
                     <span className="signup-link">New user? <Link to="/signup">Sign up!</Link></span>
                 </div>
             </div>
@@ -92,14 +92,7 @@ class LoginForm extends Component {
 
         const loginRequest = Object.assign({}, this.state);
 
-        login(loginRequest)
-        .then(response => {
-            localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-            Alert.success("You're successfully logged in!");
-            this.props.history.push("/");
-        }).catch(error => {
-            Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');
-        });
+        this.props.login(loginRequest);
     }
     
     render() {

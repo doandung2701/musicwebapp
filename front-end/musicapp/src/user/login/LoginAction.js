@@ -1,6 +1,8 @@
 import { LOGIN_SUCCESSFULLY, LOGIN_FAILED, LOGINING, ACCESS_TOKEN } from "../../constants";
-import { login } from '../../util/APIUtils';
+import { login, getCurrentUser } from '../../util/APIUtils';
 import Alert from 'react-s-alert';
+import { history } from "../../helpers/helpers";
+import { loadCurrentUser } from "../../app/AppAction";
 
 export const loggingIn = ()=>({
     type: LOGINING
@@ -20,9 +22,9 @@ export const loginUser = (loginRequest)=>{
         login(loginRequest)
         .then(response => {
             localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-            dispatch(loginSuccessFully())
-            Alert.success("You're successfully logged in!");
-            this.props.history.push("/");
+            dispatch(loginSuccessFully());
+            dispatch(loadCurrentUser());
+            history.push("/");
         }).catch(error => {
             dispatch(loginFailed)
             Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ACCESS_TOKEN } from '../../constants';
 import { Redirect } from 'react-router-dom'
+import { history } from '../../helpers/helpers';
 
 class OAuth2RedirectHandler extends Component {
     getUrlParameter(name) {
@@ -21,6 +22,7 @@ class OAuth2RedirectHandler extends Component {
                 state: { from: this.props.location }
             }}/>; 
         } else {
+            console.log("DM facebook");
             return <Redirect to={{
                 pathname: "/login",
                 state: { 

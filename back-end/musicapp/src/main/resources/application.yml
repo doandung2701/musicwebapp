@@ -57,12 +57,11 @@ app:
       - myiosapp://oauth2/redirect
 server:
   ssl:
-    key-store: classpath:keystore.p12
-    key-store-password: buidoandung123
+    key-store: classpath:keystore-giang.p12
+    key-store-password: giangnt15
     keyStoreType: PKCS12
     keyAlias: tomcat
   port: 8443
-security:
-  require-ssl: true
+
 
 
