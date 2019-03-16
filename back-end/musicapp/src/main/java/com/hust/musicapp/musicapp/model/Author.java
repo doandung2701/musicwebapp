@@ -1,5 +1,6 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -24,7 +25,8 @@ public class Author  implements Serializable {
     @ManyToMany
     @JoinTable(name = "author_song",joinColumns = @JoinColumn(name = "author_id"),inverseJoinColumns =
     @JoinColumn(name = "song_id"))
-    @JsonIgnore
+   // @JsonIgnore
+    @JsonBackReference
     private Set<Song> songs;
 
     public Author(String authorName, String briefDescription, Set<Song> songs) {

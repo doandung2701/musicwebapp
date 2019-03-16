@@ -160,5 +160,5 @@ public class User {
     public void setProviderId(String providerId) {
         this.providerId = providerId;
     }
-    
+
 }

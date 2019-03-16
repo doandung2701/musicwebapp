@@ -1,16 +1,11 @@
 package com.hust.musicapp.musicapp.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-<<<<<<< HEAD
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-=======
 import org.springframework.web.util.UrlPathHelper;
->>>>>>> DevGiang
 
 @Configuration
 @EnableWebMvc

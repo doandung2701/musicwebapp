@@ -1,10 +1,7 @@
 package com.hust.musicapp.musicapp.model;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-=======
 import org.hibernate.annotations.Cascade;
->>>>>>> DevGiang
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -42,6 +39,7 @@ public class Song implements Serializable {
     @ManyToMany
     @JoinTable(name = "author_song",joinColumns = @JoinColumn(name = "song_id"),inverseJoinColumns =
     @JoinColumn(name = "author_id"))
+    @JsonManagedReference
     private Set<Author> authors;
 
 
@@ -60,21 +58,15 @@ public class Song implements Serializable {
     @JoinColumn(name = "playlist_id",referencedColumnName = "playlist_id"))
     private Set<PlayList> playLists;
 
-<<<<<<< HEAD
-    @OneToMany(mappedBy = "song",cascade = CascadeType.ALL,orphanRemoval = true)
-    @JsonManagedReference
-    private Set<Comment> comments;
+
 
     @OneToMany(mappedBy = "song",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonManagedReference
-=======
-    @OneToMany(mappedBy = "song",orphanRemoval = true)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Set<Comment> comments;
 
     @OneToMany(mappedBy = "song",orphanRemoval = true)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
->>>>>>> DevGiang
     private Set<Rate> rates;
 
     @ManyToOne

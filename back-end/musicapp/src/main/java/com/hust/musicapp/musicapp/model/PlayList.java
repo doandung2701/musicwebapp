@@ -1,11 +1,7 @@
 package com.hust.musicapp.musicapp.model;
 
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonBackReference;
-=======
 import com.fasterxml.jackson.annotation.JsonIgnore;
->>>>>>> DevGiang
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -36,10 +32,7 @@ public class PlayList implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-<<<<<<< HEAD
     @JsonBackReference
-=======
->>>>>>> DevGiang
     private User user;
 
 

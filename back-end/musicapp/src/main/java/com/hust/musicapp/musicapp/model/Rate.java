@@ -10,18 +10,17 @@ import java.io.Serializable;
 public class Rate implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     Long id;
-    @Id
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Id
     @ManyToOne
     @JoinColumn(name="score_id")
     private ScoreType scoreType;
 
-    @Id
     @ManyToOne
     @JoinColumn(name="song_id")
     @JsonBackReference
