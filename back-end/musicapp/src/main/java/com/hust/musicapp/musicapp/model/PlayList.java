@@ -1,5 +1,7 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -27,10 +29,10 @@ public class PlayList implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "song_id"))
     private Set<Song> songs;
 
-    @ManyToMany
-    @JoinTable(name = "playlist_users",joinColumns = @JoinColumn(name="playlist_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 
 
     public PlayList(String name, String thumbnail, String description) {
@@ -82,11 +84,11 @@ public class PlayList implements Serializable {
         this.songs = songs;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
