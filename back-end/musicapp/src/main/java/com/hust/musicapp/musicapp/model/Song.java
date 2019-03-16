@@ -1,6 +1,10 @@
 package com.hust.musicapp.musicapp.model;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+=======
+import org.hibernate.annotations.Cascade;
+>>>>>>> DevGiang
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -56,15 +60,57 @@ public class Song implements Serializable {
     @JoinColumn(name = "playlist_id",referencedColumnName = "playlist_id"))
     private Set<PlayList> playLists;
 
+<<<<<<< HEAD
     @OneToMany(mappedBy = "song",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonManagedReference
     private Set<Comment> comments;
 
     @OneToMany(mappedBy = "song",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonManagedReference
+=======
+    @OneToMany(mappedBy = "song",orphanRemoval = true)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private Set<Comment> comments;
+
+    @OneToMany(mappedBy = "song",orphanRemoval = true)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+>>>>>>> DevGiang
     private Set<Rate> rates;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Song() {
+    }
+
+    public Set<Singer> getSingers() {
+        return singers;
+    }
+
+    public void setUpdateSong(Song s){
+        this.songName = s.getSongName();
+        this.categories = s.getCategories();
+        this.comments =s.getComments();
+        this.songSrc =s.getSongSrc();
+        this.authors =s.getAuthors();
+        this.playLists = s.getPlayLists();
+        this.rates = s.getRates();
+        this.singers = s.getSingers();
+        this.briefDesciption =s.getBriefDesciption();
+        this.thumbnail = s.getThumbnail();
+    }
+
+    public void setSingers(Set<Singer> singers) {
+        this.singers = singers;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getSongId() {

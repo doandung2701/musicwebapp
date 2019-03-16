@@ -4,6 +4,8 @@ spring:
         username: root
         password: 1234
 
+
+
     jpa:
         show-sql: true
         hibernate:

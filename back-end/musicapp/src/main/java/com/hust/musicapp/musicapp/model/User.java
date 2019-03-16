@@ -46,13 +46,16 @@ public class User {
     @Fetch(FetchMode.JOIN)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
     @JsonManagedReference
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<PlayList> playLists;
 
     @OneToMany(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.ALL)
     @JsonManagedReference
     private Set<Rate> rates;
+
+    @OneToMany
+    private Set<Song> songs;
 
     public Set<Comment> getComments() {
         return comments;
@@ -68,6 +71,38 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Set<PlayList> getPlayLists() {
+        return playLists;
+    }
+
+    public void setPlayLists(Set<PlayList> playLists) {
+        this.playLists = playLists;
+    }
+
+    public Set<Rate> getRates() {
+        return rates;
+    }
+
+    public void setRates(Set<Rate> rates) {
+        this.rates = rates;
+    }
+
+    public Set<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(Set<Song> songs) {
+        this.songs = songs;
     }
 
     public String getName() {
@@ -125,12 +160,5 @@ public class User {
     public void setProviderId(String providerId) {
         this.providerId = providerId;
     }
-
-    public Set<PlayList> getPlayLists() {
-        return playLists;
-    }
-
-    public void setPlayLists(Set<PlayList> playLists) {
-        this.playLists = playLists;
-    }
+    
 }

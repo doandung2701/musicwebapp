@@ -1,5 +1,7 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -21,6 +23,7 @@ public class Category implements Serializable {
     @ManyToMany
     @JoinTable(name = "category_song",joinColumns = @JoinColumn(name = "category_id"),inverseJoinColumns =
     @JoinColumn(name = "song_id"))
+    @JsonIgnore
     private Set<Song> songs;
 
     public Category(String categoryId, String categoryName, String categoryDes, Set<Song> songs) {

@@ -1,7 +1,11 @@
 package com.hust.musicapp.musicapp.model;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+=======
+import com.fasterxml.jackson.annotation.JsonIgnore;
+>>>>>>> DevGiang
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,12 +36,18 @@ public class Comment implements Serializable {
     private Set<Comment> replies;
 
     @ManyToOne
+<<<<<<< HEAD
     @JoinColumn(name = "singer_id")
     @JsonBackReference
+=======
+    @JoinColumn(name = "song_id")
+    @JsonIgnore
+>>>>>>> DevGiang
     private Song song;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Comment(String commentCnt, Date commentDate, Comment parentCmt, Set<Comment> replies) {
