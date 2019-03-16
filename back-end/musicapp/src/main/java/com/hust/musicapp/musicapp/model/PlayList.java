@@ -27,10 +27,9 @@ public class PlayList implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "song_id"))
     private Set<Song> songs;
 
-    @ManyToMany
-    @JoinTable(name = "playlist_users",joinColumns = @JoinColumn(name="playlist_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
     public PlayList(String name, String thumbnail, String description) {
@@ -82,11 +81,11 @@ public class PlayList implements Serializable {
         this.songs = songs;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public User getUsers() {
+        return user;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUsers(User users) {
+        this.user = users;
     }
 }

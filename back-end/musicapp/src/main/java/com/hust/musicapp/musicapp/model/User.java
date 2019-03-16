@@ -45,13 +45,14 @@ public class User {
     @Fetch(FetchMode.JOIN)
     private Set<Role> roles;
 
-    @ManyToMany
-    @JoinTable(name = "playlist_users",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns =
-    @JoinColumn(name = "playlist_id"))
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<PlayList> playLists;
 
     @OneToMany(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.ALL)
     private Set<Rate> rates;
+
+    @OneToMany
+    private Set<Song> songs;
 
     public Set<Comment> getComments() {
         return comments;
@@ -67,6 +68,38 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Set<PlayList> getPlayLists() {
+        return playLists;
+    }
+
+    public void setPlayLists(Set<PlayList> playLists) {
+        this.playLists = playLists;
+    }
+
+    public Set<Rate> getRates() {
+        return rates;
+    }
+
+    public void setRates(Set<Rate> rates) {
+        this.rates = rates;
+    }
+
+    public Set<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(Set<Song> songs) {
+        this.songs = songs;
     }
 
     public String getName() {
