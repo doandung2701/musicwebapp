@@ -1,5 +1,7 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -55,9 +57,11 @@ public class Song implements Serializable {
     private Set<PlayList> playLists;
 
     @OneToMany(mappedBy = "song",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private Set<Comment> comments;
 
     @OneToMany(mappedBy = "song",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private Set<Rate> rates;
 
     public Song() {

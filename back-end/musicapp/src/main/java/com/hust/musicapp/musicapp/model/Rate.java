@@ -1,12 +1,16 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name="rate")
 public class Rate implements Serializable {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -20,6 +24,7 @@ public class Rate implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn(name="song_id")
+    @JsonBackReference
     private Song song;
 
     public Rate(User user, ScoreType scoreType, Song song) {
@@ -53,5 +58,13 @@ public class Rate implements Serializable {
 
     public void setSong(Song song) {
         this.song = song;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
