@@ -15,4 +15,6 @@ public interface AuthorService {
     List<Author> saveAll(List<Author> author);
 
     Long count();
+
+    void deleteAuthor(Author a);
 }

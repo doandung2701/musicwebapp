@@ -1,5 +1,7 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -29,11 +31,13 @@ public class Comment implements Serializable {
     private Set<Comment> replies;
 
     @ManyToOne
-    @JoinColumn(name = "singer_id")
+    @JoinColumn(name = "song_id")
+    @JsonIgnore
     private Song song;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Comment(String commentCnt, Date commentDate, Comment parentCmt, Set<Comment> replies) {

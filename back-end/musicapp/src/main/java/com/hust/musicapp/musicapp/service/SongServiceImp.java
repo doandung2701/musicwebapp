@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 @Service
@@ -86,5 +85,10 @@ public class SongServiceImp implements SongService {
     @Override
     public List<Song> saveAll(List<Song> songs) {
         return songRepo.saveAll(songs);
+    }
+
+    @Override
+    public void deleteSong(Song song) {
+        songRepo.delete(song);
     }
 }

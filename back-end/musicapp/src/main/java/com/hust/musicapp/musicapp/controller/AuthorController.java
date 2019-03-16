@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("authorsController")
 @RequestMapping("/authors")
 @CrossOrigin("*")
 public class AuthorController {
@@ -36,9 +36,17 @@ public class AuthorController {
         return ResponseEntity.ok(authorService.saveAll(authors));
     }
 
+
     @GetMapping("/count")
     public ResponseEntity<Long> count(){
         return ResponseEntity.ok(authorService.count());
+    }
+
+    @DeleteMapping("/delete-author")
+    public ResponseEntity<?> deleteAuthor(@RequestBody Author author){
+        Author a = authorService.findById(author.getAuthorId());
+        authorService.deleteAuthor(a);
+        return ResponseEntity.ok("Delete successfully");
     }
 
 }

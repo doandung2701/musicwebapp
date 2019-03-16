@@ -35,4 +35,6 @@ public interface SongService {
     Song getOne(Long id);
 
     List<Song> saveAll(List<Song> songs);
+
+    void deleteSong(Song song);
 }

@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface AuthorRepo extends JpaRepository<Author,Long> {
 
-    Author findByAuthorName(String authorName);
-
     @Query("select a from Author a where a.authorName like %:name%")
     List<Author> findByAuthorNameLike(@Param("name") String authorName);
 

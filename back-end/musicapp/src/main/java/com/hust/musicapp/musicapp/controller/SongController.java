@@ -4,7 +4,6 @@ import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,7 +12,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -66,12 +64,12 @@ public class SongController {
 
     @GetMapping("/find-by-author-ids")
     public ResponseEntity<?> findByAuthors(@RequestParam("ids") List<Long> ids) {
-        return ResponseEntity.ok(songService.findBySingerId(ids));
+        return ResponseEntity.ok(songService.findByAuthorId(ids));
     }
 
     @GetMapping("/find-by-category-ids")
     public ResponseEntity<?> findByCategories(@RequestParam("ids") List<Long> ids) {
-        return ResponseEntity.ok(songService.findBySingerId(ids));
+        return ResponseEntity.ok(songService.findByCategoriesId(ids));
     }
 
     @GetMapping("/find-by-id/{id}")
@@ -79,7 +77,7 @@ public class SongController {
         return ResponseEntity.ok(songService.findById(id));
     }
 
-    @GetMapping("/find-by-name/")
+    @GetMapping("/find-by-name")
     public ResponseEntity<?> findByName( @RequestParam("name") String name) {
         return ResponseEntity.ok(songService.findByNameLike(name));
     }
@@ -92,6 +90,16 @@ public class SongController {
     @PutMapping("/save-songs")
     public ResponseEntity<?> updateSong(@RequestBody List<Song> songs) {
         return ResponseEntity.ok(songService.saveAll(songs));
+    }
+
+    @DeleteMapping("/delete-song")
+    public ResponseEntity<?> deleteSong(@RequestBody Song song) {
+        Song s = songService.findById(song.getSongId());
+        if (s!=null) {
+            songService.deleteSong(s);
+            return ResponseEntity.ok("Delete Sucessfully!");
+        }
+        else return  ResponseEntity.notFound().build();
     }
 
     @InitBinder

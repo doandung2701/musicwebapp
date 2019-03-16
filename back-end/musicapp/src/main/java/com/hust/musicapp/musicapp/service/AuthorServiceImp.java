@@ -41,4 +41,9 @@ public class AuthorServiceImp implements AuthorService {
     public Long count(){
         return authorRepo.count();
     }
+
+    @Override
+    public void deleteAuthor(Author a){
+        authorRepo.delete(a);
+    }
 }
