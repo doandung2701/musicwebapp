@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import { Route, Switch, Router } from "react-router-dom";
 import NotFound from "../common/NotFound";
+import PlayList from "../playlist/PlayList";
 import { Layout, notification, Menu, Icon } from "antd";
 import { history } from "../util/Helpers";
 import AppHeaderContainer from "../common/AppHeaderContainer";
@@ -88,7 +89,7 @@ class App extends Component {
                   component={NewPoll}
                   handleLogout={this.handleLogout}
                 /> */}
-                <Route component={NotFound} />
+                <Route component={PlayList} />
               </Switch>
             </div>
           </Content>

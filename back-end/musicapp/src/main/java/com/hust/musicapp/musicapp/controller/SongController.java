@@ -2,6 +2,7 @@ package com.hust.musicapp.musicapp.controller;
 
 import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.service.SongService;
+import com.hust.musicapp.musicapp.util.PageableUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +24,8 @@ public class SongController {
     @Autowired
     private SongService songService;
 
+
+
     @GetMapping("/find-all")
     public ResponseEntity<?> findAll() {
         List<Song> songs = songService.findAll();
@@ -40,20 +43,7 @@ public class SongController {
                                         @Nullable @RequestParam("orderBy") String order,
                                         @Nullable @RequestParam("direction") String direction) {
 
-        Pageable pageable = null;
-        Sort sort = null;
-        if (order == null && direction == null) {
-            pageable = PageRequest.of(page - 1, rows);
-        } else if (order != null && direction != null) {
-            if (direction.equalsIgnoreCase("desc")) {
-                sort = new Sort(Sort.Direction.DESC, order);
-            } else {
-                sort = new Sort(Sort.Direction.ASC, order);
-            }
-            pageable = PageRequest.of(page - 1, rows, sort);
-        } else {
-            pageable = PageRequest.of(page - 1, rows);
-        }
+        Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
         return ResponseEntity.ok(songService.findAllWithPaging(pageable));
     }
 

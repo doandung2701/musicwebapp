@@ -12,25 +12,30 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("singer")
+@RequestMapping("/singer")
 public class SingerController {
+
     @Autowired
     SingerRepository singerRepository;
-    @GetMapping
+
+
+    @GetMapping("/find/find-all")
     public Iterable<Singer> getAllSingers()
     {
         return singerRepository.findAll();
     }
-    @PostMapping
+
+    @PostMapping("/save/create-singer")
     public Singer createSinger(@Valid @RequestBody Singer singer){
         return singerRepository.save(singer);
     }
-    @GetMapping("{id}")
+
+    @GetMapping("/find/by-id/{id}")
     public Singer getSingerById(@PathVariable("id") Long id){
         return singerRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Singer","id",id));
     }
     // Update a Note
-    @PutMapping("{id}")
+    @PutMapping("/save/update-singer/{id}")
     public Singer updateSinger(@PathVariable(value = "id") Long singerid,
                            @Valid @RequestBody Singer singerDetail) {
 
@@ -46,7 +51,7 @@ public class SingerController {
         Singer updatedSinger = singerRepository.save(singer);
         return updatedSinger;
     }
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteSinger(@PathVariable(value = "id") Long singerId) {
         Singer note = singerRepository.findById(singerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Singer", "id", singerId));
@@ -55,7 +60,7 @@ public class SingerController {
 
         return ResponseEntity.ok().build();
     }
-    @GetMapping("{id}/songs")
+    @GetMapping("/find/songs-by-id/{id}")
     public List<Song> getAllSongsOfUser(@PathVariable Long id){
         Singer singer=singerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Singer", "id", id));
         return singerRepository.getAllSongsOfSinger(id);
