@@ -4,6 +4,7 @@ import com.hust.musicapp.musicapp.exception.ResourceNotFoundException;
 import com.hust.musicapp.musicapp.model.Singer;
 import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.repository.SingerRepository;
+import com.hust.musicapp.musicapp.service.SingerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +13,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/singer")
+@RequestMapping("/singers")
 public class SingerController {
 
     @Autowired
-    SingerRepository singerRepository;
+    SingerService singerRepository;
 
 
     @GetMapping("/find/find-all")
@@ -34,7 +35,6 @@ public class SingerController {
     public Singer getSingerById(@PathVariable("id") Long id){
         return singerRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Singer","id",id));
     }
-    // Update a Note
     @PutMapping("/save/update-singer/{id}")
     public Singer updateSinger(@PathVariable(value = "id") Long singerid,
                            @Valid @RequestBody Singer singerDetail) {
@@ -56,7 +56,7 @@ public class SingerController {
         Singer note = singerRepository.findById(singerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Singer", "id", singerId));
 
-        singerRepository.delete(note);
+        singerRepository.deleteSinger(note);
 
         return ResponseEntity.ok().build();
     }

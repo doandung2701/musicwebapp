@@ -3,12 +3,15 @@ package com.hust.musicapp.musicapp.controller;
 import com.hust.musicapp.musicapp.exception.ResourceNotFoundException;
 import com.hust.musicapp.musicapp.model.PlayList;
 import com.hust.musicapp.musicapp.model.User;
-import com.hust.musicapp.musicapp.repository.UserRepository;
 import com.hust.musicapp.musicapp.security.CurrentUser;
 import com.hust.musicapp.musicapp.security.UserPrincipal;
+import com.hust.musicapp.musicapp.service.Userservice;
+import com.hust.musicapp.musicapp.util.PageableUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -17,43 +20,55 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin("*")
 public class UserController {
     public static final String RESOURCE_NAME="USER";
     public static final String RESOURCE_ID="USER_ID";
     public static final int ACTIVE_CODE=0;
-    public static final int DISACTIVE_CODE=1;
     @Autowired
-    private UserRepository userRepository;
-    @CrossOrigin("https://localhost:3000")
+    private Userservice userservice;
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+        Optional<User> user= userservice.findById(userPrincipal.getId());
+        if(user.isPresent()){
+            return user.get();
+        }else{
+            throw new ResourceNotFoundException(RESOURCE_NAME,RESOURCE_ID,userPrincipal.getId());
+
+        }
     }
-    @GetMapping(value = {"/users","/users/"})
+    @GetMapping(value ="/users/fill-all")
     public List<User> getAll(){
-        return userRepository.findAll();
+        return userservice.findAll();
     }
-    @GetMapping("/users/{id}")
+    @GetMapping(value = "/users/find-paging")
+    public ResponseEntity<?> findPaging(@RequestParam("page") Integer page,
+                                        @RequestParam("rows") Integer row,
+                                        @Nullable @RequestParam("orderBy") String order,
+                                        @Nullable @RequestParam("direction")String direction){
+        Pageable pageable= PageableUtil.getPageable(page,row,order,direction);
+        return ResponseEntity.ok(userservice.findAllWithPaging(pageable));
+    }
+    @GetMapping("/users/find-by-id/{id}")
     public User getUserById(@PathVariable long id){
-        Optional<User> user=userRepository.findById(id);
+        Optional<User> user=userservice.findById(id);
         if(user.isPresent()){
             return user.get();
         }else{
             throw new ResourceNotFoundException(RESOURCE_NAME,RESOURCE_ID,id);
         }
     }
-    @PutMapping("/users/{id}")
+    @PutMapping("/users/toggle-active/{id}")
     @Transactional
     public ResponseEntity toggleActiveUser(@PathVariable long id, @RequestParam(required = true) int active){
         Boolean actived=(active==ACTIVE_CODE)?false:true;
-        userRepository.toggleActiveUser(actived,id);
+        userservice.toggleActiveUser(actived,id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-    @GetMapping("users/{id}/playlists")
+    @GetMapping("users/get-playlist-users/{id}/playlists")
     public List<PlayList> getPlaylistsOfUser(@PathVariable long id){
-        List<PlayList> playLists=userRepository.getPlaylistsOfUser(id);
+        List<PlayList> playLists=userservice.getPlaylistsOfUser(id);
         if(playLists==null)
             throw
          new   ResourceNotFoundException(RESOURCE_NAME,"id",id);
