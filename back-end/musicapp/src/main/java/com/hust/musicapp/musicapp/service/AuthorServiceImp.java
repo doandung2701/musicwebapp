@@ -18,6 +18,11 @@ public class AuthorServiceImp implements AuthorService {
     AuthorRepo authorRepo;
 
     @Override
+    public List<Author> findAll() {
+        return authorRepo.findAll();
+    }
+
+    @Override
     public Author findById(Long id) {
         return authorRepo.findById(id).get();
     }
