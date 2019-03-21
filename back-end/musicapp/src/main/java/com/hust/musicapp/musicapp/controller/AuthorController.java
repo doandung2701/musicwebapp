@@ -16,6 +16,11 @@ public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
+    @GetMapping("/find-all")
+    public ResponseEntity<?> findAll(){
+        return ResponseEntity.ok(authorService.findAll());
+    }
+
     @GetMapping("/find-by-id/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id){
         return ResponseEntity.ok(authorService.findById(id));
