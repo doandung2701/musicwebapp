@@ -1,11 +1,19 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "score_type")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "scoreId")
 public class ScoreType implements Serializable {
 
     @Id
@@ -16,7 +24,7 @@ public class ScoreType implements Serializable {
     @Column(name="score_value")
     private Double scoreValue;
 
-    @OneToMany(mappedBy = "scoreType",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "scoreType",cascade = CascadeType.ALL)
     private Set<Rate> rates;
 
     public ScoreType(Double scoreValue, Set<Rate> rates) {

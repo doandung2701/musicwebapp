@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("score-types")
+@CrossOrigin("*")
 public class ScoreTypeController {
     @Autowired
     private ScoreTypeService scoreTypeService;
@@ -27,8 +28,7 @@ public class ScoreTypeController {
     {
         return scoreTypeService.findAll();
     }
-    @GetMapping("save-score-types")
-    @PostMapping
+    @PostMapping("save-score-types")
     public ScoreType createScoreType(@Valid @RequestBody ScoreType scoreType){
         return scoreTypeService.save(scoreType);
     }

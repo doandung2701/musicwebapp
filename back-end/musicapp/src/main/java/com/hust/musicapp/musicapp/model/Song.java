@@ -1,6 +1,9 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -10,6 +13,9 @@ import java.util.Set;
 
 @Entity
 @Table(name="song")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "songId")
 public class Song implements Serializable {
 
     @Id
@@ -39,7 +45,6 @@ public class Song implements Serializable {
     @ManyToMany
     @JoinTable(name = "author_song",joinColumns = @JoinColumn(name = "song_id"),inverseJoinColumns =
     @JoinColumn(name = "author_id"))
-    @JsonManagedReference
     private Set<Author> authors;
 
 
@@ -61,7 +66,6 @@ public class Song implements Serializable {
 
 
     @OneToMany(mappedBy = "song",cascade = CascadeType.ALL,orphanRemoval = true)
-    @JsonManagedReference
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Set<Comment> comments;
 

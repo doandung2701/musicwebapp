@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/singers")
+@CrossOrigin("*")
 public class SingerController {
 
     @Autowired
