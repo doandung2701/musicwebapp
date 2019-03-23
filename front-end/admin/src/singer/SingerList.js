@@ -74,7 +74,7 @@ class SingerList extends React.Component {
                 sorter: (a, b) => a.name.length - b.name.length,
                 sortDirections: ['descend', 'ascend'],
                 ...this.getColumnSearchProps('name'),
-                render:(text, record) => <a href="javascript:;"onClick={()=>this.props.showListSongsOfSinger(record.id)}>{text}</a>,
+                render: (text, record) => <a href="javascript:;" onClick={() => this.props.showListSongsOfSinger(record.id)}>{text}</a>,
                 // sorter: (a, b) => a.value - b.value,
             },
             {
@@ -99,8 +99,6 @@ class SingerList extends React.Component {
                                 </Popconfirm>
                             ) : null}
                         <Divider type="vertical" />
-
-<<<<<<< HEAD
                         <Button type="primary" onClick={() => {
                             this.props.openModal({ id: record.id, name: record.name, description: record.description })
                         }}>Edit</Button>
@@ -143,21 +141,8 @@ class SingerList extends React.Component {
                     />
                     <SingerModal />
                 </div>
-=======
-    constructor(props){
-        super(props);
-        this.props.getAllSingers();
-    }
-
-    render(){
-        console.log(this.props.singerList)
-        return (
-            <div>
-                
->>>>>>> f74ba929ce067c351edf2b30cdba4aa325b1e185
             </div>
         )
     }
 }
-
-export default SingerList;
+    export default SingerList;
