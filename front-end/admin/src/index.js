@@ -7,6 +7,7 @@ import AppContainer from './app/AppContainer';
 import { createStore,compose,applyMiddleware } from "redux";
 import { rootReducer } from './app/rootReducer';
 import { Provider } from "react-redux";
+import { DraggableModalProvider } from 'ant-design-draggable-modal';
 
 const store=createStore(rootReducer,compose(applyMiddleware(thunk),
 window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()))

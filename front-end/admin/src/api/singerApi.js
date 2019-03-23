@@ -2,7 +2,7 @@ import Axios from "axios";
 import { API_BASE_URL } from "../constants";
 
  var axios = Axios.create({
-     baseURL: API_BASE_URL+"singer/",
+     baseURL: API_BASE_URL+"singers/",
      timeout: 10000
  })
 
@@ -27,5 +27,8 @@ import { API_BASE_URL } from "../constants";
  }
 
  export const findAllSongsBySingerIdApi = (id)=>{
+     return axios.get(`find/songs-by-id/${id}`);
+ }
+ export const getSongsOfSinger=(id)=>{
      return axios.get(`find/songs-by-id/${id}`);
  }
