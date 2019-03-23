@@ -108,7 +108,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js",
                             "/songs/**",
                             "/authors/**",
+<<<<<<< HEAD
+                            "/score-types/**",
+                            "/singers/**",
+                            "/songs/**")
+=======
                             "/singer/**")
+>>>>>>> f74ba929ce067c351edf2b30cdba4aa325b1e185
                         .permitAll()
                     .antMatchers("/auth/**", "/oauth2/**")
                         .permitAll()

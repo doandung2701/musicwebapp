@@ -13,8 +13,8 @@ html,body
 
   .logo {
     height: 32px;
-    background: rgba(255, 255, 255, .2);
-    margin: 14px;
+    background: rgba(255,255,255,.2);
+    margin: 16px;
     font-size: 18px;
     position: fixed;
     width: 170px;
@@ -132,3 +132,6 @@ html,body
   }
  }
 
+ a.linking{
+  color: #f7f7f7;
+ }

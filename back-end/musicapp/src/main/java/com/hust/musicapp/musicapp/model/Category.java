@@ -1,6 +1,8 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,6 +10,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "category")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "categoryId")
 public class Category implements Serializable {
 
     @Id

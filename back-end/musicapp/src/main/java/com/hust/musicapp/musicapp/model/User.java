@@ -1,6 +1,5 @@
 package com.hust.musicapp.musicapp.model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -11,6 +10,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,15 +48,13 @@ public class User {
     @Fetch(FetchMode.JOIN)
     private Set<Role> roles;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<PlayList> playLists;
 
     @OneToMany(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.ALL)
-    @JsonManagedReference
     private Set<Rate> rates;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<Song> songs;
 
     public Set<Comment> getComments() {
