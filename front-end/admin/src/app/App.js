@@ -6,6 +6,11 @@ import PlayList from "../playlist/PlayList";
 import { Layout, notification, Menu, Icon } from "antd";
 import { history } from "../util/Helpers";
 import AppHeaderContainer from "../common/AppHeaderContainer";
+import ScoreTypeList from "../scoretype/ScoreTypeList";
+import ScoreTypeListContainer from "../scoretype/ScoreTypeListContainer";
+import { Link } from 'react-router-dom'
+import SingerListContainer from "../singer/SingerListContainer";
+
 const { Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -31,50 +36,61 @@ class App extends Component {
       <Router history={history}>
 
         <Layout className="app-container" style={{ minHeight: '100vh' }}>
-        <Sider
-          collapsible
-          collapsed={this.state.collapsed}
-          onCollapse={this.onCollapse}
-        >
-          <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item key="1">
-              <Icon type="pie-chart" />
-              <span>Option 1</span>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Icon type="desktop" />
-              <span>Option 2</span>
-            </Menu.Item>
-            <SubMenu
-              key="sub1"
-              title={<span><Icon type="user" /><span>User</span></span>}
-            >
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub2"
-              title={<span><Icon type="team" /><span>Team</span></span>}
-            >
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="9">
-              <Icon type="file" />
-              <span>File</span>
-            </Menu.Item>
-          </Menu>
-        </Sider>
-        <Layout>
-        <AppHeaderContainer history={history} />
+          <Sider
+            collapsible
+            collapsed={this.state.collapsed}
+            onCollapse={this.onCollapse}
+          >
+            <div className="logo" />
+            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+              <Menu.Item key="1">
+                <Icon type="dashboard" />
+                <span>
+                  <Link to="/" className="linking">
+                    DashBoard
+                  </Link>
+                </span>
+              </Menu.Item>
+              <Menu.Item key="2">
+                <Icon type="" />
+                <span>
+                  <Link to="/score-type" className="linking">
+                    Score Type
+                  </Link>
+                </span>
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Icon type="" />
+                <span>
+                  <Link to="/singer" className="linking">
+                    Singer
+                  </Link>
+                </span>
+              </Menu.Item>
+            </Menu>
+          </Sider>
+          <Layout>
+            <AppHeaderContainer history={history} />
 
-          <Content className="app-content">
-            <div className="container">
-              <Switch>
+            <Content className="app-content">
+              <div className="container">
+                <Switch>
+                  <Route
+                    exact
+                    path="/"
+                    render={props => <h1>Dashboard</h1>}
+                  />
+                  <Route
+                    path="/score-type"
+                    render={props => <ScoreTypeListContainer {...props} />}
+                  />
+
+                  <Route
+                    path="/singer"
+                    render={props => <SingerListContainer {...props} />}
+                  />
                   {/* //cac route thi xu ly trong day */}
-                {/* <Route
+                  {/* <Route
                   exact
                   path="/"
                   render={props => <PollListContainer {...props} />}
@@ -89,14 +105,14 @@ class App extends Component {
                   component={NewPoll}
                   handleLogout={this.handleLogout}
                 /> */}
-                <Route component={PlayList} />
-              </Switch>
-            </div>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>
-       Music app admin section ©2018 Created by AkuraTeam
+                  <Route component={ScoreTypeListContainer} />
+                </Switch>
+              </div>
+            </Content>
+            <Footer style={{ textAlign: 'center' }}>
+              Music app admin section ©2018 Created by AkuraTeam
       </Footer>
-        </Layout>
+          </Layout>
         </Layout>
       </Router>
     );

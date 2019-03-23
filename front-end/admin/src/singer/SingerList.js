@@ -100,6 +100,7 @@ class SingerList extends React.Component {
                             ) : null}
                         <Divider type="vertical" />
 
+<<<<<<< HEAD
                         <Button type="primary" onClick={() => {
                             this.props.openModal({ id: record.id, name: record.name, description: record.description })
                         }}>Edit</Button>
@@ -142,6 +143,18 @@ class SingerList extends React.Component {
                     />
                     <SingerModal />
                 </div>
+=======
+    constructor(props){
+        super(props);
+        this.props.getAllSingers();
+    }
+
+    render(){
+        console.log(this.props.singerList)
+        return (
+            <div>
+                
+>>>>>>> f74ba929ce067c351edf2b30cdba4aa325b1e185
             </div>
         )
     }

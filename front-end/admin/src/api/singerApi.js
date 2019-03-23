@@ -7,7 +7,11 @@ import { API_BASE_URL } from "../constants";
  })
 
  export const getAllSingersApi = ()=>{
-     return axios.get("find/find-all");
+     return axios.get("find/find-all",{
+         headers: {
+            'Content-Security-Policy': 'default-src https:'
+         }
+     });
  }
 
  export const getSingerByIdApi = (id)=>{
