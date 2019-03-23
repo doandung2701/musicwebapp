@@ -6,6 +6,10 @@ import PlayList from "../playlist/PlayList";
 import { Layout, notification, Menu, Icon } from "antd";
 import { history } from "../util/Helpers";
 import AppHeaderContainer from "../common/AppHeaderContainer";
+import {Link} from 'react-router-dom';
+import Dashboard from '../dashboard/Dashboard';
+import AppHeader2 from "../common/AppHeader2";
+
 const { Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -22,25 +26,54 @@ class App extends Component {
     collapsed: false,
   };
 
-  onCollapse = (collapsed) => {
-    console.log(collapsed);
-    this.setState({ collapsed });
-  }
+  componentDidMount(){
+    document.getElementById("page-logo").style.backgroundImage = "center";
+}
+
+onCollapse = (collapsed) => {
+    this.setState({
+        collapsed
+    })
+    var pageLogo = document.getElementById("page-logo");
+    if (!collapsed) {
+      pageLogo.style.backgroundImage = "url('/images/soundcloud1.png')";
+        pageLogo.style.backgroundPosition = "center";
+        pageLogo.style.width = '170px';
+        document.getElementById("sider-menu").style.width = "200px"
+    } else {
+        pageLogo.style.backgroundPosition = "center";
+        pageLogo.style.backgroundImage = "url('/images/soundcloud2.png')";
+        pageLogo.style.width = '47px';
+        document.getElementById("sider-menu").style.width = "80px"
+    }
+}
+
   render() {
     return (
       <Router history={history}>
-
-        <Layout className="app-container" style={{ minHeight: '100vh' }}>
+      <div className="App">
+        <Layout className="app-container" style={{minHeight: '100vh',width: '100vw',overflow: 'hidden'}}>
         <Sider
           collapsible
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
         >
-          <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <div className="logo"  id="page-logo"/>
+          <Menu id="sider-menu"
+          theme="dark" style={{position: 'fixed',width: 200,marginTop: 60}}
+                    inlineCollapsed={this.state.collapsed}
+          defaultSelectedKeys={['1']} mode="inline">
+            <Menu.Item >
+              <Link to="/">
+                <Icon type="dashboard" />
+                 <span>Dashboard</span>
+               </Link>
+              </Menu.Item>
             <Menu.Item key="1">
+            <Link to="/playlist">
               <Icon type="pie-chart" />
               <span>Option 1</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="2">
               <Icon type="desktop" />
@@ -68,11 +101,12 @@ class App extends Component {
           </Menu>
         </Sider>
         <Layout>
-        <AppHeaderContainer history={history} />
-
+        {/* <AppHeaderContainer history={history} /> */}
+        <AppHeader2 />
           <Content className="app-content">
             <div className="container">
               <Switch>
+              <Route path="/" exact component={Dashboard} />
                   {/* //cac route thi xu ly trong day */}
                 {/* <Route
                   exact
@@ -89,7 +123,7 @@ class App extends Component {
                   component={NewPoll}
                   handleLogout={this.handleLogout}
                 /> */}
-                <Route component={PlayList} />
+                <Route path="/playlist"component={PlayList} />
               </Switch>
             </div>
           </Content>
@@ -98,7 +132,9 @@ class App extends Component {
       </Footer>
         </Layout>
         </Layout>
+        </div>
       </Router>
+      
     );
   }
 }
