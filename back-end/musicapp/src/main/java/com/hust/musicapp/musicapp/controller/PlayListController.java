@@ -27,7 +27,7 @@ public class PlayListController {
         return ResponseEntity.ok(songs);
     }
 
-    @GetMapping("/count")
+    @GetMapping("/count/count-all")
     public ResponseEntity<Long> countAll() {
         return ResponseEntity.ok(playListService.count());
     }

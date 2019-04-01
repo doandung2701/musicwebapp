@@ -36,7 +36,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.saveAll(categories));
     }
 
-    @GetMapping("/count")
+    @GetMapping("/count/count-all")
     public ResponseEntity<Long> count(){
         return ResponseEntity.ok(categoryService.count());
     }

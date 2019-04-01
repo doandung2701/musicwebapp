@@ -18,6 +18,7 @@ import AppHeaderContainer from '../common/AppHeaderContainer';
 import LoginContainer from '../user/login/LoginContainer';
 import ProfileContainer from '../user/profile/ProfileContainer';
 import SignupContainer from '../user/signup/SignupContainer';
+import 'antd/dist/antd.css';
 
 class App extends Component {
   // constructor(props) {
@@ -56,7 +57,7 @@ class App extends Component {
 
     return (
       <Router history={history}>{/*dung de routing ngoai component */}
-      <div className="app">
+      <div>
         <div className="app-top-box">
           <AppHeaderContainer  />
         </div>
@@ -76,7 +77,7 @@ class App extends Component {
         <Alert stack={{limit: 3}} 
           timeout = {3000}
           position='top-right' effect='slide' offset={65} />
-      </div>
+          </div>
       </Router>
     );
   }
