@@ -111,7 +111,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             "/score-types/**",
                             "/singers/**",
                             "/songs/**",
-                            "/singer/**")
+                            "/singer/**",
+                            "/comments/**",
+                            "/users/**",
+                            "/playlist/**")
                         .permitAll()
                     .antMatchers("/auth/**", "/oauth2/**")
                         .permitAll()
