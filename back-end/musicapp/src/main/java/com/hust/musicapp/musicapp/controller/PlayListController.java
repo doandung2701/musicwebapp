@@ -57,18 +57,18 @@ public class PlayListController {
         return ResponseEntity.ok(playListService.findById(id));
     }
 
-    @PostMapping("/save-comment")
-    public ResponseEntity<?> addComment(@RequestBody PlayList playlist) {
+    @PostMapping("/save-playlist")
+    public ResponseEntity<?> addPlaylist(@RequestBody PlayList playlist) {
         return ResponseEntity.ok(playListService.save(playlist));
     }
 
     @PutMapping("/save-playlist")
-    public ResponseEntity<?> updateComment(@RequestBody PlayList playlist) {
+    public ResponseEntity<?> updatePlaylist(@RequestBody PlayList playlist) {
         return ResponseEntity.ok(playListService.save(playlist));
     }
 
     @DeleteMapping("/delete-playlist")
-    public ResponseEntity<?> deleteComment(@RequestBody PlayList playlist) {
+    public ResponseEntity<?> deletePlaylist(@RequestBody PlayList playlist) {
         PlayList p = playListService.findById(playlist.getId());
         if (p!=null) {
             playListService.delete(p);
