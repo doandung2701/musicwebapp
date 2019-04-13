@@ -24,15 +24,13 @@ public class SongController {
     @Autowired
     private SongService songService;
 
-
-
     @GetMapping("/find-all")
     public ResponseEntity<?> findAll() {
         List<Song> songs = songService.findAll();
         return ResponseEntity.ok(songs);
     }
 
-    @GetMapping("/count")
+    @GetMapping("/count/count-all")
     public ResponseEntity<Long> countAll() {
         return ResponseEntity.ok(songService.count());
     }
@@ -90,6 +88,15 @@ public class SongController {
             return ResponseEntity.ok("Delete Sucessfully!");
         }
         else return  ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/count/get-listen-count")
+    public ResponseEntity<?> getListenCount(@RequestParam("songId") Long id){
+        Song song = songService.findById(id);
+        if (song==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(song.getListenCount());
     }
 
     @InitBinder

@@ -39,6 +39,9 @@ public class Song implements Serializable {
     @Column(name="thumbnail")
     private String thumbnail;
 
+    @Column(name="listen_count",columnDefinition = "BIGINT default 0")
+    private Long listenCount;
+
     @Column(name = "checked",nullable = false,columnDefinition = "TINYINT",length = 1)
     private boolean checked;
 
@@ -95,6 +98,14 @@ public class Song implements Serializable {
         this.singers = s.getSingers();
         this.briefDesciption =s.getBriefDesciption();
         this.thumbnail = s.getThumbnail();
+    }
+
+    public Long getListenCount() {
+        return listenCount;
+    }
+
+    public void setListenCount(Long listenCount) {
+        this.listenCount = listenCount;
     }
 
     public void setSingers(Set<Singer> singers) {
