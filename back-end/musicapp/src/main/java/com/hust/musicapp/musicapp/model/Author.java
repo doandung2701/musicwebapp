@@ -1,7 +1,9 @@
 package com.hust.musicapp.musicapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +11,9 @@ import java.util.Set;
 
 @Entity
 @Table(name="author")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "authorId")
 public class Author  implements Serializable {
 
     @Id
@@ -25,8 +30,6 @@ public class Author  implements Serializable {
     @ManyToMany
     @JoinTable(name = "author_song",joinColumns = @JoinColumn(name = "author_id"),inverseJoinColumns =
     @JoinColumn(name = "song_id"))
-   // @JsonIgnore
-    @JsonBackReference
     private Set<Song> songs;
 
     public Author(String authorName, String briefDescription, Set<Song> songs) {

@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import { getAllSingers } from './SingerAction';
+import { getAllSingers, deleteSinger, openModal } from './SingerAction';
 import SingerList from './SingerList';
 
 var mapStateToProp = state=>({
@@ -10,7 +10,10 @@ var mapDispatchToProps = dispatch=>{
     return {
         getAllSingers: ()=>{
             dispatch(getAllSingers());
-        }
+        },
+        deleteSinger:(id)=>dispatch(deleteSinger(id)),
+        openModal:(data)=>dispatch(openModal(data)),
+      
     }
 }
 

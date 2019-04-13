@@ -6,9 +6,13 @@ import PlayList from "../playlist/PlayList";
 import { Layout, notification, Menu, Icon } from "antd";
 import { history } from "../util/Helpers";
 import AppHeaderContainer from "../common/AppHeaderContainer";
+
 import {Link} from 'react-router-dom';
 import Dashboard from '../dashboard/Dashboard';
 import AppHeader2 from "../common/AppHeader2";
+import ScoreTypeList from "../scoretype/ScoreTypeList";
+import ScoreTypeListContainer from "../scoretype/ScoreTypeListContainer";
+import SingerListContainer from "../singer/SingerListContainer";
 
 const { Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -50,7 +54,7 @@ onCollapse = (collapsed) => {
 
   render() {
     return (
-      <Router history={history}>
+     <Router history={history}>
       <div className="App">
         <Layout className="app-container" style={{minHeight: '100vh',width: '100vw',overflow: 'hidden'}}>
         <Sider

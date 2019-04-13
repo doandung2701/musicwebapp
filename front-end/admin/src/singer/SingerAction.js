@@ -1,13 +1,24 @@
 import {  CREATING_SINGER, CREATE_SINGER_SUCCESS, CREATE_SINGER_FAIL, DELETING_SINGER, DELETE_SINGER_SUCCESS, DELETE_SINGER_FAIL, UPDATING_SINGER, UPDATE_SINGER_SUCCESS, UPDATE_SINGER_FAIL, GETTING_SINGER_BY_ID, GET_SINGER_BY_ID_SUCCESS, GET_SINGER_BY_ID_FAIL, GETTING_SINGERS, GET_SINGERS_SUCCESS, GET_SINGERS_FAIL } from "../constants";
-import { getAllSingersApi, createSingerApi, deleteSingerApi, getSingerByIdApi } from "../api/singerApi";
-
+import { getAllSingersApi, createSingerApi, deleteSingerApi, getSingerByIdApi, updateSingerApi } from "../api/singerApi";
+import { SINGER_SHOW_MODAL, SINGER_CLOSE_MODAL } from "./SingerConstants";
+export const openModal=(data={
+    id: 0,
+    name: 0,
+    description: ""
+})=>({
+    type:SINGER_SHOW_MODAL,
+    payload:data
+})
+export const closeModal = () => ({
+    type: SINGER_CLOSE_MODAL
+})
 const gettingSingers = ()=>({
     type: GETTING_SINGERS
 })
 
 const getSingerSuccess = (singers)=>({
     type: GET_SINGERS_SUCCESS,
-    singers //cú pháp ngắn gọn, = singers: singers
+    payload:singers //cú pháp ngắn gọn, = singers: singers
 })
 
 const getSingerFail = (error)=>({
@@ -21,7 +32,7 @@ const creatingSinger = ()=>({
 
 const createSingerSuccess = (singer)=>({
     type: CREATE_SINGER_SUCCESS,
-    singer
+    payload:singer
 })
 
 const createSingerFail = (error)=>({
@@ -33,8 +44,9 @@ const deletingSinger = ()=>({
     type: DELETING_SINGER
 })
 
-const deleteSingerSuccess = ()=>({
-    type: DELETE_SINGER_SUCCESS
+const deleteSingerSuccess = (singerid)=>({
+    type: DELETE_SINGER_SUCCESS,
+    payload:singerid
 })
 
 const deleteSingerFail = (error)=>({
@@ -48,7 +60,7 @@ const updatingSinger = ()=>({
 
 const updateSingerSuccess= (singer)=>({
     type: UPDATE_SINGER_SUCCESS,
-    singer
+    payload:singer
 })
 
 const updateSingerFail = error=>({
@@ -62,7 +74,7 @@ const gettingSingerById = ()=>({
 
 const getSingerByIdSuccess = (singer)=>({
     type: GET_SINGER_BY_ID_SUCCESS,
-    singer
+    payload:singer
 })
 
 const getSingerByIdFail = (error)=>({
@@ -112,7 +124,7 @@ export const deleteSinger = (singerId)=>{
     return dispatch=>{
         dispatch(deletingSinger());
         deleteSingerApi(singerId).then(data=>{
-            dispatch(deleteSingerSuccess(data.data));
+            dispatch(deleteSingerSuccess(singerId));
         }).catch(error=>{
             if (error.response){
                 dispatch(deleteSingerFail(error.response.data));
@@ -142,7 +154,7 @@ export const updateSinger = (singerId,singerDetail)=>{
     /*singerDetail gửi lên có các thuộc tính trong class Singer ở backend */
     return dispatch=>{
         dispatch(updatingSinger());
-        getSingerByIdApi(singerId,singerDetail).then(data=>{
+        updateSingerApi(singerId,singerDetail).then(data=>{
             dispatch(updateSingerSuccess(data.data));//trả về singer để hiển thị luôn, đỡ phải fetch lại
         }).catch(error=>{
             if (error.response){
