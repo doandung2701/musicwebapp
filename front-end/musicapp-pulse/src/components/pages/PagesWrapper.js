@@ -19,6 +19,10 @@ import TrackPage from './TrackPage/TrackPage';
 import TrackPageHeader from '../tracks/TrackPageHeader';
 import ArtistDetail from './ArtistsPage/ArtistDetail';
 import AlbumDetail from './AlbumPage/AlbumDetail';
+import DiscoverPageContainer from './DiscoverPage/DiscoverPageContainer';
+import SignInContainer from './SignIn/SignInContainer';
+import SignUpPageContainer from '../signup/SignUpPageContainer';
+import OAuth2RedirectHandler from './oauth2/OAuth2RedirectHandler';
 
 class PagesWrapper extends React.Component {
 
@@ -32,8 +36,8 @@ class PagesWrapper extends React.Component {
             history.location.pathname.indexOf("/track") >= 0;
         return (
             <Switch>
-                <Route path="/signin" exact component={SigninPage} />
-                <Route path="/signup" exact component={SignupPage} />
+                <Route path="/signin" exact component={SignInContainer} />
+                <Route path="/signup" exact component={SignUpPageContainer} />
                 <div id="content" className="app-content white bg box-shadow-z2" role="main">
                     <HiddenHeader />
                     <FooterPlayerContainer />
@@ -52,7 +56,7 @@ class PagesWrapper extends React.Component {
                                     <div className="padding">
                                         {/* Trending */}
                                         <Switch>
-                                            <Route path='/' exact component={DiscoverPage} />
+                                            <Route path='/' exact component={DiscoverPageContainer} />
                                             <Route path='/discover'  component={DiscoverPage} />
                                             <Route path='/browse'  component={BrowsePage} />
                                             <Route path="/chart"  component={ChartPage} />
@@ -61,6 +65,7 @@ class PagesWrapper extends React.Component {
                                             <Route path="/track:id"  component={TrackPage} />
                                             <Route path="/albums:id"  component={AlbumDetail} />
                                             <Route path="/artists:id"  component={ArtistDetail} />
+                                            <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/> 
                                             <Route  component={NotFound} />
                                         </Switch>
                                     </div>
