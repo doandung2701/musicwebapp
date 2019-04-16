@@ -105,6 +105,7 @@ export default class FooterPlayer extends React.Component {
 
     changeVolume = (e) => {
         this.move = true;
+        console.log(e.pageY,$('#mejs-volume-button').offset())
         let handle = document.getElementsByClassName("mejs-volume-handle")[0];
         let currentVol = document.getElementsByClassName("mejs-volume-current")[0];
         var y = -(e.pageY - $('#mejs-volume-button').offset().top);
