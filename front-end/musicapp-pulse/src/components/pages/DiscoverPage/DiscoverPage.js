@@ -7,7 +7,7 @@ import RecommendList from '../../recommend/RecommendList';
 
 export default class DiscoverPage extends React.Component {
     componentDidMount() {
-        this.props.loadCurrentlyLoggedInUser();  
+        // this.props.loadCurrentlyLoggedInUser();  
   }
 
     render() {

@@ -38,6 +38,7 @@ class PagesWrapper extends React.Component {
             <Switch>
                 <Route path="/signin" exact component={SignInContainer} />
                 <Route path="/signup" exact component={SignUpPageContainer} />
+                <Route path="/oauth2-redirect" component={OAuth2RedirectHandler}/> 
                 <div id="content" className="app-content white bg box-shadow-z2" role="main">
                     <HiddenHeader />
                     <FooterPlayerContainer />
@@ -65,7 +66,6 @@ class PagesWrapper extends React.Component {
                                             <Route path="/track:id"  component={TrackPage} />
                                             <Route path="/albums:id"  component={AlbumDetail} />
                                             <Route path="/artists:id"  component={ArtistDetail} />
-                                            <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/> 
                                             <Route  component={NotFound} />
                                         </Switch>
                                     </div>
