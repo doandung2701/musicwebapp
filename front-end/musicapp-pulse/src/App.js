@@ -9,7 +9,7 @@ import ThemeSwitcher from './components/themeswitcher/ThemeSwicher';
 import {withRouter} from 'react-router-dom';
 import DeleteModal from './components/common/DeleteModal';
 import ShareModal from './components/common/ShareModal';
-
+import { Redirect} from "react-router-dom";
 class App extends Component {
 
   render() {

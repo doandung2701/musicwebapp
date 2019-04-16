@@ -6,6 +6,10 @@ import NewTrackList from '../../new/NewTrackList';
 import RecommendList from '../../recommend/RecommendList';
 
 export default class DiscoverPage extends React.Component {
+    componentDidMount() {
+        this.props.loadCurrentlyLoggedInUser();  
+  }
+
     render() {
         return (
             <Fragment>
