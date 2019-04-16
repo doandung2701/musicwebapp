@@ -42,7 +42,7 @@ public class AuthorController {
     }
 
 
-    @GetMapping("/count")
+    @GetMapping("/count/count-all")
     public ResponseEntity<Long> count(){
         return ResponseEntity.ok(authorService.count());
     }

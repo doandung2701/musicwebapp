@@ -30,5 +30,4 @@ public interface SongRepo extends JpaRepository<Song,Long> {
     @Query("select s from Song s left outer join fetch s.authors a where a.authorId in (:authorIds)")
     List<Song> findByAuthorId(@Param("authorIds") List<Long> authorIds);
 
-
 }

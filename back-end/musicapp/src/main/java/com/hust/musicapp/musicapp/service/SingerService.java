@@ -3,6 +3,7 @@ package com.hust.musicapp.musicapp.service;
 import com.hust.musicapp.musicapp.model.Singer;
 import com.hust.musicapp.musicapp.model.Song;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.validation.Valid;
 import java.util.List;

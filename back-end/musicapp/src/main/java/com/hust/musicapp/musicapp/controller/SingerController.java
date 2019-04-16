@@ -66,4 +66,5 @@ public class SingerController {
         Singer singer=singerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Singer", "id", id));
         return singerRepository.getAllSongsOfSinger(id);
     }
+
 }
