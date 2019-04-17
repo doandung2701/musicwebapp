@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 export default class SideNav extends React.Component {
 
   render() {
+    const {authentication}=this.props;
     return (
       <Fragment>
         {/* <!-- aside --> */}
@@ -91,7 +92,7 @@ export default class SideNav extends React.Component {
                     <span className="text-xs text-muted">Your profile</span>
                   </li>
                   <li>
-                    <NavLink to="/user-profile">
+                    {authentication.authenticated==true&& <NavLink to="/user-profile">
                       <span className="nav-label">
                         <b className="label">8</b>
                       </span>
@@ -101,7 +102,8 @@ export default class SideNav extends React.Component {
                     </i>
                       </span>
                       <span className="nav-text">Your profile</span>
-                    </NavLink>
+                    </NavLink>}
+                   
                   </li>
                   {/* <li>
                     <NavLink href="/user-profile#playlists">
@@ -124,14 +126,16 @@ export default class SideNav extends React.Component {
                     </NavLink>
                   </li>*/}
                   <li>
-                    <NavLink to="/signin" >
-                      <span className="nav-icon">
-                        <i className="material-icons">
-                          play_circle_outline
-                    </i>
-                      </span>
-                      <span className="nav-text">Sign in</span>
-                    </NavLink>
+                  {authentication.authenticated==false&& 
+                  <NavLink to="/signin" >
+                  <span className="nav-icon">
+                    <i className="material-icons">
+                      play_circle_outline
+                </i>
+                  </span>
+                  <span className="nav-text">Sign in</span>
+                </NavLink>}
+                    
                   </li>
                 </ul>
               </nav>

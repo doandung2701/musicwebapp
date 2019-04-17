@@ -7,8 +7,18 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import { rootReducer } from './app/rootReducer';
 import thunk from 'redux-thunk';
 import AppContainer from './app/AppContainer';
+import { loadQueueState, loadUserData } from './localStorage';
 
-var store = createStore(rootReducer,compose(applyMiddleware(thunk),
+const queueFromLocalStorage = loadQueueState();
+const persistedData = {
+  queueState: queueFromLocalStorage,
+  auth: {
+    authenticated: Boolean(loadUserData()),
+    user: loadUserData(),
+    errors: {},
+  },
+};
+var store = createStore(rootReducer,persistedData,compose(applyMiddleware(thunk),
 window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 ));
 
