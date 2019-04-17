@@ -23,6 +23,7 @@ import DiscoverPageContainer from './DiscoverPage/DiscoverPageContainer';
 import SignInContainer from './SignIn/SignInContainer';
 import SignUpPageContainer from '../signup/SignUpPageContainer';
 import OAuth2RedirectHandler from './oauth2/OAuth2RedirectHandler';
+import OAuth2RedirectHandlerContainer from './oauth2/OAuth2RedirectHandlerContainer';
 
 class PagesWrapper extends React.Component {
 
@@ -38,7 +39,7 @@ class PagesWrapper extends React.Component {
             <Switch>
                 <Route path="/signin" exact component={SignInContainer} />
                 <Route path="/signup" exact component={SignUpPageContainer} />
-                <Route path="/oauth2-redirect" component={OAuth2RedirectHandler}/> 
+                <Route path="/oauth2-redirect" component={OAuth2RedirectHandlerContainer}/> 
                 <div id="content" className="app-content white bg box-shadow-z2" role="main">
                     <HiddenHeader />
                     <FooterPlayerContainer />
