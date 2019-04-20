@@ -1,12 +1,11 @@
 package com.hust.musicapp.musicapp.service;
 
-import com.hust.musicapp.musicapp.model.Category;
 import com.hust.musicapp.musicapp.model.Song;
+import com.hust.musicapp.musicapp.payload.SongPayload;
+import com.hust.musicapp.musicapp.payload.TrendingSong;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
 
 public interface SongService {
 
@@ -20,7 +19,7 @@ public interface SongService {
 
     List<Song> findByNameExact(String name);
 
-    List<Song> findByNameLike(String name);
+    List<SongPayload> findByNameLike(String name);
 
     List<Song> findBySingerId(List<Long> singerIds);
 
@@ -35,6 +34,9 @@ public interface SongService {
     Song getOne(Long id);
 
     List<Song> saveAll(List<Song> songs);
-
+    List<TrendingSong> getSongTrending();
+    List<TrendingSong> getNewestSong();
+    List<TrendingSong> getTopgFiveSongLovest();
+    List<TrendingSong> getChartSongs();
     void deleteSong(Song song);
 }

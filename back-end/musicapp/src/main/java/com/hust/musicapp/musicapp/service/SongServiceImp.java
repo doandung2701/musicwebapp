@@ -1,6 +1,8 @@
 package com.hust.musicapp.musicapp.service;
 
 import com.hust.musicapp.musicapp.model.Song;
+import com.hust.musicapp.musicapp.payload.SongPayload;
+import com.hust.musicapp.musicapp.payload.TrendingSong;
 import com.hust.musicapp.musicapp.repository.SongRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,26 @@ public class SongServiceImp implements SongService {
 
     @Autowired
     private SongRepo songRepo;
+
+    @Override
+    public List<TrendingSong> getSongTrending() {
+        return songRepo.getSongTrending();
+    }
+
+    @Override
+    public List<TrendingSong> getNewestSong() {
+        return songRepo.getSongNewest();
+    }
+
+    @Override
+    public List<TrendingSong> getTopgFiveSongLovest() {
+        return songRepo.getTopSongLovest();
+    }
+
+    @Override
+    public List<TrendingSong> getChartSongs() {
+        return songRepo.getChartSongs();
+    }
 
     @Override
     public List<Song> findAll() {
@@ -49,7 +71,7 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
-    public List<Song> findByNameLike(String name) {
+    public List<SongPayload> findByNameLike(String name) {
         return songRepo.findByNameLike(name);
     }
 

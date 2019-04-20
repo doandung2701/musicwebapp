@@ -27,6 +27,17 @@ public class Author  implements Serializable {
     @Column(name="brief_description")
     private String briefDescription;
 
+    @Column(name="author_thumbnail",nullable = true)
+    private String thumbnai;
+
+    public String getThumbnai() {
+        return thumbnai;
+    }
+
+    public void setThumbnai(String thumbnai) {
+        this.thumbnai = thumbnai;
+    }
+
     @ManyToMany
     @JoinTable(name = "author_song",joinColumns = @JoinColumn(name = "author_id"),inverseJoinColumns =
     @JoinColumn(name = "song_id"))
