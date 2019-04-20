@@ -98,7 +98,22 @@ public class SongController {
         }
         return ResponseEntity.ok(song.getListenCount());
     }
-
+    @GetMapping("/find-trending")
+    public ResponseEntity<?> getSongTrending(){
+    return ResponseEntity.ok(songService.getSongTrending());
+    }
+    @GetMapping("/find-newest")
+    public ResponseEntity<?> getSongNewest(){
+        return ResponseEntity.ok(songService.getNewestSong());
+    }
+    @GetMapping("/find-lovest")
+    public ResponseEntity<?> getTopFiveSongLovest(){
+        return ResponseEntity.ok(songService.getTopgFiveSongLovest());
+    }
+    @GetMapping("/find-charts")
+    public ResponseEntity<?> getChartSongs(){
+        return ResponseEntity.ok(songService.getChartSongs());
+    }
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
