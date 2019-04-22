@@ -1,9 +1,6 @@
 package com.hust.musicapp.musicapp.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,6 +22,7 @@ public class ScoreType implements Serializable {
     private Double scoreValue;
 
     @OneToMany(mappedBy = "scoreType",cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Rate> rates;
 
     public ScoreType(Double scoreValue, Set<Rate> rates) {

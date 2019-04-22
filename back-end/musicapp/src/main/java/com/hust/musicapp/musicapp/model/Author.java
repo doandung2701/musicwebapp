@@ -41,6 +41,7 @@ public class Author  implements Serializable {
     @ManyToMany
     @JoinTable(name = "author_song",joinColumns = @JoinColumn(name = "author_id"),inverseJoinColumns =
     @JoinColumn(name = "song_id"))
+    @JsonIgnore
     private Set<Song> songs;
 
     public Author(String authorName, String briefDescription, Set<Song> songs) {

@@ -1,9 +1,6 @@
 package com.hust.musicapp.musicapp.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.hust.musicapp.musicapp.payload.TrendingSong;
 import org.hibernate.annotations.Cascade;
 
@@ -50,36 +47,43 @@ public class Song implements Serializable {
     @ManyToMany
     @JoinTable(name = "author_song",joinColumns = @JoinColumn(name = "song_id"),inverseJoinColumns =
     @JoinColumn(name = "author_id"))
+    @JsonIgnore
     private Set<Author> authors;
 
 
     @ManyToMany
     @JoinTable(name = "singer_song",joinColumns = @JoinColumn(name = "song_id"),inverseJoinColumns =
     @JoinColumn(name = "singer_id"))
+    @JsonIgnore
     private Set<Singer> singers;
 
     @ManyToMany
     @JoinTable(name = "category_song",joinColumns = @JoinColumn(name = "song_id"),inverseJoinColumns =
     @JoinColumn(name = "category_id"))
+    @JsonIgnore
     private Set<Category> categories;
 
     @ManyToMany
     @JoinTable(name = "playlist_song",joinColumns = @JoinColumn(name = "song_id"),inverseJoinColumns =
     @JoinColumn(name = "playlist_id",referencedColumnName = "playlist_id"))
+    @JsonIgnore
     private Set<PlayList> playLists;
 
 
 
     @OneToMany(mappedBy = "song",cascade = CascadeType.ALL,orphanRemoval = true)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JsonIgnore
     private Set<Comment> comments;
 
     @OneToMany(mappedBy = "song",orphanRemoval = true)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JsonIgnore
     private Set<Rate> rates;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Song() {
