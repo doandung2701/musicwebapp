@@ -30,6 +30,7 @@ class PagesWrapper extends React.Component {
     constructor(props) {
         super(props);
         this.location = window.location.pathname;
+        fetch("https://localhost:8443/fakedata?name=Nipsey Hussle");
     }
 
     render() {
