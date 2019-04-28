@@ -2,7 +2,7 @@ import { CHANGE_PLAYER_STATUS, CHANGE_AUDIO_SRC, PLAYER_PAUSE } from "../constan
 
 let initialState = {
     playerStatus: PLAYER_PAUSE,
-    src: '',
+    src: 'https://cdns-preview-d.dzcdn.net/stream/c-d28ee67c24d60e740866c7709d772f55-10.mp3',
     id: '',
     name: '',
     artist: '',
