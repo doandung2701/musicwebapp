@@ -1,10 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { Table, Popconfirm, Divider, Button, Input, Icon } from 'antd';
 import Highlighter from 'react-highlight-words';
-import * as actions from './CommentsAction';
-import {connect} from 'react-redux';
+import * as actions from './UsersAction';
 
-class CommentsList extends React.Component {
+class UserList extends React.Component {
     getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({
             setSelectedKeys, selectedKeys, confirm, clearFilters,
@@ -64,70 +64,95 @@ class CommentsList extends React.Component {
         super(props);
         this.columns = [
             {
-                title: 'COMMENT ID',
-                dataIndex:'commentId',
-                key: 'commentId',
-            }, 
-            {
-                title: 'COMMENT',
-                dataIndex: 'commentCnt',
-                key: 'commentCnt',
-                onFilter: (value, record) => record.commentCnt.indexOf(value) === 0,
-                sorter: (a, b) => a.commentCnt.length - b.commentCnt.length,
+                title: 'ID',
+                dataIndex: 'id',
+                key: 'id',
+            }, {
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name',
+                onFilter: (value, record) => record.name.indexOf(value) === 0,
+                sorter: (a, b) => a.name.length - b.name.length,
                 sortDirections: ['descend', 'ascend'],
-                ...this.getColumnSearchProps('commentCnt'),
+                ...this.getColumnSearchProps('name'),
                 render: (text, record) => <a href="javascript:;" onClick={() => this.props.showListSongsOfSinger(record.id)}>{text}</a>,
                 // sorter: (a, b) => a.value - b.value,
             },
             {
-                title: 'COMMNET DATE',
-                dataIndex: 'commentDate',
-                key: 'commentDate',
-                onFilter: (value, record) => record.commentDate.indexOf(value) === 0,
-                sorter: (a, b) => a.commentDate.length - b.commentDate.length,
+                title: 'Email',
+                dataIndex: 'email',
+                key: 'email',
+                onFilter: (value, record) => record.email.indexOf(value) === 0,
+                sorter: (a, b) => a.email.length - b.email.length,
                 sortDirections: ['descend', 'ascend'],
-                ...this.getColumnSearchProps('commentDate'),
+                ...this.getColumnSearchProps('email'),
                 // sorter: (a, b) => a.value - b.value,
             },
             {
-                title: 'PARENT COMMNET',
-                dataIndex: 'parentCmt',
-                key: 'parentCmt',
-                onFilter: (value, record) => record.parentCmt.indexOf(value) === 0,
-                sorter: (a, b) => a.parentCmt.length - b.parentCmt.length,
+                title: 'Image',
+                dataIndex: 'imageUrl',
+                key: 'imageUrl',
+                onFilter: (value, record) => record.imageUrl.indexOf(value) === 0,
+                sorter: (a, b) => a.imageUrl.length - b.imageUrl.length,
                 sortDirections: ['descend', 'ascend'],
-                ...this.getColumnSearchProps('parentCmt'),
+                ...this.getColumnSearchProps('imageUrl'),
                 // sorter: (a, b) => a.value - b.value,
             },
             {
-                title: 'operation',
-                dataIndex: 'operation',
+                title: 'Email Verified',
+                dataIndex: 'emailVerified',
+                key: 'emailVerified',
+                onFilter: (value, record) => record.emailVerified.indexOf(value) === 0,
+                sorter: (a, b) => a.emailVerified.length - b.emailVerified.length,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('emailVerified'),
+                // sorter: (a, b) => a.value - b.value,
                 render: (text, record) => (
-                    <span>
-                        {this.props.commentReducer.commentList.length >= 1
-                            ? (
-                                <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteComment(record.commentId)}>
-                                    <a href="javascript:;">Delete</a>
+                    <Popconfirm title="Sure to toggel verified?" onConfirm= {() => this.props.toggleUser(record.id, record.emailVerified) }>
+                                    <a href="javascript:;">{record.emailVerified}</a>
                                 </Popconfirm>
-                            ) : null}
-                    </span>
-                ),
-            }
+                )
+            },
+            {
+                title: 'Provider',
+                dataIndex: 'provider',
+                key: 'provider',
+                onFilter: (value, record) => record.provider.indexOf(value) === 0,
+                sorter: (a, b) => a.provider.length - b.provider.length,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('provider'),
+                // sorter: (a, b) => a.value - b.value,
+            },
+            // {
+            //     title: 'operation',
+            //     dataIndex: 'operation',
+            //     render: (text, record) => (
+            //         <span>
+            //             {this.props.userReducer.userList.length >= 1
+            //                 ? (
+            //                     <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteSinger(record.id)}>
+            //                         <a href="javascript:;">Delete</a>
+            //                     </Popconfirm>
+            //                 ) : null}
+            //         </span>
+            //     ),
+            // }
         ]
             ;
-        this.props.getAllComments();
+        this.props.getAllUsers();
         this.state = {
             searchText: '',
         };
     }
     render() {
-    
-        const data = this.props.commentReducer.commentList.map((data, index) => (
+        const data = this.props.userReducer.userList.map((data, index) => (
             {
-                commentId: data.commentId,
-                commentCnt: data.commentCnt,
-                commentDate: data.commentDate,
-                parentCmt: data.commentCnt
+                id: data.id,
+                name: data.name,
+                email: data.email,
+                imageUrl: data.imageUrl,
+                emailVerified: data.emailVerified,
+                provider: data.provider
             }
         ))
         return (
@@ -144,6 +169,7 @@ class CommentsList extends React.Component {
                     <Table columns={this.columns} dataSource={data}
                         rowKey={record => record.id}
                         pagination={{ pageSize: 7 }}
+                        loading={this.props.userReducer.isGettingUserList || this.props.userReducer.isloadingDelete}
                     />
                 </div>
             </div>
@@ -152,16 +178,18 @@ class CommentsList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    commentReducer: state.commentReducer
+    userReducer: state.userReducer
 })
 
-const mapDispatchToProps = dispatch => {
+const mapDispathToProps = dispatch => {
     return {
-        getAllComments: () => {
-            dispatch(actions.getAllComments());
+        getAllUsers: ()=> {
+            dispatch(actions.getAllUsers());
         },
-        deleteComment: (commentId) => dispatch(actions.deleteComment(commentId))
+        toggleUser: (id, active)=> {
+            dispatch(actions.toggleUser(id, active));
+        }
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(CommentsList);
+export default connect(mapStateToProps,mapDispathToProps) (UserList);

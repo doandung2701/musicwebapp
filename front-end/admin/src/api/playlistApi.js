@@ -49,6 +49,7 @@ export const updatePlayListApi = (playlist) => {
 }
 
 export const deletePlayListApi = (playlist) => {
-    return axios.delete("delete-playlist",playlist);
+    console.log(playlist);
+    return axios.delete("delete-playlist",playlist); //doc lại axios
 }
 
