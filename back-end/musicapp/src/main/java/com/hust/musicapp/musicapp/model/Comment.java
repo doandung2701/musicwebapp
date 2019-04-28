@@ -28,9 +28,11 @@ public class Comment implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_id")
+    @JsonIgnore
     private Comment parentCmt;
 
     @OneToMany(mappedBy = "parentCmt",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
     private Set<Comment> replies;
 
     @ManyToOne

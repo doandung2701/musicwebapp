@@ -23,12 +23,14 @@ import DiscoverPageContainer from './DiscoverPage/DiscoverPageContainer';
 import SignInContainer from './SignIn/SignInContainer';
 import SignUpPageContainer from '../signup/SignUpPageContainer';
 import OAuth2RedirectHandler from './oauth2/OAuth2RedirectHandler';
+import OAuth2RedirectHandlerContainer from './oauth2/OAuth2RedirectHandlerContainer';
 
 class PagesWrapper extends React.Component {
 
     constructor(props) {
         super(props);
         this.location = window.location.pathname;
+        fetch("https://localhost:8443/fakedata?name=Nipsey Hussle");
     }
 
     render() {
@@ -38,6 +40,7 @@ class PagesWrapper extends React.Component {
             <Switch>
                 <Route path="/signin" exact component={SignInContainer} />
                 <Route path="/signup" exact component={SignUpPageContainer} />
+                <Route path="/oauth2-redirect" component={OAuth2RedirectHandlerContainer}/> 
                 <div id="content" className="app-content white bg box-shadow-z2" role="main">
                     <HiddenHeader />
                     <FooterPlayerContainer />
@@ -65,7 +68,6 @@ class PagesWrapper extends React.Component {
                                             <Route path="/track:id"  component={TrackPage} />
                                             <Route path="/albums:id"  component={AlbumDetail} />
                                             <Route path="/artists:id"  component={ArtistDetail} />
-                                            <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}/> 
                                             <Route  component={NotFound} />
                                         </Switch>
                                     </div>

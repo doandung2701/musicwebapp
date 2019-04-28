@@ -1,248 +1,206 @@
-import React, { Component } from 'react';
-// import './NotFound.css';
-import "./PlayList.css";
-import {
-    Table, Input, InputNumber, Popconfirm, Form,
-  } from 'antd';
-import PlayList_Form from './PlayList_Form';
-import { Link } from 'react-router-dom';
-import { Button } from 'antd';
-  
-  const data = [];
-  for (let i = 0; i < 100; i++) {
-    data.push({
-      key: i.toString(),
-      playlist_id: `Edrward ${i}`,
-      user_name: `Nguyen Duong`,
-      playlist_name: 32,
-      thumbnail: `London Park no. ${i}`,
-      playlist_description: `TEST. ${i}`,
-      list_music: `xem bai hat`
-    });
-  }
-  const FormItem = Form.Item;
-  const EditableContext = React.createContext();
-  
-  const EditableRow = ({ form, index, ...props }) => (
-    <EditableContext.Provider value={form}>
-      <tr {...props} />
-    </EditableContext.Provider>
-  );
-  
-  const EditableFormRow = Form.create()(EditableRow);
-  
-  class EditableCell extends React.Component {
-    getInput = () => {
-      if (this.props.inputType === 'number') {
-        return <InputNumber />;
-      }
-      return <Input />;
-    };
-  
-    render() {
-      const {
-        editing,
-        dataIndex,
-        title,
-        inputType,
-        record,
-        index,
-        ...restProps
-      } = this.props;
-      return (
-        <EditableContext.Consumer>
-          {(form) => {
-            const { getFieldDecorator } = form;
-            return (
-              <td {...restProps}>
-                {editing ? (
-                  <FormItem style={{ margin: 0 }}>
-                    {getFieldDecorator(dataIndex, {
-                      rules: [{
-                        required: true,
-                        message: `Please Input ${title}!`,
-                      }],
-                      initialValue: record[dataIndex],
-                    })(this.getInput())}
-                  </FormItem>
-                ) : restProps.children}
-              </td>
-            );
-          }}
-        </EditableContext.Consumer>
-      );
-    }
-  }
-  
-  class EditableTable extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = { data, editingKey: '' };
-      this.columns = [
-        {
-          title: 'PLAYLIST ID',
-          dataIndex: 'playlist_id',
-          width: '10%',
-          editable: true,
-        },
-        {
-          title: 'USERNAME',
-          dataIndex: 'user_name',
-          width: '20%',
-          editable: true,
-        },
-        {
-          title: 'PLAYLIST NAME',
-          dataIndex: 'playlist_name',
-          width: '20%',
-          editable: true,
-        },
-        {
-            title: 'THUMBNAIL',
-            dataIndex: 'thumbnail',
-            width: '20%',
-            editable: true,
-        },
-        {
-            title: 'PLAYLIST_DESCRIPTION',
-            dataIndex: 'playlist_description',
-            width: '25%',
-            editable: true,
-        },
-        {
-            title: 'LIST MUSIC',
-            dataIndex: 'list_music',
-            width: '20%',
-            editable: true,
-        },
-        {
-          title: 'operation',
-          dataIndex: 'operation',
-          render: (text, record) => {
-            const editable = this.isEditing(record);
-            return (
-              <div>
-                {editable ? (
-                  <span>
-                    <EditableContext.Consumer>
-                      {form => (
-                        <a
-                          href="javascript:;"
-                          onClick={() => this.save(form, record.key)}
-                          style={{ marginRight: 8 }}
-                        >
-                          Save
-                        </a>
-                      )}
-                    </EditableContext.Consumer>
-                    <EditableContext.Consumer>
-                      {form => (
-                        <a
-                          href="javascript:;"
-                          onClick={() => this.save(form, record.key)}
-                          style={{ marginRight: 8 }}
-                        >
-                          Delete
-                        </a>
-                      )}
-                    </EditableContext.Consumer>
-                    <Popconfirm
-                      title="Sure to cancel?"
-                      onConfirm={() => this.cancel(record.key)}
-                    >
-                      <a>Cancel</a>
-                    </Popconfirm>
-                  </span>
-                ) : (
-                  <a onClick={() => this.edit(record.key)}>Edit</a>
-                )}
-              </div>
-            );
-          },
-        },
-      ];
-    }
-  
-    isEditing = record => record.key === this.state.editingKey;
-  
-    cancel = () => {
-      this.setState({ editingKey: '' });
-    };
-  
-    save(form, key) {
-      form.validateFields((error, row) => {
-        if (error) {
-          return;
-        }
-        const newData = [...this.state.data];
-        const index = newData.findIndex(item => key === item.key);
-        if (index > -1) {
-          const item = newData[index];
-          newData.splice(index, 1, {
-            ...item,
-            ...row,
-          });
-          this.setState({ data: newData, editingKey: '' });
-        } else {
-          newData.push(row);
-          this.setState({ data: newData, editingKey: '' });
-        }
-      });
-    }
-  
-    edit(key) {
-      this.setState({ editingKey: key });
-    }
-  
-    render() {
-      const components = {
-        body: {
-          row: EditableFormRow,
-          cell: EditableCell,
-        },
-      };
-  
-      const columns = this.columns.map((col) => {
-        if (!col.editable) {
-          return col;
-        }
-        return {
-          ...col,
-          onCell: record => ({
-            record,
-            inputType: col.dataIndex === 'age' ? 'number' : 'text',
-            dataIndex: col.dataIndex,
-            title: col.title,
-            editing: this.isEditing(record),
-          }),
-        };
-      });
-  
-      return (
-        <Table
-          components={components}
-          bordered
-          dataSource={this.state.data}
-          columns={columns}
-          rowClassName="editable-row"
-          pagination={{
-            onChange: this.cancel,
-          }}
-        />
-      );
-    }
-  }
-  
+import React from 'react';
+import { Table, Popconfirm, Divider, Button, Input, Icon } from 'antd';
+import PlayListModal from './PlayListModal';
+import Highlighter from 'react-highlight-words';
+import { connect } from 'react-redux';
+import * as actions from './PlayListAction';
 
-class PlayList extends Component {
+class PlayList extends React.Component {
+    getColumnSearchProps = (dataIndex) => ({
+        filterDropdown: ({
+            setSelectedKeys, selectedKeys, confirm, clearFilters,
+        }) => (
+                <div style={{ padding: 8 }}>
+                    <Input
+                        ref={node => { this.searchInput = node; }}
+                        placeholder={`Search ${dataIndex}`}
+                        value={selectedKeys[0]}
+                        onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                        onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+                        style={{ width: 188, marginBottom: 8, display: 'block' }}
+                    />
+                    <Button
+                        type="primary"
+                        onClick={() => this.handleSearch(selectedKeys, confirm)}
+                        icon="search"
+                        size="small"
+                        style={{ width: 90, marginRight: 8 }}
+                    >
+                        Search
+            </Button>
+                    <Button
+                        onClick={() => this.handleReset(clearFilters)}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Reset
+            </Button>
+                </div>
+            ),
+        filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilter: (value, record) => record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: (visible) => {
+            if (visible) {
+                setTimeout(() => this.searchInput.select());
+            }
+        },
+        render: (text) => (
+            <Highlighter
+                highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                searchWords={[this.state.searchText]}
+                autoEscape
+                textToHighlight={text}
+            />
+        ),
+    })
+    handleSearch = (selectedKeys, confirm) => {
+        confirm();
+        this.setState({ searchText: selectedKeys[0] });
+    }
+    handleReset = (clearFilters) => {
+        clearFilters();
+        this.setState({ searchText: '' });
+    }
+    findPlayList = (id) => {
+        let playlist = {};
+        this.props.playListList.playListList.map((data) => {
+            if (data.id == id) 
+                playlist = data;
+        })
+        return playlist;
+    }
+    constructor(props) {
+        super(props);
+        this.columns = [
+            {
+                title: 'ID',
+                dataIndex: 'id',
+                key: 'id',
+            }, 
+            {
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name',
+                onFilter: (value, record) => record.name.indexOf(value) === 0,
+                sorter: (a, b) => a.name.length - b.name.length,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('name'),
+                render: (text, record) => <a href="javascript:;" onClick={() => this.props.showListSongsOfSinger(record.id)}>{text}</a>,
+                // sorter: (a, b) => a.value - b.value,
+            },
+            {
+                title: 'Thumbnail',
+                dataIndex: 'thumbnail',
+                key: 'thumbnail',
+                onFilter: (value, record) => record.thumbnail.indexOf(value) === 0,
+                sorter: (a, b) => a.thumbnail.length - b.thumbnail.length,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('thumbnail'),
+                // sorter: (a, b) => a.value - b.value,
+            },
+            {
+                title: 'Description',
+                dataIndex: 'description',
+                key: 'description',
+                onFilter: (value, record) => record.description.indexOf(value) === 0,
+                sorter: (a, b) => a.description.length - b.description.length,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('description'),
+                // sorter: (a, b) => a.value - b.value,
+            },
+            // {
+            //     title: 'User',
+            //     dataIndex: 'user',
+            //     key: 'user',
+            //     onFilter: (value, record) => record.user.indexOf(value) === 0,
+            //     sorter: (a, b) => a.user.length - b.user.length,
+            //     sortDirections: ['descend', 'ascend'],
+            //     ...this.getColumnSearchProps('user'),
+            //     // sorter: (a, b) => a.value - b.value,
+            // },
+            // {
+            //     title: 'PlayListSong',
+            //     dataIndex: 'playListSong',
+            //     key: 'playListSong',
+            //     onFilter: (value, record) => record.playListSong.indexOf(value) === 0,
+            //     sorter: (a, b) => a.playListSong.length - b.playListSong.length,
+            //     sortDirections: ['descend', 'ascend'],
+            //     ...this.getColumnSearchProps('playListSong'),
+            //     // sorter: (a, b) => a.value - b.value,
+            // },
+            {
+                title: 'operation',
+                dataIndex: 'operation',
+                render: (text, record) => (
+                    <span>
+                        {this.props.playListList.playListList.length >= 1
+                            ? (
+                                <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deletePlayList(this.findPlayList(record.id))}>
+                                    <a href="javascript:;">Delete</a>
+                                </Popconfirm>
+                            ) : null}
+                        <Divider type="vertical" />
+                        <Button type="primary" onClick={() => {
+                            this.props.openModal({ id: record.id, name: record.name, thumbnail: record.thumbnail, description: record.description, user: record.user, playListSong: record.playListSong }) // sua lai cho nay
+                        }}>Edit</Button>
+                    </span>
+                ),
+            }
+        ]
+            ;
+        this.props.getAllPlayLists();
+        this.state = {
+            searchText: '',
+        };
+    }
     render() {
+        console.log(this.props.playListList.playListList);
+
+        const data = this.props.playListList.playListList.map((data, index) => (
+            {
+                id: data.id,
+                name: data.name,
+                thumbnail: data.thumbnail !== null ? data.thumbnail : 'No Data',
+                description: data.description,
+                // user: data.user !== null ? data.user.name : 'No Data',
+                // playListSong: playListSong
+            }
+        ))
         return (
-            <div className="mr-15">
-                <PlayList_Form/>
-                <h1  className="pd-10">Quản lý PLAYLIST</h1>
-                <EditableTable/>
-            </div> 
-        );
+            <div style={{
+                position: 'relative'
+            }}>
+                <div style={{
+                    position: "absolute",
+                    top: '-45px',
+                    right: '10px',
+                }}>
+                    <Button type="primary" onClick={() => this.props.openModal()}>Create</Button>
+                </div>
+                <div>
+                    <Table columns={this.columns} dataSource={data}
+                        rowKey={record => record.id}
+                        pagination={{ pageSize: 7 }}
+                        loading={this.props.playListList.isGettingplayListList || this.props.playListList.isloadingDelete}
+                    />
+                    <PlayListModal />
+                </div>
+            </div>
+        )
     }
 }
-export default PlayList;
+
+const mapStateToProps = (state) => ({
+    playListList : state.playListList
+})
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getAllPlayLists : ()  => { dispatch(actions.getAllPlayLists())},
+        openModal: (data) => {dispatch(actions.openModal(data))},
+        deletePlayList: (playList) => {dispatch(actions.deletePlayList(playList))}
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (PlayList);

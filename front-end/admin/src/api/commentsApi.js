@@ -4,7 +4,7 @@ import {
 } from "../constants";
 
 var axios = Axios.create({
-    baseURL: API_BASE_URL + "/comments/",
+    baseURL: API_BASE_URL + "comments/",
     timeout: 10000
 })
 

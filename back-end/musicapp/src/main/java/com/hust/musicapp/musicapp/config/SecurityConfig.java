@@ -114,6 +114,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             "/singer/**",
                             "/comments/**",
                             "/users/**",
+                            "/fakedata",
                             "/playlist/**")
                         .permitAll()
                     .antMatchers("/auth/**", "/oauth2/**")

@@ -4,7 +4,11 @@ import { CHANGE_PLAYER_STATUS,
 
 let initialState = {
     playerStatus: PLAYER_PAUSE,
+<<<<<<< HEAD
     src: 'http://tracking.musixmatch.com/t1.0/mzoCLtOg7U2B2B6ROdSvu+HvAFuzkE0/cTF/',
+=======
+    src: 'https://cdns-preview-d.dzcdn.net/stream/c-d28ee67c24d60e740866c7709d772f55-10.mp3',
+>>>>>>> e109b343ab23af1732eef576c758ee8199d98c7c
     id: '',
     name: '',
     artist: '',

@@ -41,6 +41,7 @@ public class User {
     private String providerId;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
     private Set<Comment> comments;
 
     @ManyToMany
@@ -49,12 +50,15 @@ public class User {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
     private Set<PlayList> playLists;
 
     @OneToMany(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Rate> rates;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonIgnore
     private Set<Song> songs;
 
     public Set<Comment> getComments() {

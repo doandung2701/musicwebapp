@@ -1,9 +1,6 @@
 package com.hust.musicapp.musicapp.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,6 +26,7 @@ public class Rate implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="song_id")
+    @JsonIgnore
     private Song song;
 
     public Rate(User user, ScoreType scoreType, Song song) {

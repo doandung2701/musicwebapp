@@ -3,12 +3,13 @@ export const CHANGE_PLAYER_STATUS = 'CHANGE_PLAYER_STATUS'
 export const CHANGE_AUDIO_SRC = 'CHANGE_AUDIO_SRC'
 export const PLAYER_PLAYING = 'PLAYER_PLAYING';
 export const PLAYER_PAUSE = 'PLAYER_PAUSE';
+export const PLAYER_LOADED = 'PLAYER_LOADED';
 export const PLAYER_BUFFERING = 'PLAYER_BUFFERING';
 //end player constants
 //begin authentication reducers
 export const API_BASE_URL = 'https://localhost:8443';
 export const ACCESS_TOKEN = 'accessToken';
-export const OAUTH2_REDIRECT_URI = 'https://localhost:3000/oauth2/redirect'
+export const OAUTH2_REDIRECT_URI = 'https://localhost:3000/oauth2-redirect'
 export const GOOGLE_AUTH_URL = API_BASE_URL + '/oauth2/authorize/google?redirect_uri=' + OAUTH2_REDIRECT_URI;
 export const FACEBOOK_AUTH_URL = API_BASE_URL + '/oauth2/authorize/facebook?redirect_uri=' + OAUTH2_REDIRECT_URI;
 export const GITHUB_AUTH_URL = API_BASE_URL + '/oauth2/authorize/github?redirect_uri=' + OAUTH2_REDIRECT_URI;

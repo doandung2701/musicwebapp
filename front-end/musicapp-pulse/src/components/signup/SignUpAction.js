@@ -26,7 +26,7 @@ export const signUp = (signupRequest)=>{
         .then(response => {
             Alert.success("You're successfully registered. Please login to continue!");
             dispatch(signupSuccess(response.data))
-           history.push("/login");
+           history.push("/signin");
         }).catch(error => {
             Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');
             dispatch(signupFail(error.message));            

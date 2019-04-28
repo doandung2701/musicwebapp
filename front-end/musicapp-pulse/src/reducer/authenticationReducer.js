@@ -2,7 +2,7 @@
 import Alert from 'react-s-alert'
 import { LOADING_CURRENT_USER, LOADING_CURRENT_USER_SUCCESS, LOADING_CURRENT_USER_FAIL, LOG_OUT, LOGIN_SUCCESSFULLY, SIGNING_UP, SIGN_UP_SUCCESS, SIGN_UP_FAIL } from '../constants/constants';
 var initialState = {
-    authenticated: false,
+    authenticated: localStorage.getItem("accessToken")?true:false,
     loading: false,
     currentUser: null,
     isSigningUp: false

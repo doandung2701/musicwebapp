@@ -1,7 +1,7 @@
 import React from 'react';
 import $ from 'jquery';
 import FooterTrackList from './FooterTrackList';
-import { PLAYER_PAUSE, PLAYER_PLAYING, PLAYER_BUFFERING } from '../../constants/constants';
+import { PLAYER_PAUSE, PLAYER_PLAYING, PLAYER_BUFFERING, PLAYER_LOADED } from '../../constants/constants';
 
 const stream = ['Streaming', 'Streaming.', 'Streaming..', 'Streaming...']
 
@@ -12,22 +12,25 @@ export default class FooterPlayer extends React.Component {
         this.player = React.createRef();
         this.rail = React.createRef();
         document.onmousemove = this.moveMouseChangeVol;
+     
     }
 
     changeCurrentTime = (e) => {
-        if (this.player.current.src && isNaN(this.player.current.duration)===false
-            &&isFinite(this.player.current.duration)===true) {
+        if (this.player.current.src && isNaN(this.player.current.duration) === false
+            && isFinite(this.player.current.duration) === true) {
             let x = e.pageX;
             let width = document.body.offsetWidth;
             this.player.current.currentTime = (x / width) * this.player.current.duration;
             this.rail.current.style.width =
-                (this.player.current.currentTime / this.player.current.duration * 100) + "%";
+                ((this.player.current.currentTime / this.player.current.duration) * document.body.clientWidth-55)+"px";  
         }
     }
 
     componentDidMount() {
-        let playpause = document.getElementsByClassName("mejs-playpause-button")[0];
-        let audioCtn = document.getElementsByClassName("mejs-container mejs-audio")[0];
+        window.onresize= function(){
+            this.rail.current.style.width =
+                ((this.player.current.currentTime / this.player.current.duration) * document.body.clientWidth-55)+"px";
+        }.bind(this)
         let mejsError = document.getElementsByClassName("mejs-error")[0];
         this.player.current.onloadeddata = () => {
             document.getElementsByClassName("mejs-duration")[0].innerHTML =
@@ -36,7 +39,8 @@ export default class FooterPlayer extends React.Component {
                     '<img alt="" height="30px" src="/images/Infinity-10s-50px.gif"/>';
             // audioCtn.classList.remove("is-buffering");
             // this.props.changePlayerStatus(PLAYER_PAUSE);
-            // this.player.current.play();
+            // this.player.current.pause();
+            this.props.changePlayerStatus(PLAYER_PAUSE);
             mejsError.style.display = "none";
             this.rail.current.style.width = "0%";
         }
@@ -45,7 +49,10 @@ export default class FooterPlayer extends React.Component {
             clearInterval(this.updateTime);
             // playpause.classList.remove("mejs-pause");
             // playpause.classList.add("mejs-play");
+            console.log("end")
             this.player.current.currentTime = this.player.current.duration;
+            console.log(this.player.current.currentTime)
+            console.log(this.player.current.duration)
             this.props.changePlayerStatus(PLAYER_PAUSE);
         }
         this.player.current.onerror = () => {
@@ -74,10 +81,12 @@ export default class FooterPlayer extends React.Component {
             this.props.changePlayerStatus(PLAYER_PLAYING);
             this.playerProgress = setInterval(() => {
                 // console.log(this.rail.current.style);
+                if (this.rail.current)
                 this.rail.current.style.width =
-                    (this.player.current.currentTime / this.player.current.duration * 100) + "%";
+                    (this.player.current.currentTime / this.player.current.duration * document.body.clientWidth-55)+"px";
             }, 100);
             this.updateTime = setInterval(() => {
+                if (this.rail.current)
                 document.getElementsByClassName("mejs-currenttime")[0].innerHTML =
                     this.formatTime(this.player.current.currentTime);
             }, 100);

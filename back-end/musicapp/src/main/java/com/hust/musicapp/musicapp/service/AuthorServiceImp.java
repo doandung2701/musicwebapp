@@ -1,8 +1,10 @@
 package com.hust.musicapp.musicapp.service;
 
 import com.hust.musicapp.musicapp.model.Author;
+import com.hust.musicapp.musicapp.payload.ArtistPayload;
 import com.hust.musicapp.musicapp.repository.AuthorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,20 @@ import java.util.List;
 @Repository
 @Transactional
 public class AuthorServiceImp implements AuthorService {
+    @Override
+    public List<Author> findAllWithPaging(Pageable pageable) {
+        return authorRepo.findAll(pageable).getContent();
+    }
+
+    @Override
+    public List<ArtistPayload> getArtitst(Pageable pageable,String orderParam) {
+        return authorRepo.getArtists(pageable,orderParam).getContent();
+    }
+
+    @Override
+    public List<ArtistPayload> findByNameLike(String authorName) {
+        return authorRepo.findByNameLike(authorName);
+    }
 
     @Autowired
     AuthorRepo authorRepo;
