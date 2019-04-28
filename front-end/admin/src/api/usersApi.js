@@ -25,7 +25,8 @@ export const getUserbyIdApi = (id) => {
 }
 
 export const toggleActiveUserApi = (id, active) => {
-    return axios.put(`toggle-active/${id}`, active);
+    active = active == 'true' ? 0 : 1;
+    return axios.put(`toggle-active/${id}?active=${active}`);
 }
 
 export const getPlayListOfUserApi = (id) => {
@@ -34,4 +35,16 @@ export const getPlayListOfUserApi = (id) => {
             'Content-Security-Policy': 'default-src https:'
         }
     })
+}
+
+export const createUserApi = (user) => {
+    return axios.post(`save-user`, user);
+}
+
+export const updateUserApi = (id, userDetail) => {
+    return axios.put(`save-user/${id}`,userDetail);
+}
+
+export const deleteCommentApi = (id) => {
+    return axios.delete(`delete-user/${id}`)
 }

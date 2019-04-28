@@ -47,9 +47,9 @@ const updatingComment = () => ({
     type: actionConstants.UPDATING_COMMENT,
 })
 
-const updateCommentSuccess = (comment) => ({
+const updateCommentSuccess = (comments) => ({
     type: actionConstants.UPDATE_COMMENT_SUCCESS,
-    payload: comment
+    payload: comments
 })
 
 const updateCommentFail = (error) => ({
@@ -61,6 +61,7 @@ export const getAllComments = () => {
     return (dispatch) => {
         dispatch(gettingComments);
         commentsApi.getAllCommentsApi().then(data => {
+            console.log(data.data);
             dispatch(getCommentsSuccess(data.data));
         }).catch(error => {
             if (error.response /*trường hợp server không sập thì có phản hồi*/) {
