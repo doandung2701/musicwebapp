@@ -26,14 +26,14 @@ class AppHeader2 extends React.Component{
             <Layout >
             <Layout.Header style={{ background: '#fff', padding: '0px'}} className="header-ctn" >
             <div className="header">
-                      <div className="search-form">
+                      {/* <div className="search-form">
                           <input type="search" name="search" placeholder='Search...' />
                           <button style={{position: 'relative'}}><i style={{position: 'absolute',
                           top: '30%',right: '30%'}}
                           className="fa fa-search"></i></button>
-                      </div>
+                      </div> */}
                       <div className="header-right">
-                          <div className="tool-bar">
+                          {/* <div className="tool-bar">
                               <Dropdown overlay={adminAccDropdown}
                                trigger={['click']}>
                                   <a className="ant-dropdown-link" href="ab">
@@ -47,7 +47,7 @@ class AppHeader2 extends React.Component{
                                       <Icon style={{fontSize: '22px'}} type="bell"></Icon></Badge>
                                   </a>
                               </Dropdown>
-                          </div>
+                          </div> */}
                           <div className="header-account">
                               <Dropdown overlay={adminAccDropdown} trigger={['click']} placement="topRight">
                                   <a className="ant-dropdown-link" href="ab">

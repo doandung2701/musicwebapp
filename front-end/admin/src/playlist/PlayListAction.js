@@ -80,6 +80,8 @@ export const getAllPlayLists = () => {
         playListApi.getAllPlayListApi().then(data => {
             dispatch(getPlayListsSuccess(data.data));
         }).catch(error => {
+            console.log(error);
+            
             if (error.respone) {
                 dispatch(getPlayListFail(error.respone.data));
             }else {
