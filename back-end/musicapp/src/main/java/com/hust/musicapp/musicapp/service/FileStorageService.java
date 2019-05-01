@@ -33,9 +33,9 @@ public class FileStorageService {
 					ex);
 		}
 	}
-
 	public String storeFile(MultipartFile file) throws FileStorageException {
 		// Normalize file name
+		//test
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 		try {
             // Check if the file's name contains invalid characters

@@ -25,6 +25,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 @CrossOrigin("*")
 public class FileController {
+	//controller
 	private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 	@Autowired
 	private FileStorageService fileStorageService;

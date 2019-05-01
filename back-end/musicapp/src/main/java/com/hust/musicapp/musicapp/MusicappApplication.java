@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties({AppProperties.class, FileStorageProperties.class})
 public class MusicappApplication {
 
+
     public static void main(String[] args) {
         SpringApplication.run(MusicappApplication.class, args);
     }

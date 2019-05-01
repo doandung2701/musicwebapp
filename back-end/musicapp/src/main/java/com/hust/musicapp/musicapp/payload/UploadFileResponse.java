@@ -1,6 +1,7 @@
 package com.hust.musicapp.musicapp.payload;
 
 public class UploadFileResponse {
+	//response
 	 private String fileName;
 	    private String fileDownloadUri;
 	    private String fileType;
