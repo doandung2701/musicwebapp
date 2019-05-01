@@ -1,6 +1,7 @@
 package com.hust.musicapp.musicapp.repository;
 
 import com.hust.musicapp.musicapp.model.Song;
+import com.hust.musicapp.musicapp.payload.DasboardPayload;
 import com.hust.musicapp.musicapp.payload.SongPayload;
 import com.hust.musicapp.musicapp.payload.TrendingSong;
 import org.springframework.data.domain.Pageable;
@@ -45,4 +46,6 @@ public interface SongRepo extends JpaRepository<Song,Long> {
     ArrayList<TrendingSong> getTopSongLovest();
     @Query(nativeQuery = true,value = "select s.song_id , s.brief_description, s.song_name,s.song_src,s.thumbnail, s.upload_date,s.listen_count,count(st.score_id) as rate_count,sum(st.score_value) as rate_value from song s left outer join rate r on s.song_id=r.song_id inner join score_type st on r.score_id=st.score_id group by song_id order by rate_value desc,rate_count desc limit 10")
     ArrayList<TrendingSong> getChartSongs();
+    @Query(nativeQuery = true,value = "SELECT ( SELECT COUNT(*) FROM users ) AS NumOfUsers, ( SELECT COUNT(*) FROM song ) AS NumOfSongs, (SELECT COUNT(*) FROM comments ) AS NumOfComments, (SELECT COUNT(*) FROM singer ) AS NumOfSingers FROM dual")
+    DasboardPayload getDataDashboard();
 }

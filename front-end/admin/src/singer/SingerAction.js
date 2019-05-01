@@ -85,7 +85,7 @@ const getSingerByIdFail = (error)=>({
 export const getAllSingers = ()=>{
     return dispatch=>{
         dispatch(gettingSingers());
-        getAllSingersApi().then(data=>{
+        getAllSingersApi().then(data=>{            
             dispatch(getSingerSuccess(data.data))
         }).catch(error=>{
             if (error.response/*trong truong hop server khong sap*/){
