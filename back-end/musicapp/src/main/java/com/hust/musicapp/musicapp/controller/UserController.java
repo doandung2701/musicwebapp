@@ -1,10 +1,13 @@
 package com.hust.musicapp.musicapp.controller;
 
+import com.hust.musicapp.musicapp.exception.FileStorageException;
 import com.hust.musicapp.musicapp.exception.ResourceNotFoundException;
 import com.hust.musicapp.musicapp.model.PlayList;
 import com.hust.musicapp.musicapp.model.User;
+import com.hust.musicapp.musicapp.payload.UploadFileResponse;
 import com.hust.musicapp.musicapp.security.CurrentUser;
 import com.hust.musicapp.musicapp.security.UserPrincipal;
+import com.hust.musicapp.musicapp.service.FileStorageService;
 import com.hust.musicapp.musicapp.service.Userservice;
 import com.hust.musicapp.musicapp.util.PageableUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +32,8 @@ public class UserController {
     public static final int ACTIVE_CODE=0;
     @Autowired
     private Userservice userservice;
+    @Autowired
+    private FileStorageService fileStorageService;
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
@@ -74,5 +81,21 @@ public class UserController {
          new   ResourceNotFoundException(RESOURCE_NAME,"id",id);
         return playLists;
     }
+    @PutMapping("/users/{id}/upload-image")
+    public ResponseEntity uploadImageProfile(@RequestParam("file") MultipartFile file,@PathVariable("id")Long id) throws Exception{
+        String fileName = "";
+        try {
+            fileName = fileStorageService.storeFile(file);
 
+        } catch (FileStorageException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                .path(fileName).toUriString();
+        User user=userservice.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found","id",id));
+        user.setImageUrl(fileUri);
+        userservice.save(user);
+        return ResponseEntity.ok(fileUri);
+    }
 }
