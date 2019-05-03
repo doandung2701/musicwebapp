@@ -1,38 +1,49 @@
 package com.hust.musicapp.musicapp.controller;
 
-import com.hust.musicapp.musicapp.model.Singer;
 import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.payload.SongResponse;
 import com.hust.musicapp.musicapp.service.SingerService;
+import com.hust.musicapp.musicapp.exception.FileStorageException;
+import com.hust.musicapp.musicapp.service.FileStorageService;
 import com.hust.musicapp.musicapp.service.SongService;
 import com.hust.musicapp.musicapp.util.PageableUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import org.springframework.core.io.Resource;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/songs")//all request starting with /songs go here
 @CrossOrigin("*")//enable cross origin resources sharing
 public class SongController {
-
+    Logger logger= LoggerFactory.getLogger(SongController.class);
     @Autowired
     private SongService songService;
 
     @Autowired
     SingerService singerService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @GetMapping("/find-all")
     public ResponseEntity<?> findAll() {
@@ -266,7 +277,57 @@ public class SongController {
         sdf.setLenient(true);
         binder.registerCustomEditor(java.sql.Date.class, new CustomDateEditor(sdf, true));
     }
+    @PutMapping("/{id}/upload-song")
+    public ResponseEntity uploadSong(@RequestParam("file") MultipartFile file, @PathVariable("id")Long id) throws Exception{
+        String fileName = "";
+        try {
+            fileName = fileStorageService.storeFile(file);
 
+        } catch (FileStorageException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                .path(fileName).toUriString();
+       Song song=songService.findById(id);
+       song.setSongSrc(fileUri);
+       songService.save(song);
+        return ResponseEntity.ok(fileUri);
+    }
+    @PutMapping("/{id}/upload-image-song")
+    public ResponseEntity uploadThumbnail(@RequestParam("file") MultipartFile file,@PathVariable("id") Long id) throws Exception{
+        String fileName = "";
+        try {
+            fileName = fileStorageService.storeFile(file);
+
+        } catch (FileStorageException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                .path(fileName).toUriString();
+        Song song=songService.findById(id);
+        song.setThumbnail(fileUri);
+        songService.save(song);
+        return ResponseEntity.ok(fileUri);
+    }
+    @GetMapping("downloadSong/{fileName:.+}")
+    public ResponseEntity<Resource> downloadSong(@PathVariable String fileName, HttpServletRequest request){
+        Resource resource=fileStorageService.loadFileAsResource(fileName);
+        String contentType=null;
+        try {
+            contentType=request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        }catch (IOException e){
+            logger.info("Could not determine file type.");
+
+        }
+        if (contentType==null){
+            contentType = "application/octet-stream";
+        }
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
 }
 
 

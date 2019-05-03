@@ -62,6 +62,8 @@ server:
     keyStoreType: PKCS12
     keyAlias: tomcat
   port: 8443
+file:
+  upload-dir: ./uploads
 
 
 

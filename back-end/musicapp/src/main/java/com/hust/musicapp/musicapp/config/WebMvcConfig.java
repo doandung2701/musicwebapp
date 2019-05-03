@@ -13,6 +13,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         WebMvcConfigurer.super.addResourceHandlers(registry);
         registry.addResourceHandler("/img/artists/**").addResourceLocations("/resources/img/artist/");
+        registry.addResourceHandler("/uploads/**").addResourceLocations("file:uploads/");
     }
 
     @Override
@@ -33,4 +34,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         urlPathHelper.setRemoveSemicolonContent(false);
         configurer.setUrlPathHelper(urlPathHelper);
     }
+
 }

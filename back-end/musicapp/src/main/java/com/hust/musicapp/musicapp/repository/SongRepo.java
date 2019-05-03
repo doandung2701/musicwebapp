@@ -2,6 +2,7 @@ package com.hust.musicapp.musicapp.repository;
 
 import com.hust.musicapp.musicapp.model.Singer;
 import com.hust.musicapp.musicapp.model.Song;
+import com.hust.musicapp.musicapp.payload.DasboardPayload;
 import com.hust.musicapp.musicapp.payload.SongPayload;
 import com.hust.musicapp.musicapp.payload.TrendingSong;
 import org.springframework.data.domain.Pageable;
@@ -75,4 +76,6 @@ public interface SongRepo extends JpaRepository<Song, Long> {
     @Query("select s from Song s order by s.listenCount desc,s.likeCount desc ")
     List<Song> getChartAll(Pageable pageable);
 
+    @Query(nativeQuery = true,value = "SELECT ( SELECT COUNT(*) FROM users ) AS NumOfUsers, ( SELECT COUNT(*) FROM song ) AS NumOfSongs, (SELECT COUNT(*) FROM comments ) AS NumOfComments, (SELECT COUNT(*) FROM singer ) AS NumOfSingers FROM dual")
+    DasboardPayload getDataDashboard();
 }

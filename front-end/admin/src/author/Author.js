@@ -9,14 +9,15 @@ import {
 
 
   const data = [];
-  for (let i = 0; i < 20; i++) {
-    data.push({
-      key: i.toString(),
-      author_id: `AUTHOR ${i}`,
-      author_name: `Edrward ${i}`,
-      brief_description: `Một nhà văn tài năng của nền văn học đương đại`,
-    });
-  }
+  // for (let i = 0; i < 20; i++) {
+  //   data.push({
+  //     key: i.toString(),
+  //     author_id: `AUTHOR ${i}`,
+  //     author_name: `Edrward ${i}`,
+  //     brief_description: `Một nhà văn tài năng của nền văn học đương đại`,
+  //   });
+  // }
+
   const FormItem = Form.Item;
   const EditableContext = React.createContext();
 //   const DeleteableContext = React.createContext();
@@ -85,19 +86,19 @@ import {
         },
         {
             title: 'ID',
-            dataIndex: 'author_id',
+            dataIndex: 'authorId',
             width: '10%',
             editable: true,
           },
         {
           title: 'Tên',
-          dataIndex: 'author_name',
+          dataIndex: 'authorName',
           width: '20%',
           editable: true,
         },
         {
           title: 'Tiểu Sử',
-          dataIndex: 'brief_description',
+          dataIndex: 'briefDescription',
           width: '50%',
           editable: true,
         },
@@ -213,7 +214,7 @@ import {
         <Table
           components={components}
           bordered
-          dataSource={this.state.data}
+          dataSource={this.props.authors.authors}
           columns={columns}
           rowClassName="editable-row"
           pagination={{
@@ -225,12 +226,19 @@ import {
   }
 
 class Author extends Component {
+
+  constructor(props){
+    super(props);
+    this.props.getAllAuthors();
+  }
+
     render(){
+      console.log(this.props)
         return(
             <div className="main">
                 <Author_Form/>
                 <h1 className="title">Danh sách tác giả</h1>
-                <EditableTable />
+                <EditableTable authors = {this.props.authors}/>
             </div>
         );
     }

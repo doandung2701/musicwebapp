@@ -15,6 +15,7 @@ import AppHeader2 from "../common/AppHeader2";
 import ScoreTypeList from "../scoretype/ScoreTypeList";
 import ScoreTypeListContainer from "../scoretype/ScoreTypeListContainer";
 import SingerListContainer from "../singer/SingerListContainer";
+import LoginContainer from "../login/LoginContainer";
 
 const { Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -33,6 +34,7 @@ class App extends Component {
   };
 
   componentDidMount(){
+    if(!window.location.pathname.endsWith("login"))
     document.getElementById("page-logo").style.backgroundImage = "center";
 }
 
@@ -54,11 +56,12 @@ onCollapse = (collapsed) => {
     }
 }
 
-  render() {
+  render() {    
     return (
      <Router history={history}>
-      <div className="App">
+     <div className="App">
         <Layout className="app-container" style={{minHeight: '100vh',width: '100vw',overflow: 'hidden'}}>
+        {!window.location.pathname.endsWith("login")&&
         <Sider
           collapsible
           collapsed={this.state.collapsed}
@@ -78,41 +81,44 @@ onCollapse = (collapsed) => {
             <Menu.Item key="1">
             <Link to="/playlist">
               <Icon type="pie-chart" />
-              <span>Option 1</span>
+              <span>PlayList</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <Icon type="desktop" />
-              <span>Option 2</span>
+            <Link to="/users">
+              <Icon type="pie-chart" />
+              <span>Users</span>
+              </Link>
             </Menu.Item>
-            <SubMenu
-              key="sub1"
-              title={<span><Icon type="user" /><span>User</span></span>}
-            >
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub2"
-              title={<span><Icon type="team" /><span>Team</span></span>}
-            >
-              <Menu.Item key="6">Team 1</Menu.Item>
-              <Menu.Item key="8">Team 2</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="9">
-              <Icon type="file" />
-              <span>File</span>
+            <Menu.Item key="3">
+            <Link to="/comments">
+              <Icon type="pie-chart" />
+              <span>Comments</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="4">
+            <Link to="/singers">
+              <Icon type="pie-chart" />
+              <span>Singers</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="5">
+              <Link to="/scoretypes">
+              <Icon type="pie-chart" />
+              <span>Scoretypes</span>
+              </Link>
             </Menu.Item>
           </Menu>
-        </Sider>
+        </Sider>}
         <Layout>
         {/* <AppHeaderContainer history={history} /> */}
-        <AppHeader2 />
+        {!window.location.pathname.endsWith("login")&&<AppHeader2 />}
           <Content className="app-content">
             <div className="container">
               <Switch>
               <Route path="/" exact component={Dashboard} />
+              <Route path="/login"
+              render={(props) => <LoginContainer {...props} />}></Route>
                   {/* //cac route thi xu ly trong day */}
                 {/* <Route
                   exact
@@ -132,6 +138,8 @@ onCollapse = (collapsed) => {
                 <Route path="/playlist"component={PlayList} />
                 <Route path="/users"component={Users} />
                 <Route path="/comments"component={Comments} />
+                <Route path="/singers" component={SingerListContainer}/>
+                <Route path="/scoretypes" component={ScoreTypeListContainer}/>
               </Switch>
             </div>
           </Content>
@@ -142,7 +150,6 @@ onCollapse = (collapsed) => {
         </Layout>
         </div>
       </Router>
-      
     );
   }
 }
