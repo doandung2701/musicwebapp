@@ -47,4 +47,14 @@ public class SingerServiceImpl implements SingerService{
     public List<Song> getAllSongsOfSinger(Long id) {
         return singerRepository.getAllSongsOfSinger(id  );
     }
+
+    @Override
+    public List<Singer> findByNameLike(String name) {
+        return singerRepository.findByNameLike(name);
+    }
+
+    @Override
+    public Long countDistinctById(Long id) {
+        return singerRepository.countDistinctById(id);
+    }
 }

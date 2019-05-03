@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 import { PLAYER_PLAYING } from '../../constants/constants';
-import { playTrack } from '../../helpers/helper';
-import {Link} from 'react-router-dom';
+import { playTrack, closeSearchModal } from '../../helpers/helper';
+import { Link } from 'react-router-dom';
+import TrackActionModal from '../common/TrackActionModal';
+import { TrackItemLikeBtnWithContainer } from '../../containers/WithLikeButtonContainer';
 
 export default class TrackItem extends React.Component {
 
@@ -20,36 +22,49 @@ export default class TrackItem extends React.Component {
     render() {
         let track = this.props.track;
         let status = this.props.player.playerStatus;
+        console.log("track",track)
         return (
             <div className="item r" data-id="item-116"
                 data-src="http://api.soundcloud.com/tracks/260682299/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
                 <div className="item-media info">
-                    <Link to={`/${this.props.type}${track.id}`} className="item-media-content"
+                    <Link to={`/${this.props.type}${track.songId}`}
+                        className="item-media-content"
                         style={{ backgroundImage: `url('${track.thumbnail}')` }} />
                     <div className="item-overlay center">
-                        <button className={`btn-playpause ${track.src === this.props.player.src
+                        <button className={`btn-playpause ${track.songSrc === this.props.player.nowPlaying.songSrc
                             && status === PLAYER_PLAYING && 'is-playing'}`}
-                            onClick={() => playTrack.bind(this)(track)}>Play</button>
+                            onClick={() => { playTrack.bind(this)(track); this.props.addSongToQueue(track) }}>Play</button>
                     </div>
                 </div>
                 <div className="item-info">
-                    <div className="item-overlay bottom text-right">
-                        <a href="#" className="btn-favorite"><i className="fa fa-heart-o" /></a>
-                        <a href="#" className="btn-more" data-toggle="dropdown">
-                            <i className="fa fa-ellipsis-h" ></i></a>
-                        <div className="dropdown-menu pull-right black lt" />
+                    <div className="item-overlay bottom text-right dropup">
+                        <TrackItemLikeBtnWithContainer song={track}
+                         songId={track.songId} />
+                        <span href="#" style={{ color: 'white', cursor: 'pointer' }}
+                            className="btn-more" data-toggle="dropdown">
+                            <i className="fa fa-ellipsis-h" ></i></span>
+                        <TrackActionModal onAddToQueue={() => this.props.addSongToQueue(track)} />
+                        {/* <div className="dropdown-menu pull-right black lt">
+                        </div> */}
                     </div>
                     <div className="item-title text-ellipsis">
-                        <Link to={`/${this.props.type}${track.id}`}>{track.name}</Link>
+                        <Link className="text-muted"
+                            to={`/${this.props.type}${track.songId}`}
+                            onClick={this.props.onCloseSearch}>{track.songName}</Link>
                     </div>
                     <div className="item-author text-sm text-ellipsis">
-                        <Link to={`/artists${track.id}`} className="text-muted">{track.artist}</Link>
+                        {track.singers && track.singers.length > 0 ?
+                            <Link onClick={this.props.onCloseSearch}
+                                to={`/artists-detail-${track.singers[0].id}`}
+                                className="text-muted"
+                            >{track.singers[0].name}</Link>
+                            : <span className="text-muted">Unknown</span>}
                     </div>
                     <div className="item-meta text-sm text-muted">
                         <span className="item-meta-stats text-xs  item-meta-right">
-                            <i className="fa fa-play text-muted"></i> 860
-          		          	<i className="fa fa-heart m-l-sm text-muted"></i> 240
-          		          </span>
+                            <i className="fa fa-play text-muted"></i> {track.listenCount}
+                            <i className="fa fa-heart m-l-sm text-muted"></i> {track.likeCount}
+                        </span>
                     </div>
 
                 </div>

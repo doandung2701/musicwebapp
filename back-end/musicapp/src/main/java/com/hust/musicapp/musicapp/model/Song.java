@@ -3,6 +3,8 @@ package com.hust.musicapp.musicapp.model;
 import com.fasterxml.jackson.annotation.*;
 import com.hust.musicapp.musicapp.payload.TrendingSong;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,10 +14,23 @@ import java.util.Set;
 
 @Entity
 @Table(name="song")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "songId")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "songId")
 public class Song implements Serializable {
+    @ManyToMany
+    @JoinTable(name = "user_like_song",inverseJoinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "song_id"))
+    @JsonIgnore
+    private Set<User> likeUsers;
+
+    public Set<User> getLikeUsers() {
+        return likeUsers;
+    }
+
+    public void setLikeUsers(Set<User> likeUsers) {
+        this.likeUsers = likeUsers;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,16 +66,16 @@ public class Song implements Serializable {
     private Set<Author> authors;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "singer_song",joinColumns = @JoinColumn(name = "song_id"),inverseJoinColumns =
     @JoinColumn(name = "singer_id"))
-    @JsonIgnore
+    @JsonManagedReference
     private Set<Singer> singers;
 
     @ManyToMany
     @JoinTable(name = "category_song",joinColumns = @JoinColumn(name = "song_id"),inverseJoinColumns =
     @JoinColumn(name = "category_id"))
-    @JsonIgnore
+//    @JsonIgnore
     private Set<Category> categories;
 
     @ManyToMany
@@ -68,7 +83,6 @@ public class Song implements Serializable {
     @JoinColumn(name = "playlist_id",referencedColumnName = "playlist_id"))
     @JsonIgnore
     private Set<PlayList> playLists;
-
 
 
     @OneToMany(mappedBy = "song",cascade = CascadeType.ALL,orphanRemoval = true)
@@ -85,6 +99,9 @@ public class Song implements Serializable {
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
+
+    @Column(name = "like_count",columnDefinition = "BIGINT default 0")
+    private Long likeCount;
 
     public Song() {
     }
@@ -104,6 +121,14 @@ public class Song implements Serializable {
         this.singers = s.getSingers();
         this.briefDesciption =s.getBriefDesciption();
         this.thumbnail = s.getThumbnail();
+    }
+
+    public Long getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Long likeCount) {
+        this.likeCount = likeCount;
     }
 
     public Long getListenCount() {
@@ -188,14 +213,6 @@ public class Song implements Serializable {
 
     public void setAuthors(Set<Author> authors) {
         this.authors = authors;
-    }
-
-    public Set<Singer> getSinger() {
-        return singers;
-    }
-
-    public void setSinger(Set<Singer> singers) {
-        this.singers = singers;
     }
 
     public Set<Category> getCategories() {

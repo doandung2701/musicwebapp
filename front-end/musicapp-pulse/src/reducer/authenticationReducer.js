@@ -4,7 +4,7 @@ import { LOADING_CURRENT_USER, LOADING_CURRENT_USER_SUCCESS, LOADING_CURRENT_USE
 var initialState = {
     authenticated: localStorage.getItem("accessToken")?true:false,
     loading: false,
-    currentUser: null,
+    currentUser: undefined,
     isSigningUp: false
 }
 export const authenticateReducer = (state = initialState, action) => {
@@ -30,7 +30,7 @@ export const authenticateReducer = (state = initialState, action) => {
             return {
                 ...state,
                 authenticated: false,
-                currentUser: null
+                currentUser: undefined
             }
         case LOGIN_SUCCESSFULLY: 
         Alert.success("You're successfully logged in!");

@@ -1,18 +1,35 @@
 import React, { Fragment } from 'react';
-import UserTrackList from '../../user/UserTrackList';
 import { Link } from 'react-router-dom';
 import UserPlayList from '../../user/UserPlayList';
 import { largeCarouselData } from '../../../fakedata/fakedata';
 import UserProfileHeader from '../../user/UserProfileHeader';
+import { UserTrackListFetchOnScrollContainer } from '../../../containers/FetchOnSrollContainer';
+import { wipeFetchOnScrollSongs, getSongByUserId } from '../../../actions/SongAction';
 
 class UserProfilePage extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.props.loadCurrentlyLoggedInUser();
+    }
+
+    componentDidMount(){
+    }
+
     render() {
+        let {currentUser={
+            imageUrl: '/images/a14.jpg',
+            name: 'Some name',
+            id: 0
+          }} = this.props.authentication;
+          
         return (
             <Fragment>
                 <UserProfileHeader
                     user={{
-                        avatar: 'http://vanhienblog.info/wp-content/uploads/2019/02/anh-gai-xinh-dep-hot-girl-2.jpg',
-                        name: 'Tran Tuyet Trinh'
+                        avatar: currentUser.imageUrl,
+                        name: currentUser.name,
+                        email : currentUser.email
                     }} />
                 <div className="padding p-y-0 m-b-md">
                     <div className="nav-active-border b-primary bottom m-b-md m-t">
@@ -32,7 +49,10 @@ class UserProfilePage extends React.Component {
                         </ul>
                     </div>
                     <div className="tab-content">
-                        <UserTrackList />
+                        <UserTrackListFetchOnScrollContainer me="songs" 
+                        addSongToQueue = {this.props.addSongToQueue}
+                        func={getSongByUserId} singerId={currentUser.id}
+                        wipeFunc={wipeFetchOnScrollSongs}/>
                         <UserPlayList tracks={largeCarouselData} />
                         <div className="tab-pane" id="like" aria-expanded="false">
                             <div className="row m-b">

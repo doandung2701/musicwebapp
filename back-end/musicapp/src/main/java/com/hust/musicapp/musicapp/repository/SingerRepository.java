@@ -10,4 +10,9 @@ import java.util.List;
 public interface SingerRepository extends PagingAndSortingRepository<Singer,Long> {
     @Query("select s.songs from Singer s where s.id=:id")
     List<Song> getAllSongsOfSinger(@Param("id")Long id);
+
+    @Query("select s from Singer s where s.name like %:name%")
+    List<Singer> findByNameLike(@Param("name") String name);
+
+    Long countDistinctById(Long id);
 }

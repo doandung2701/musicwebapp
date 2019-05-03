@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import ArtistList from '../../artist/ArtistList';
+import { ArtistListFetchOnScrollContainer } from '../../../containers/FetchOnSrollContainer';
+import { getAllSingersPaging, wipeFetchOnScrollSingers } from '../../../actions/ArtistAction';
 
 export default class ArtistsPage extends React.Component{
     render(){
@@ -19,7 +20,7 @@ export default class ArtistsPage extends React.Component{
             </div>
           </div>
         </div>
-        <ArtistList  />
+        <ArtistListFetchOnScrollContainer me="artists" wipeFunc= {wipeFetchOnScrollSingers} func={getAllSingersPaging} />
         </Fragment>
         )
     }

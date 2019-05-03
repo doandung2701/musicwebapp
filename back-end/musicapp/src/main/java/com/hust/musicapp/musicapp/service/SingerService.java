@@ -11,10 +11,19 @@ import java.util.Optional;
 
 public interface SingerService {
     Iterable<Singer> findAll();
+
     List<Singer> findALlWithPaging(Pageable pageable);
+
     Singer save(@Valid Singer singer);
+
     Optional<Singer> findById(Long id);
+
     void deleteSinger(Singer singer);
+
     List<Song> getAllSongsOfSinger(Long id);
+
+    List<Singer> findByNameLike(String name);
+
+    Long countDistinctById(Long id);
 
 }

@@ -2,40 +2,35 @@ import React from 'react';
 import FooterPlayerContainer from '../player/FooterPlayerContainer';
 import HiddenHeader from '../headers/HiddenHeader';
 import PageRight from './PageRight';
-import DiscoverPage from './DiscoverPage/DiscoverPage';
-import DiscoverPageHeader from '../headers/DiscoverPageHeader';
 import BrowsePage from './BrowsePage/BrowsePage';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { history } from '../../helpers/helper';
 import ChartPage from './ChartPage/ChartPage';
 import ArtistsPage from './ArtistsPage/ArtistsPage';
 import { NotFound } from './NotFound';
-import SigninPage from './SignIn/SignIn';
-import SignupPage from '../signup/SignUp';
-import UserProfileHeader from '../user/UserProfileHeader';
-import UserProfilePage from './UserProfilePage/UserProfilePage';
 import UserBgImg from '../user/UserBackGroundImg';
-import TrackPage from './TrackPage/TrackPage';
-import TrackPageHeader from '../tracks/TrackPageHeader';
-import ArtistDetail from './ArtistsPage/ArtistDetail';
 import AlbumDetail from './AlbumPage/AlbumDetail';
 import DiscoverPageContainer from './DiscoverPage/DiscoverPageContainer';
 import SignInContainer from './SignIn/SignInContainer';
 import SignUpPageContainer from '../signup/SignUpPageContainer';
-import OAuth2RedirectHandler from './oauth2/OAuth2RedirectHandler';
 import OAuth2RedirectHandlerContainer from './oauth2/OAuth2RedirectHandlerContainer';
+import DiscoverPageHeaderContainer from '../../containers/DiscoverPageHeaderContainer';
+import ArtistDetailContainer from './ArtistsPage/ArtistDetailContainer';
+import TrackPageContainer from './TrackPage/TrackPageContainer';
+import UserProfilePageContainer from './UserProfilePage/UserProfilePageContainer';
 
 class PagesWrapper extends React.Component {
 
     constructor(props) {
         super(props);
         this.location = window.location.pathname;
-        fetch("https://localhost:8443/fakedata?name=Nipsey Hussle");
+        // fetch("https://localhost:8443/fakedata?name=Nipsey Hussle");
     }
 
     render() {
         const isBgVisible = history.location.pathname.indexOf("/user-profile") >= 0 ||
-            history.location.pathname.indexOf("/track") >= 0;
+            history.location.pathname.indexOf("/track")>=0||
+            history.location.pathname.indexOf("/artists-detail-")>= 0;
         return (
             <Switch>
                 <Route path="/signin" exact component={SignInContainer} />
@@ -45,14 +40,11 @@ class PagesWrapper extends React.Component {
                     <HiddenHeader />
                     <FooterPlayerContainer />
                     <div className="app-body" id="view">
-                        {isBgVisible && <UserBgImg 
-                        img={history.location.pathname.indexOf("/user-profile")>=0?
-                        "http://vanhienblog.info/wp-content/uploads/2019/02/anh-gai-xinh-dep-hot-girl-2.jpg":
-                        "http://mavemagz.com/wp-content/uploads/2014/07/maroon51.jpg"} />}
+                        {isBgVisible && <UserBgImg history={history} />}
                         {/* ############ PAGE START*/}
                         <div className="page-content">
                             {(history.location.pathname === "/discover" || history.location.pathname === "/")
-                                && <DiscoverPageHeader />}
+                                && <DiscoverPageHeaderContainer />}
                           
                             <div className="row-col">
                                 <div className="col-lg-9 b-r no-border-md">
@@ -60,14 +52,14 @@ class PagesWrapper extends React.Component {
                                         {/* Trending */}
                                         <Switch>
                                             <Route path='/' exact component={DiscoverPageContainer} />
-                                            <Route path='/discover'  component={DiscoverPage} />
+                                            <Route path='/discover'  component={DiscoverPageContainer} />
                                             <Route path='/browse'  component={BrowsePage} />
                                             <Route path="/chart"  component={ChartPage} />
                                             <Route path="/artists"  component={ArtistsPage} />
-                                            <Route path="/user-profile"   component={UserProfilePage} />
-                                            <Route path="/track:id"  component={TrackPage} />
+                                            <Route path="/user-profile"   component={UserProfilePageContainer} />
+                                            <Route path="/track:id"  component={TrackPageContainer} />
                                             <Route path="/albums:id"  component={AlbumDetail} />
-                                            <Route path="/artists:id"  component={ArtistDetail} />
+                                            <Route path="/artists-detail-:id"  component={ArtistDetailContainer} />
                                             <Route  component={NotFound} />
                                         </Switch>
                                     </div>

@@ -16,6 +16,12 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @GetMapping("/find-all")
+    public ResponseEntity<?> findAll(){
+        return ResponseEntity.ok(categoryService.findAll());
+    }
+
+
     @GetMapping("/find-by-id/{id}")
     public ResponseEntity<?> findById(@PathVariable String id){
         return ResponseEntity.ok(categoryService.findById(id));

@@ -14,6 +14,8 @@ public interface CategoryService {
 
     List<Category> saveAll(List<Category> categories);
 
+    List<Category> findAll();
+
     Long count();
 
     void delete(Category c);

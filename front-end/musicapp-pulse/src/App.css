@@ -1,6 +1,7 @@
 .App {
   text-align: center;
 }
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
@@ -21,9 +22,11 @@
 .App-link {
   color: #61dafb;
 }
-.ant-carousel{
+
+.ant-carousel {
   padding: 0px;
 }
+
 .ant-carousel .slick-slide.carousel-large {
   text-align: center;
   /* height: 543px !important; */
@@ -33,7 +36,41 @@
   border: none;
   overflow: hidden;
 }
-.ant-carousel .slick-slider.carousel-sm .slick-dots li,.ant-carousel .slick-slider.carousel-sm .slick-dots .slick-avtive{
+
+#search-modal {
+  position: fixed;
+  z-index: 100;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  animation: fade-in 0.5s ;
+}
+@keyframes fade-out{
+  from{
+    opacity: 1;
+  }
+  to{
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in{
+  from{
+    opacity: 0;
+  }
+  to{
+    opacity: 1;
+  }
+}
+
+#search-modal::-webkit-scrollbar {
+  display: none;
+}
+
+.ant-carousel .slick-slider.carousel-sm .slick-dots li,
+.ant-carousel .slick-slider.carousel-sm .slick-dots .slick-avtive {
   background-color: black !important;
 }
 
@@ -41,6 +78,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

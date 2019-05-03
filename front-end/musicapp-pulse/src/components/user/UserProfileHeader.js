@@ -22,7 +22,7 @@ class UserProfileHeader extends React.Component {
                             </h1>
                             <p className="item-desc text-ellipsis text-muted" 
                             data-ui-toggle-class="text-ellipsis">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quamquam tu hanc copiosiorem etiam soles dicere. Nihil illinc huc pervenit. Verum hoc idem saepe faciamus. Quid ad utilitatem tantae pecuniae? Utram tandem linguam nescio? Sed hoc sane concedamus.</p>
+                            {user.email}</p>
                             <div className="item-action m-b">
                                 <a href="#" className="btn btn-sm rounded primary">Upload</a>
                                 <a href="#" className="btn btn-sm rounded white">Edit Profile</a>

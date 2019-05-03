@@ -1,19 +1,24 @@
-import { CHANGE_PLAYER_STATUS,
-     CHANGE_AUDIO_SRC, 
-     PLAYER_PAUSE } from "../constants/constants";
+import {
+    CHANGE_PLAYER_STATUS,
+    CHANGE_AUDIO_SRC,
+    PLAYER_PAUSE,
+    ADD_SONG_TO_QUEUE,
+    TOGGLE_REPEAT,
+    REMOVE_ITEM_FROM_QUEUE
+} from "../constants/constants";
+import { findSongIndexInQueue } from "../helpers/helper";
 
 let initialState = {
     playerStatus: PLAYER_PAUSE,
-<<<<<<< HEAD
-    src: 'http://tracking.musixmatch.com/t1.0/mzoCLtOg7U2B2B6ROdSvu+HvAFuzkE0/cTF/',
-=======
-    src: 'https://cdns-preview-d.dzcdn.net/stream/c-d28ee67c24d60e740866c7709d772f55-10.mp3',
->>>>>>> e109b343ab23af1732eef576c758ee8199d98c7c
-    id: '',
-    name: '',
-    artist: '',
-    thumbnail: '/images/a1.jpg',
-
+    nowPlaying: {
+        songSrc: 'http://streaming.radionomy.com/JamendoLounge',
+        songId: '',
+        songName: '',
+        singers: [],
+        thumbnail: '/images/a1.jpg',
+    },
+    queue: [],
+    repeat: false
 }
 
 export const playerReducer = (state = initialState, action) => {
@@ -23,10 +28,37 @@ export const playerReducer = (state = initialState, action) => {
                 ...state,
                 playerStatus: action.status
             }
-        case CHANGE_AUDIO_SRC: 
+        case CHANGE_AUDIO_SRC:
             return {
                 ...state,
-                ...action.src
+                nowPlaying: { ...action.src }
+            }
+        case ADD_SONG_TO_QUEUE:
+            if (findSongIndexInQueue(action.src, state.queue) < 0)
+                return {
+                    ...state,
+                    queue: [...state.queue, action.src]
+                };
+            else
+                return state;
+        case TOGGLE_REPEAT:
+            return {
+                ...state,
+                repeat: !state.repeat
+            }
+        case REMOVE_ITEM_FROM_QUEUE:
+            let nowPlaying = {...state.nowPlaying};
+            if (nowPlaying.songSrc===action.songSrc){
+                // nowPlaying = initialState.nowPlaying
+                return state;
+            }
+            let queue = state.queue.filter(value => {
+                return value.songSrc !== action.songSrc
+            })
+            return {
+                ...state,
+                queue,
+                // nowPlaying
             }
         default: return state;
     }

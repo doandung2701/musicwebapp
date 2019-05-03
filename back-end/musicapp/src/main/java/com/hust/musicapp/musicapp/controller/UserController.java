@@ -2,9 +2,11 @@ package com.hust.musicapp.musicapp.controller;
 
 import com.hust.musicapp.musicapp.exception.ResourceNotFoundException;
 import com.hust.musicapp.musicapp.model.PlayList;
+import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.model.User;
 import com.hust.musicapp.musicapp.security.CurrentUser;
 import com.hust.musicapp.musicapp.security.UserPrincipal;
+import com.hust.musicapp.musicapp.service.SongService;
 import com.hust.musicapp.musicapp.service.Userservice;
 import com.hust.musicapp.musicapp.util.PageableUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class UserController {
     public static final int ACTIVE_CODE=0;
     @Autowired
     private Userservice userservice;
+    @Autowired
+    private SongService songService;
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
@@ -74,5 +78,12 @@ public class UserController {
          new   ResourceNotFoundException(RESOURCE_NAME,"id",id);
         return playLists;
     }
-
+    @PutMapping("/users/like-song")
+    public ResponseEntity likeSongByUser(@RequestParam("userId")Long userId,@RequestParam("songId") Long songId){
+            User user=userservice.findById(userId).get();
+            Song song=songService.findById(songId);
+            user.getLikeSongs().add(song);
+            userservice.save(user);
+            return ResponseEntity.ok().build();
+    }
 }

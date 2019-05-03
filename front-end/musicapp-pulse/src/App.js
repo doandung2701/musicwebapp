@@ -2,33 +2,51 @@ import React, { Component, Fragment } from 'react';
 import './App.css';
 import "antd/dist/antd.css";
 import PagesWrapper from './components/pages/PagesWrapper';
-import { history } from './helpers/helper';
-import SearchModal from './components/search/SearchModal';
 import ThemeSwitcher from './components/themeswitcher/ThemeSwicher';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import DeleteModal from './components/common/DeleteModal';
 import ShareModal from './components/common/ShareModal';
-<<<<<<< HEAD
-import {Redirect} from 'react-router-dom';
-
-
-=======
-import { Redirect} from "react-router-dom";
 import SideNavContainer from './components/side_nav/SideNavContainer';
->>>>>>> e109b343ab23af1732eef576c758ee8199d98c7c
+import SearchModalContainer from './components/search/SearchModalContainer';
+
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchVisible: false
+    }
+    this.props.loadCurrentlyLoggedInUser();
+  }
+
+  onOpenSearch = () => {
+    this.setState({
+      searchVisible: true
+    })
+  }
+
+  onCloseSearch = () => {
+    this.setState({
+      searchVisible: false
+    })
+  }
+
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.authentication.currentUser !== this.props.authentication.currentUser) {
+  //     this.props.loadCurrentlyLoggedInUser();
+  //   }
+  // }
 
   render() {
     const location = window.location.pathname;
-    if (location==="/"){
-      return history.push("/user-profile")
-    }
     return (
       <Fragment>
         <div className="app dk" id="app">
-          {location!=='/signin'&&location!=='/signup'&&<SideNavContainer />}
+          {location !== '/signin' && location !== '/signup' && <SideNavContainer
+            onCloseSearch={this.onCloseSearch}
+            onOpenSearch={this.onOpenSearch} />}
           <PagesWrapper />
-          <SearchModal />
+          {this.state.searchVisible && <SearchModalContainer onClose={this.onCloseSearch} />}
           <DeleteModal />
           <ShareModal />
           <ThemeSwitcher />
@@ -38,4 +56,4 @@ class App extends Component {
   }
 }
 
-export default withRouter(App);
+export default App;
