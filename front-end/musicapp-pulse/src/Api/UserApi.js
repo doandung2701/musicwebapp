@@ -1,5 +1,6 @@
 import { ACCESS_TOKEN, API_BASE_URL } from "../constants/constants";
 import Axios from "axios";
+import { timeout } from "q";
 
 const request = (options) => {
     const headers = new Headers({
@@ -50,7 +51,10 @@ export function signup(signupRequest) {
         body: JSON.stringify(signupRequest)
     });
 }
-
+const axios = Axios.create({
+    baseURL: API_BASE_URL,
+    timeout: 5000
+})
 export const likeSongApi = (songId,userId)=>{
     return Axios.put(API_BASE_URL+"/users/like-song",null,{
         params: {
@@ -58,4 +62,12 @@ export const likeSongApi = (songId,userId)=>{
             songId
         }
     })
+}
+
+export const changeAvaApi = (data,userId)=>{
+    return axios.put(`/users/${userId}/upload-image`,data,{
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)
+        }
+    });
 }

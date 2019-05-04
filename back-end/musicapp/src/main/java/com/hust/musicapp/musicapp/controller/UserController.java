@@ -37,6 +37,7 @@ public class UserController {
 
     @Autowired
     private SongService songService;
+    @Autowired
     private FileStorageService fileStorageService;
 
     @GetMapping("/user/me")

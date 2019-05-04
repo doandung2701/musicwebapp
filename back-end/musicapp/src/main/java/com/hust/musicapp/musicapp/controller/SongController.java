@@ -300,21 +300,26 @@ public class SongController {
         return ResponseEntity.ok(songs);
     }
     @PutMapping("/{id}/upload-image-song")
-    public ResponseEntity uploadThumbnail(@RequestParam("file") MultipartFile file,@PathVariable("id") Long id) throws Exception{
+    public ResponseEntity uploadThumbnail(@RequestParam("file") MultipartFile[] file,@PathVariable("id") Long id) throws Exception{
         String fileName = "";
-        try {
-            fileName = fileStorageService.storeFile(file);
+        List<Song> songs=new ArrayList<>();
+        for (MultipartFile f:
+             file) {
+            try {
+                fileName = fileStorageService.storeFile(f);
 
-        } catch (FileStorageException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            } catch (FileStorageException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                    .path(fileName).toUriString();
+            Song song=songService.findById(id);
+            song.setThumbnail(fileUri);
+            songService.save(song);
+            songs.add(song);
         }
-        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
-                .path(fileName).toUriString();
-        Song song=songService.findById(id);
-        song.setThumbnail(fileUri);
-        songService.save(song);
-        return ResponseEntity.ok(fileUri);
+        return ResponseEntity.ok(songs);
     }
     @GetMapping("downloadSong/{fileName:.+}")
     public ResponseEntity<Resource> downloadSong(@PathVariable String fileName, HttpServletRequest request){

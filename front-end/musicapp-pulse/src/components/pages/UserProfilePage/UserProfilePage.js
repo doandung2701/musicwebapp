@@ -26,6 +26,8 @@ class UserProfilePage extends React.Component {
         return (
             <Fragment>
                 <UserProfileHeader
+                    currentUser = {currentUser}
+                    changeAva = {this.props.changeAva}
                     user={{
                         avatar: currentUser.imageUrl,
                         name: currentUser.name,

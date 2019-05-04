@@ -3,9 +3,9 @@ import React from 'react';
 const withLikeButton = (Component)=>{
     return class extends React.Component{
 
-        componentDidUpdate(){
-            console.log(this.props.song)
-        }
+        // componentDidUpdate(){
+        //     this.forceUpdate();
+        // }
 
         render(){
             let {song,userId,...rest} = this.props;

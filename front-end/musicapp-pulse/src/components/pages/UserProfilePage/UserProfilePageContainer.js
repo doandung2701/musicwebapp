@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import UserProfilePage from './UserProfilePage';
-import { loadCurrentUser } from '../../../actions/AuthentcationAction';
+import { loadCurrentUser, changeAva } from '../../../actions/AuthentcationAction';
 import { getSongByUserId } from '../../../actions/SongAction';
 import { addSongToQueue } from '../../player/PlayerAction';
 
@@ -20,6 +20,9 @@ var mapDispatchToProps = dispatch =>{
         },
         addSongToQueue : (src)=>{
             dispatch(addSongToQueue(src))
+        },
+        changeAva: (data,userId)=>{
+            dispatch(changeAva(data,userId));
         }
     }
 }

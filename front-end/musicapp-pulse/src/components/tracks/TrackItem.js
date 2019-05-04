@@ -7,22 +7,16 @@ import { TrackItemLikeBtnWithContainer } from '../../containers/WithLikeButtonCo
 
 export default class TrackItem extends React.Component {
 
-    // playTrack = (src) => {
-    //     let audio = document.getElementById("footer-player");
-    //     if (audio.src === src) {
-    //         document.getElementsByClassName("mejs-button mejs-playpause-button")[0].click();
-    //     } else {
-    //         this.props.changeAudioSrc(src);
-    //         audio.oncanplaythrough = () => {
-    //             document.getElementsByClassName("mejs-button mejs-playpause-button")[0].click();
-    //         }
-    //     }
-    // }
+    componentDidUpdate(prevProps){
+        console.log("Prev",prevProps.track)
+        console.log("Change",this.props.track)
+    }
 
     render() {
+        console.log(this.props.track.songId);
+
         let track = this.props.track;
         let status = this.props.player.playerStatus;
-        console.log("track",track)
         return (
             <div className="item r" data-id="item-116"
                 data-src="http://api.soundcloud.com/tracks/260682299/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
@@ -39,7 +33,7 @@ export default class TrackItem extends React.Component {
                 <div className="item-info">
                     <div className="item-overlay bottom text-right dropup">
                         <TrackItemLikeBtnWithContainer song={track}
-                         songId={track.songId} />
+                            songId={track.songId} />
                         <span href="#" style={{ color: 'white', cursor: 'pointer' }}
                             className="btn-more" data-toggle="dropdown">
                             <i className="fa fa-ellipsis-h" ></i></span>

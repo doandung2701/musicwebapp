@@ -20,7 +20,7 @@ export default class DiscoverPage extends React.Component {
         return (
             <Fragment>
                 <TrendingContainer />
-                <NewTrackListContainer tracks={largeCarouselData} />
+                <NewTrackListContainer />
                 <RecommendList tracks={largeCarouselData} />
             </Fragment>
         )
