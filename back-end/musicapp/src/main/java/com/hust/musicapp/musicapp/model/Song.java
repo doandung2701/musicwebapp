@@ -14,9 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="song")
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "songId")
+
 public class Song implements Serializable {
     @ManyToMany
     @JoinTable(name = "user_like_song",inverseJoinColumns = @JoinColumn(name = "user_id"),
@@ -99,6 +97,18 @@ public class Song implements Serializable {
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
+
+    @ManyToOne
+    @JsonIgnore
+    private Album album;
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
 
     @Column(name = "like_count",columnDefinition = "BIGINT default 0")
     private Long likeCount;
