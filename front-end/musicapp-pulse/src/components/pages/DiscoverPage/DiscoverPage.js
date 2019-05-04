@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import { largeCarouselData } from '../../../fakedata/fakedata';
 
-import Trending from '../../trending/Trending';
-import NewTrackList from '../../new/NewTrackList';
 import RecommendList from '../../recommend/RecommendList';
 import { API_BASE_URL } from '../../../constants/constants';
 import Axios from 'axios';
+import TrendingContainer from '../../trending/TrendingContainer';
+import NewTrackListContainer from '../../new/NewTrackListContainer';
 
 export default class DiscoverPage extends React.Component {
     componentDidMount() {
@@ -19,8 +19,8 @@ export default class DiscoverPage extends React.Component {
     render() {
         return (
             <Fragment>
-                <Trending data={largeCarouselData} />
-                <NewTrackList tracks={largeCarouselData} />
+                <TrendingContainer />
+                <NewTrackListContainer tracks={largeCarouselData} />
                 <RecommendList tracks={largeCarouselData} />
             </Fragment>
         )

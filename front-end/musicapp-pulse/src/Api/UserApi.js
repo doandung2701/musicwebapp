@@ -1,4 +1,5 @@
 import { ACCESS_TOKEN, API_BASE_URL } from "../constants/constants";
+import Axios from "axios";
 
 const request = (options) => {
     const headers = new Headers({
@@ -48,4 +49,13 @@ export function signup(signupRequest) {
         method: 'POST',
         body: JSON.stringify(signupRequest)
     });
+}
+
+export const likeSongApi = (songId,userId)=>{
+    return Axios.put(API_BASE_URL+"/users/like-song",null,{
+        params: {
+            userId,
+            songId
+        }
+    })
 }

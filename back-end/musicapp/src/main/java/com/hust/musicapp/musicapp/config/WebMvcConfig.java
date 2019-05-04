@@ -8,6 +8,14 @@ import org.springframework.web.util.UrlPathHelper;
 @EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
     private final long MAX_AGE_SECS = 3600;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        WebMvcConfigurer.super.addResourceHandlers(registry);
+        registry.addResourceHandler("/img/artists/**").addResourceLocations("/resources/img/artist/");
+        registry.addResourceHandler("/uploads/**").addResourceLocations("file:uploads/");
+    }
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -17,6 +25,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         .allowCredentials(true)
         .maxAge(MAX_AGE_SECS)
         .allowedOrigins("https://localhost:3000");
+
     }
 
     @Override
@@ -26,8 +35,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
         configurer.setUrlPathHelper(urlPathHelper);
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/uploads/**").addResourceLocations("file:uploads/");
-    }
 }

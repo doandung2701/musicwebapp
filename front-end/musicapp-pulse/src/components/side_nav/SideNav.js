@@ -6,6 +6,10 @@ export default class SideNav extends React.Component {
 
   render() {
     const {authentication}=this.props;
+    let {currentUser={
+      imageUrl: '/images/a14.jpg',
+      name: 'Some name'
+    }} = authentication;
     return (
       <Fragment>
         {/* <!-- aside --> */}
@@ -37,7 +41,7 @@ export default class SideNav extends React.Component {
                     <span className="text-xs text-muted">Main</span>
                   </li>
                   <li>
-                    <NavLink to="/discover" >
+                    <NavLink to="/discover" onClick={this.props.onCloseSearch}>
                       <span className="nav-icon">
                         <i className="material-icons">
                           play_circle_outline
@@ -47,7 +51,7 @@ export default class SideNav extends React.Component {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/browse" >
+                    <NavLink to="/browse" onClick={this.props.onCloseSearch}>
                       <span className="nav-icon">
                         <i className="material-icons">
                           sort
@@ -57,7 +61,7 @@ export default class SideNav extends React.Component {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/chart">
+                    <NavLink to="/chart" onClick={this.props.onCloseSearch}>
                       <span className="nav-icon">
                         <i className="material-icons">
                           trending_up
@@ -67,7 +71,7 @@ export default class SideNav extends React.Component {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/artists">
+                    <NavLink to="/artists" onClick={this.props.onCloseSearch}>
                       <span className="nav-icon">
                         <i className="material-icons">
                           portrait
@@ -77,14 +81,14 @@ export default class SideNav extends React.Component {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink data-toggle="modal" data-target="#search-modal">
+                    <a href="#" onClick={this.props.onOpenSearch}>
                       <span className="nav-icon">
                         <i className="material-icons">
                           search
                     </i>
                       </span>
                       <span className="nav-text">Search</span>
-                    </NavLink>
+                    </a>
                   </li>
 
 
@@ -140,9 +144,11 @@ export default class SideNav extends React.Component {
                 </ul>
               </nav>
             </div>
-            <SideNavAccountSection user={{
-              avatar: 'http://vanhienblog.info/wp-content/uploads/2019/02/anh-gai-xinh-dep-hot-girl-2.jpg',
-              name: 'Tran Tuyet Trinh'
+            <SideNavAccountSection 
+            onLogout={this.props.logout}
+            user={{
+              avatar: currentUser.imageUrl,
+              name: currentUser.name
             }} />
           </div>
         </div>

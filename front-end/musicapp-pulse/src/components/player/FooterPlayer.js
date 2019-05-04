@@ -1,7 +1,9 @@
 import React from 'react';
 import $ from 'jquery';
-import FooterTrackList from './FooterTrackList';
 import { PLAYER_PAUSE, PLAYER_PLAYING, PLAYER_BUFFERING, PLAYER_LOADED } from '../../constants/constants';
+import { findSongIndexInQueue } from '../../helpers/helper';
+import FooterTrackListContainer from './FooterTrackListContainer';
+import { TrackPageHeaderLikeBtnWithContainer } from '../../containers/WithLikeButtonContainer';
 
 const stream = ['Streaming', 'Streaming.', 'Streaming..', 'Streaming...']
 
@@ -12,7 +14,7 @@ export default class FooterPlayer extends React.Component {
         this.player = React.createRef();
         this.rail = React.createRef();
         document.onmousemove = this.moveMouseChangeVol;
-     
+
     }
 
     changeCurrentTime = (e) => {
@@ -22,14 +24,14 @@ export default class FooterPlayer extends React.Component {
             let width = document.body.offsetWidth;
             this.player.current.currentTime = (x / width) * this.player.current.duration;
             this.rail.current.style.width =
-                ((this.player.current.currentTime / this.player.current.duration) * document.body.clientWidth-55)+"px";  
+                ((this.player.current.currentTime / this.player.current.duration) * document.body.clientWidth - 55) + "px";
         }
     }
 
     componentDidMount() {
-        window.onresize= function(){
+        window.onresize = function () {
             this.rail.current.style.width =
-                ((this.player.current.currentTime / this.player.current.duration) * document.body.clientWidth-55)+"px";
+                ((this.player.current.currentTime / this.player.current.duration) * document.body.clientWidth - 55) + "px";
         }.bind(this)
         let mejsError = document.getElementsByClassName("mejs-error")[0];
         this.player.current.onloadeddata = () => {
@@ -37,23 +39,22 @@ export default class FooterPlayer extends React.Component {
                 this.formatTime(this.player.current.duration) ?
                     this.formatTime(this.player.current.duration) :
                     '<img alt="" height="30px" src="/images/Infinity-10s-50px.gif"/>';
-            // audioCtn.classList.remove("is-buffering");
-            // this.props.changePlayerStatus(PLAYER_PAUSE);
-            // this.player.current.pause();
             this.props.changePlayerStatus(PLAYER_PAUSE);
             mejsError.style.display = "none";
             this.rail.current.style.width = "0%";
+        }
+        this.player.current.oncanplaythrough = () => {
+            let el = document.getElementsByClassName("mejs-button mejs-playpause-button")[0];
+            if (el) el.click();
         }
         this.player.current.onended = () => {
             clearInterval(this.playerProgress);
             clearInterval(this.updateTime);
             // playpause.classList.remove("mejs-pause");
             // playpause.classList.add("mejs-play");
-            console.log("end")
             this.player.current.currentTime = this.player.current.duration;
-            console.log(this.player.current.currentTime)
-            console.log(this.player.current.duration)
             this.props.changePlayerStatus(PLAYER_PAUSE);
+            this.playNext();
         }
         this.player.current.onerror = () => {
             clearInterval(this.playerProgress);
@@ -76,19 +77,16 @@ export default class FooterPlayer extends React.Component {
             clearInterval(this.updateTime);
         }
         this.player.current.onplay = () => {
-            // playpause.classList.remove("mejs-play");
-            // playpause.classList.add("mejs-pause");
             this.props.changePlayerStatus(PLAYER_PLAYING);
             this.playerProgress = setInterval(() => {
-                // console.log(this.rail.current.style);
                 if (this.rail.current)
-                this.rail.current.style.width =
-                    (this.player.current.currentTime / this.player.current.duration * document.body.clientWidth-55)+"px";
+                    this.rail.current.style.width =
+                        (this.player.current.currentTime / this.player.current.duration * document.body.clientWidth - 55) + "px";
             }, 100);
             this.updateTime = setInterval(() => {
                 if (this.rail.current)
-                document.getElementsByClassName("mejs-currenttime")[0].innerHTML =
-                    this.formatTime(this.player.current.currentTime);
+                    document.getElementsByClassName("mejs-currenttime")[0].innerHTML =
+                        this.formatTime(this.player.current.currentTime);
             }, 100);
         }
     }
@@ -173,8 +171,31 @@ export default class FooterPlayer extends React.Component {
         }
     }
 
+
+    playNext = () => {
+        let { queue, nowPlaying, repeat } = this.props.player;
+        let curr = findSongIndexInQueue(nowPlaying, queue);
+        if (queue.length === curr + 1) {
+            if (repeat) {
+                this.props.changeAudioSrc(queue[0]);
+                if (queue.length === 1) {
+                    this.player.current.currentTime = 0;
+                }
+            }
+        } else {
+            this.props.changeAudioSrc(queue[curr + 1]);
+        }
+    }
+
+    playPrev = () => {
+        let { queue, nowPlaying } = this.props.player;
+        let curr = findSongIndexInQueue(nowPlaying, queue);
+        if (curr > 0)
+            this.props.changeAudioSrc(queue[curr - 1]);
+    }
+
     render() {
-        let audioSrc = this.props.player.src;
+        let audioSrc = this.props.player.nowPlaying.songSrc;
         let status = this.props.player.playerStatus;
         let player = this.props.player;
         return (
@@ -189,24 +210,31 @@ export default class FooterPlayer extends React.Component {
                                 src={audioSrc} />
                         </div><div className="mejs-layers"><div className="mejs-poster mejs-layer"
                             style={{ display: 'none', width: '100%', height: '40px' }} />
-                                <div className="mejs-track-actions"><button className="mejs-like-button btn btn-sm no-bg btn-icon"
-                                    track-id="item-1" /></div>
+                                <div className="mejs-track-actions">
+                                    <TrackPageHeaderLikeBtnWithContainer songId={player.nowPlaying.songId}/>
+                                </div>
                                 <a className="mejs-track-artwork" href="track.detail.html"
-                                    style={{ backgroundImage: `url("${player.thumbnail}")` }} />
+                                    style={{ backgroundImage: `url("${player.nowPlaying.thumbnail}")` }} />
                                 <div className="mejs-track-details">
-                                    <span className="mejs-track-title"><a href="track.detail.html">{player.name}</a></span>
-                                    <span className="mejs-track-author"><a href="artist.detail.html">{player.artist}</a></span></div>
+                                    <span className="mejs-track-title"><a href="track.detail.html">{player.nowPlaying.songName}</a></span>
+                                    <span className="mejs-track-author">
+                                        {player.nowPlaying.singers && player.nowPlaying.singers.length > 0 &&
+                                            <a href="artist.detail.html">
+                                                {player.nowPlaying.singers[0].name}</a>}</span></div>
                                 <div className="mejs-track-source" style={{ display: 'none' }}><i /></div>
                                 <div className="mejs-overlay-error mejs-layer" style={{ width: '100%', height: '40px' }}>
                                     <div className="mejs-error" onClick={this.closeErrorNoti}
                                     >Oh snap, there was a playback error!</div></div>
-                            </div><div className="mejs-controls"><div className="mejs-button mejs-previous-button mejs-previous">
-                                <button type="button" aria-controls="mep_0" title="Previous Track" /></div>
+                            </div><div className="mejs-controls">
+                                <div className="mejs-button mejs-previous-button mejs-previous">
+                                    <button type="button" onClick={this.playPrev}
+                                        aria-controls="mep_0" title="Previous Track" /></div>
                                 <div className={`mejs-button mejs-playpause-button ${this.determineStatus(status)}`}
                                     onClick={this.play}>
                                     <button type="button" aria-controls="mep_0" aria-label="Play" /></div>
                                 <div className="mejs-button mejs-next-button mejs-next">
-                                    <button type="button" aria-controls="mep_0" title="Next Track" /></div>
+                                    <button type="button" onClick={this.playNext}
+                                        aria-controls="mep_0" title="Next Track" /></div>
                                 <div className="mejs-time-rail" ref={this.rail} onClick={this.changeCurrentTime}
                                     style={{ backgroundColor: 'white !important' }}>
                                     <span className="mejs-time-total mejs-time-slider" aria-label="Time Slider"
@@ -229,26 +257,28 @@ export default class FooterPlayer extends React.Component {
                                     onMouseUp={() => this.move = false}>
                                     <button type="button" id="btn-mute" draggable="false"
                                         aria-controls="mep_0" title="Mute" aria-label="Mute" />
-                                    <a href="#" className="mejs-volume-slider" draggable="false"
+                                    <span className="mejs-volume-slider" draggable="false"
                                         aria-label="volumeSlider" aria-valuemin={0} aria-valuemax={100}
                                         aria-valuenow={100} aria-valuetext="100%" role="slider" tabIndex={0}
-                                        style={{ display: 'none' }}><span className="mejs-offscreen">
+                                        style={{ display: 'none', cursor: 'pointer' }}><span className="mejs-offscreen">
                                             Use Up/Down Arrow keys to increase or decrease volume.</span>
                                         <div className="mejs-volume-total" draggable="false" />
                                         <div className="mejs-volume-current"
                                             draggable="false" style={{ height: '100px', top: '8px' }} />
                                         <div className="mejs-volume-handle"
                                             draggable="false"
-                                            style={{ top: '5px' }} /></a></div>
-                                <div className="mejs-button mejs-repeat-button mejs-repeat">
-                                    <button type="button" aria-controls="mep_0" title="Repeat" /></div>
+                                            style={{ top: '5px' }} /></span></div>
+                                <div className={`mejs-button mejs-repeat-button mejs-repeat ${this.props.player.repeat && 'is-repeat'}`}>
+                                    <button type="button" aria-controls="mep_0"
+                                        onClick={this.props.toggleRepeat}
+                                        title="Repeat" /></div>
                                 <div className="mejs-button mejs-shuffle-button mejs-repeat">
                                     <button type="button" aria-controls="mep_0" title="Shuffle" /></div>
                                 <div className="mejs-button mejs-toggle-playlist-button mejs-toggle-playlist is-closed">
                                     <button type="button" onClick={this.toggleTrackList}
                                         aria-controls="mep_0" title="Toggle Playlist" /></div></div>
                             <div className="mejs-clear" /></div></div>
-                    <FooterTrackList />
+                    <FooterTrackListContainer />
                 </div>
             </div>
         )

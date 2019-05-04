@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react';
-import SubMediumTrackList from '../../tracks/SubMediumTrackList';
-import { largeCarouselData } from '../../../fakedata/fakedata';
+import { BrowsePageFetchOnSrollContainer } from '../../../containers/FetchOnSrollContainer';
+import { getAllSongPaging, wipeFetchOnScrollSongs } from '../../../actions/SongAction';
+
 
 export default class BrowsePage extends React.Component{
+
     render(){
         return(
             <Fragment>
@@ -84,7 +86,9 @@ export default class BrowsePage extends React.Component{
             </div>
           </div>
         </div>
-        <SubMediumTrackList type="track" tracks={largeCarouselData} />
+        <BrowsePageFetchOnSrollContainer type="track" wipeFunc={wipeFetchOnScrollSongs} 
+        me="songs" func={getAllSongPaging}/>
+        {/* <SubMediumTrackList type="track" tracks={largeCarouselData} /> */}
         </Fragment>
         )
     }

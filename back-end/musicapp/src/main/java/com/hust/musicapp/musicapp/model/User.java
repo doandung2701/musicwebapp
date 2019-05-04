@@ -10,9 +10,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +57,19 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonIgnore
     private Set<Song> songs;
+    @ManyToMany
+    @JoinTable(name = "user_like_song",joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "song_id"))
+    @JsonIgnore
+    private Set<Song> likeSongs;
+
+    public Set<Song> getLikeSongs() {
+        return likeSongs;
+    }
+
+    public void setLikeSongs(Set<Song> likeSongs) {
+        this.likeSongs = likeSongs;
+    }
 
     public Set<Comment> getComments() {
         return comments;

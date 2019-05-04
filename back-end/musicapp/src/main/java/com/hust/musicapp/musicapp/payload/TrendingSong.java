@@ -14,5 +14,4 @@ public interface TrendingSong {
     public Long getRate_count();
     public Long getRate_value();
 
-
 }

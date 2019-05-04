@@ -10,9 +10,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "category")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "categoryId")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "categoryId")
 public class Category implements Serializable {
 
     @Id

@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import TrackItem from './TrackItem';
-import { changePlayerStatus, changeAudioSrc } from '../player/PlayerAction';
+import { changePlayerStatus, changeAudioSrc, addSongToQueue } from '../player/PlayerAction';
 
 let mapStateToProps = state=>({
     player: state.player
@@ -12,6 +12,9 @@ let mapDispatchToProps = dispatch =>({
     },
     changeAudioSrc : (src)=>{
         dispatch(changeAudioSrc(src))
+    },
+    addSongToQueue: (src)=>{
+        dispatch(addSongToQueue(src));
     }
 })
 

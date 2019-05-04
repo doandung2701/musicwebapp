@@ -2,6 +2,7 @@
 import Alert from 'react-s-alert';
 import { LOADING_CURRENT_USER, LOADING_CURRENT_USER_SUCCESS, LOADING_CURRENT_USER_FAIL, LOG_OUT, ACCESS_TOKEN } from '../constants/constants';
 import { getCurrentUser } from '../Api/UserApi';
+import { history } from '../helpers/helper';
 
 export const loadingCurrentUser = () => ({
     type: LOADING_CURRENT_USER
@@ -32,6 +33,7 @@ export const loadCurrentUser = () => {
 export const logout = ()=>{
     Alert.closeAll();
     localStorage.removeItem(ACCESS_TOKEN);
+    history.push("/");
     Alert.success("You're safely logged out!");
     return {
         type: LOG_OUT
