@@ -278,21 +278,26 @@ public class SongController {
         binder.registerCustomEditor(java.sql.Date.class, new CustomDateEditor(sdf, true));
     }
     @PutMapping("/{id}/upload-song")
-    public ResponseEntity uploadSong(@RequestParam("file") MultipartFile file, @PathVariable("id")Long id) throws Exception{
+    public ResponseEntity uploadSong(@RequestParam("file") MultipartFile[] file, @PathVariable("id")Long id) throws Exception{
+        List<Song> songs=new ArrayList<>();
         String fileName = "";
-        try {
-            fileName = fileStorageService.storeFile(file);
+        for (MultipartFile f:
+             file) {
+            try {
+                fileName = fileStorageService.storeFile(f);
 
-        } catch (FileStorageException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            } catch (FileStorageException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                    .path(fileName).toUriString();
+            Song song=songService.findById(id);
+            song.setSongSrc(fileUri);
+            songs.add( songService.save(song));
         }
-        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
-                .path(fileName).toUriString();
-       Song song=songService.findById(id);
-       song.setSongSrc(fileUri);
-       songService.save(song);
-        return ResponseEntity.ok(fileUri);
+
+        return ResponseEntity.ok(songs);
     }
     @PutMapping("/{id}/upload-image-song")
     public ResponseEntity uploadThumbnail(@RequestParam("file") MultipartFile file,@PathVariable("id") Long id) throws Exception{
