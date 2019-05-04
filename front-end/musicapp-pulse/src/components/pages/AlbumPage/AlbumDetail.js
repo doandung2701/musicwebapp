@@ -10,18 +10,18 @@ class AlbumDetail extends React.Component {
         return (
             <Fragment>
                 <AlbumDetailHeader />
-                <h6 class="m-b">
-                    <span class="text-muted">by &nbsp;</span>
-                    <a href="artist.detail.html" data-pjax="" class="item-author _600">Rachel Platten</a>
-                    <span class="text-muted text-sm">- 10 song, 50 min 32 sec</span>
+                <h6 className="m-b">
+                    <span className="text-muted">by &nbsp;</span>
+                    <a href="artist.detail.html" data-pjax="" className="item-author _600">Rachel Platten</a>
+                    <span className="text-muted text-sm">- 10 song, 50 min 32 sec</span>
                 </h6>
-                <div id="tracks" class="row item-list item-list-xs item-list-li m-b">
+                <div id="tracks" className="row item-list item-list-xs item-list-li m-b">
                     {largeCarouselData.map(value => (
                         <TrackItemContainer type="track" key={value.id} track={value} />
                     ))}
                 </div>
                 <h5 className="m-b">From The Same Artist</h5>
-                <SubMediumTrackList type="track" tracks={top4View} />
+                <SubMediumTrackList type="track" list={top4View} />
                 <CommentsList />
             </Fragment>
         )

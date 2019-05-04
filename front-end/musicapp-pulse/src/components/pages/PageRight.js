@@ -1,5 +1,5 @@
 import React from 'react';
-import Top5LikeList from '../top5like/Top5LikeList';
+import Top5LikeListContainer from '../top5like/Top5LikeListContainer';
 import { top5Like } from '../../fakedata/fakedata';
 
 export default class PageRight extends React.Component {
@@ -8,7 +8,7 @@ export default class PageRight extends React.Component {
             <div className="col-lg-3 w-xxl w-auto-md" >
                 <div className="padding" style={{ bottom: '60px' ,marginTop: 22}} 
                 data-ui-jp="stick_in_parent">
-                    <Top5LikeList tracks={top5Like} />
+                    <Top5LikeListContainer tracks={top5Like} />
                     <h6 className="text text-muted">Go mobile</h6>
                     <div className="btn-groups">
                         <a href="#" className="btn btn-sm dark lt m-r-xs" style={{ width: '135px' }}>

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+<<<<<<< HEAD
     "antd": "^3.16.1",
     "history": "^4.7.2",
     "jquery": "^3.3.1",
@@ -11,15 +12,15 @@
     "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "prop-types": "^15.5.10",
+=======
+    "history": "^4.7.2",
+>>>>>>> parent of d1b5975... create components for user page
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
-    "react-onclickoutside": "^6.1.1",
     "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
-    "react-router-redux": "^4.0.0",
     "react-s-alert": "^1.4.1",
-    "react-scripts": "^2.1.8",
-    "react-toastify": "^1.7.0",
+    "react-scripts": "2.1.5",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
   },

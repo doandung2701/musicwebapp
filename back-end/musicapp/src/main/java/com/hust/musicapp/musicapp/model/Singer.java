@@ -1,5 +1,6 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -10,9 +11,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "singer")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Singer implements Serializable {
 
     @Id
@@ -26,10 +27,14 @@ public class Singer implements Serializable {
     @Column(name="brief_description")
     private String description;
 
+    @Column(name = "thumbnail")
+    @Basic(fetch = FetchType.EAGER)
+    private String thumbnail;
+
     @ManyToMany
     @JoinTable(name = "singer_song",joinColumns = @JoinColumn(name = "singer_id"),inverseJoinColumns =
     @JoinColumn(name = "song_id"))
-    @JsonIgnore
+    @JsonBackReference
     private Set<Song> songs;
 
     public Singer(String name, String description, Set<Song> songs) {
@@ -41,6 +46,14 @@ public class Singer implements Serializable {
     public Singer(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public Singer() {

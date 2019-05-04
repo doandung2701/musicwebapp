@@ -7,7 +7,7 @@ export default class SearchResultListArtist extends React.Component {
             <div className="row item-list item-list-sm item-list-by m-b">
                 {this.props.artists.map(value => (
                     <div className="col-xs-12" key={value.id}>
-                        <ArtistItem artist={value} />
+                        <ArtistItem onCloseSearch={this.props.onCloseSearch} artist={value} />
                     </div>
                 ))}
             </div>

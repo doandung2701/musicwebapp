@@ -1,5 +1,6 @@
 package com.hust.musicapp.musicapp.service;
 
+import com.hust.musicapp.musicapp.model.Singer;
 import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.payload.SongPayload;
 import com.hust.musicapp.musicapp.payload.TrendingSong;
@@ -37,10 +38,39 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
+    public List<Song> select4RandomByCategory(Long categoryId) {
+        return songRepo.select4RandomByCategory(categoryId);
+    }
+
+    @Override
+    public ArrayList<Song> getSongTrending(Pageable pageable) {
+        return songRepo.getSongTrending(pageable);
+    }
+
+    @Override
+    public ArrayList<Song> getSongNewestJpa(Pageable pageable) {
+        return songRepo.getSongNewestJpa(pageable);
+    }
+
+    @Override
     public List<TrendingSong> getChartSongs() {
         return songRepo.getChartSongs();
     }
 
+    @Override
+    public List<Song> getChartSongs(String id,Pageable pageable) {
+        return songRepo.getChartSongs(id,pageable);
+    }
+
+    @Override
+    public List<Song> getChartAll(Pageable pageable) {
+        return songRepo.getChartAll(pageable);
+    }
+
+    @Override
+    public List<Song> findTopByLikeCount(Pageable pageable){
+        return songRepo.findTopByLikeCount(pageable);
+    }
     @Override
     public List<Song> findAll() {
         List<Song> songs = new ArrayList<>();
@@ -61,8 +91,8 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
-    public List<Song> findByUserId(Long id) {
-        return songRepo.findByUserId(id);
+    public List<Song> findByUserId(Long id,Pageable pageable) {
+        return songRepo.findByUserId(id,pageable);
     }
 
     @Override
@@ -70,8 +100,13 @@ public class SongServiceImp implements SongService {
         return songRepo.findByNameExact(name);
     }
 
+//    @Override
+//    public List<SongPayload> findByNameLike(String name) {
+//        return songRepo.findByNameLike(name);
+//    }
+
     @Override
-    public List<SongPayload> findByNameLike(String name) {
+    public List<Song> findByNameLike(String name) {
         return songRepo.findByNameLike(name);
     }
 
@@ -92,6 +127,21 @@ public class SongServiceImp implements SongService {
 
     public Long count(){
         return songRepo.count();
+    }
+
+    @Override
+    public Long countDistinctBySingers(Singer s) {
+        return songRepo.countDistinctBySingers(s);
+    }
+
+    @Override
+    public List<Song> findTopByListenCountAndSingers(Pageable pageable, Long singerId) {
+        return songRepo.findTopByListenCountAndSingers(pageable,singerId);
+    }
+
+    @Override
+    public List<Song> findDistinctBySingers(Long singerId, Pageable pageable) {
+        return songRepo.findDistinctBySingers(singerId,pageable);
     }
 
     @Override

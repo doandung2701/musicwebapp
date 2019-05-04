@@ -7,12 +7,14 @@ export default class ArtistItem extends React.Component {
         return (
             <div className="item">
                 <div className="item-media rounded ">
-                    <Link to={`/artists${artist.id}`} className="item-media-content" 
-                    style={{backgroundImage: `url(${artist.img})`}}></Link>
+                    <Link onClick={this.props.onCloseSearch} 
+                    to={`/artists-detail-${artist.id}`} className="item-media-content" 
+                    style={{backgroundImage: `url(${artist.thumbnail})`}}></Link>
                 </div>
                 <div className="item-info text-center">
                     <div className="item-title text-ellipsis">
-                        <a href="artist.detail.html">{artist.name}</a>
+                        <Link onClick={this.props.onCloseSearch} 
+                         to={`/artists-detail-${artist.id}`}>{artist.name}</Link>
                         <div className="text-sm text-muted">{artist.songCount} songs</div>
                     </div>
                 </div>

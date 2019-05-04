@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 export default class SideNavAccountSection extends React.Component {
 
@@ -21,23 +22,10 @@ export default class SideNavAccountSection extends React.Component {
                         </span>
                     </a>
                     <div className="dropdown-menu w dropdown-menu-scale ">
-                        <a className="dropdown-item" href="profile.html#profile">
+                        <Link className="dropdown-item" to="/user-profile">
                             <span>Profile</span>
-                        </a>
-                        <a className="dropdown-item" href="profile.html#tracks">
-                            <span>Tracks</span>
-                        </a>
-                        <a className="dropdown-item" href="profile.html#playlists">
-                            <span>Playlists</span>
-                        </a>
-                        <a className="dropdown-item" href="profile.html#likes">
-                            <span>Likes</span>
-                        </a>
-                        <div className="dropdown-divider"></div>
-                        <a className="dropdown-item" href="docs.html">
-                            Need help?
-                        </a>
-                        <a className="dropdown-item" href="signin.html">Sign out</a>
+                        </Link>
+                        <a className="dropdown-item" onClick={this.props.onLogout}>Sign out</a>
                     </div>
                 </div>
 
