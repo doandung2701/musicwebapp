@@ -7,13 +7,8 @@ import { TrackItemLikeBtnWithContainer } from '../../containers/WithLikeButtonCo
 
 export default class TrackItem extends React.Component {
 
-    componentDidUpdate(prevProps){
-        console.log("Prev",prevProps.track)
-        console.log("Change",this.props.track)
-    }
 
     render() {
-        console.log(this.props.track.songId);
 
         let track = this.props.track;
         let status = this.props.player.playerStatus;
