@@ -2,6 +2,7 @@ package com.hust.musicapp.musicapp.controller;
 
 import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.payload.SongResponse;
+import com.hust.musicapp.musicapp.payload.SongUploadPayload;
 import com.hust.musicapp.musicapp.service.SingerService;
 import com.hust.musicapp.musicapp.exception.FileStorageException;
 import com.hust.musicapp.musicapp.service.FileStorageService;
@@ -185,7 +186,19 @@ public class SongController {
     public ResponseEntity<?> updateSong(@RequestBody List<Song> songs) {
         return ResponseEntity.ok(songService.saveAll(songs));
     }
-
+    @PostMapping("/users/upload-song")
+    public ResponseEntity<?> uploadSong(@RequestBody SongUploadPayload songUploadPayload){
+        Song song
+                =new Song();
+        song.setSongName(songUploadPayload.getSongName());
+        song.setBriefDesciption(songUploadPayload.getBriefDesciption());
+        song.setChecked(songUploadPayload.isChecked());
+        song.setAuthors(songUploadPayload.getAuthors());
+        song.setSingers(songUploadPayload.getSingers());
+        song.setCategories(songUploadPayload.getCategories());
+        song.setUser(songUploadPayload.getUser());
+        return ResponseEntity.ok( songService.save(song));
+    }
     @DeleteMapping("/delete-song")
     public ResponseEntity<?> deleteSong(@RequestBody Song song) {
         Song s = songService.findById(song.getSongId());
@@ -278,13 +291,11 @@ public class SongController {
         binder.registerCustomEditor(java.sql.Date.class, new CustomDateEditor(sdf, true));
     }
     @PutMapping("/{id}/upload-song")
-    public ResponseEntity uploadSong(@RequestParam("file") MultipartFile[] file, @PathVariable("id")Long id) throws Exception{
-        List<Song> songs=new ArrayList<>();
+    public ResponseEntity uploadSong(@RequestParam("file") MultipartFile file, @PathVariable("id")Long id) throws Exception{
         String fileName = "";
-        for (MultipartFile f:
-             file) {
+
             try {
-                fileName = fileStorageService.storeFile(f);
+                fileName = fileStorageService.storeFile(file);
 
             } catch (FileStorageException e) {
                 // TODO Auto-generated catch block
@@ -294,19 +305,14 @@ public class SongController {
                     .path(fileName).toUriString();
             Song song=songService.findById(id);
             song.setSongSrc(fileUri);
-            songs.add( songService.save(song));
-        }
-
-        return ResponseEntity.ok(songs);
+        return ResponseEntity.ok(song);
     }
     @PutMapping("/{id}/upload-image-song")
-    public ResponseEntity uploadThumbnail(@RequestParam("file") MultipartFile[] file,@PathVariable("id") Long id) throws Exception{
+    public ResponseEntity uploadThumbnail(@RequestParam("file") MultipartFile file,@PathVariable("id") Long id) throws Exception{
         String fileName = "";
-        List<Song> songs=new ArrayList<>();
-        for (MultipartFile f:
-             file) {
+
             try {
-                fileName = fileStorageService.storeFile(f);
+                fileName = fileStorageService.storeFile(file);
 
             } catch (FileStorageException e) {
                 // TODO Auto-generated catch block
@@ -317,9 +323,8 @@ public class SongController {
             Song song=songService.findById(id);
             song.setThumbnail(fileUri);
             songService.save(song);
-            songs.add(song);
-        }
-        return ResponseEntity.ok(songs);
+
+        return ResponseEntity.ok(songService.save(song));
     }
     @GetMapping("downloadSong/{fileName:.+}")
     public ResponseEntity<Resource> downloadSong(@PathVariable String fileName, HttpServletRequest request){

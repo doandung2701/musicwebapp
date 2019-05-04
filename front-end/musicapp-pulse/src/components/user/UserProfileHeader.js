@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import { Modal, Upload, message } from 'antd';
 import { dummyRequest } from '../../helpers/helper';
+import SongModal from './SongModal';
+import SongModalContainer from './SongModalContainer';
 
 class UserProfileHeader extends React.Component {
 
@@ -10,6 +12,7 @@ class UserProfileHeader extends React.Component {
             modalVisible: false,
             file: null,
             formData: null,
+            modalSongVisible:false
         }
     }
 
@@ -25,7 +28,16 @@ class UserProfileHeader extends React.Component {
                 file: this.props.user.avatar
             })
     }
-
+    closeModalSong=()=>{
+       this.setState({
+        modalSongVisible:false
+       })
+    }
+    openUploadSongModal=()=>{
+        this.setState({
+            modalSongVisible:true
+        })
+    }
     handleOk = () => {
             if (this.state.formData) {
                 this.props.changeAva(this.state.formData, this.props.currentUser.id);
@@ -105,7 +117,7 @@ class UserProfileHeader extends React.Component {
                                     data-ui-toggle-class="text-ellipsis">
                                     {user.email}</p>
                                 <div className="item-action m-b">
-                                    <a href="#" className="btn btn-sm rounded primary">Upload</a>
+                                    <a className="btn btn-sm rounded primary" onClick={this.openUploadSongModal}>Upload</a>
                                     <a href="#" className="btn btn-sm rounded white">Edit Profile</a>
                                 </div>
                                 <div className="block clearfix m-b">
@@ -115,6 +127,7 @@ class UserProfileHeader extends React.Component {
                         </div>
                     </div>
                 </div>
+                <SongModalContainer user={this.props.currentUser} isShow={this.state.modalSongVisible} closeModal={this.closeModalSong}/>
             </Fragment>
         )
     }

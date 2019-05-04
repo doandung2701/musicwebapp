@@ -10,7 +10,6 @@ import NewTrackListContainer from '../../new/NewTrackListContainer';
 export default class DiscoverPage extends React.Component {
     componentDidMount() {
         Axios.get(`${API_BASE_URL}/user/me`).then(response=>{
-            console.log(response.data);
             
         })
         // this.props.loadCurrentlyLoggedInUser();  

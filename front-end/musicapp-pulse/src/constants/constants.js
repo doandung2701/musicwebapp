@@ -68,6 +68,10 @@ export const GET_SONG_BY_USER_ID_FAIL = 'GET_SONG_BY_USER_ID_FAIL';
 export const LIKING_SONG = 'LIKING_SONG';
 export const LIKE_SONG_SUCCESS = 'LIKE_SONG_SUCCESS';
 export const LIKE_SONG_FAIL = 'LIKE_SONG_FAIL';
+
+export const UPLOADING_SONG="UPLOADING_SONG";
+export const UPLOAD_SONG_SUCCESS="UPLOAD_SONG_SUCCESS"
+export const UPLOAD_SONG_FAIL="UPLOAD_SONG_FAIL"
 //Song constants
 
 //singer const

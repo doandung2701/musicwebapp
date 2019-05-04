@@ -90,3 +90,12 @@ export const getChartSongByCatIdApi = (id)=>{
         }
     })
 }
+export const createSong=(data)=>{
+    return axios.post("users/upload-song",data);
+}
+export const uploadImageSong=(id,data)=>{
+    return axios.put(`${id}/upload-image-song`,data);
+}
+export const uploadSongFile=(id,data)=>{
+    return axios.put(`${id}/upload-song`,data);
+}

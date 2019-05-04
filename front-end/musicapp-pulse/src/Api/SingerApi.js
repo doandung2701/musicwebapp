@@ -11,3 +11,6 @@ export const getSingersByNameApi = (name) => axios.get('find-by-name', {
         name
     }
 })
+export const getAllSinger=()=>{
+    return axios.get("find/find-all");
+}
