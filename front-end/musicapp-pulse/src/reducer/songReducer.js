@@ -90,7 +90,6 @@ export const songReducer = (state = initialState, action) => {
                 isGettingDiscoverHeader: true
             }
         case GET_DISCOVER_HEADER_DATA_SUCCESS:
-        console.log(action.songs[1].data)
             return {
                 ...state,
                 random4Jazz: action.songs[0].data,

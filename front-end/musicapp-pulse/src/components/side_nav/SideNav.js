@@ -95,8 +95,9 @@ export default class SideNav extends React.Component {
                   <li className="nav-header hidden-folded m-t">
                     <span className="text-xs text-muted">Your profile</span>
                   </li>
-                  <li>
-                    {authentication.authenticated==true&& <NavLink to="/user-profile">
+                  <li onClick={this.props.onCloseSearch}>
+                    {authentication.authenticated==true&& 
+                    <NavLink to="/user-profile">
                       <span className="nav-label">
                         <b className="label">8</b>
                       </span>

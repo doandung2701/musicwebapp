@@ -12,7 +12,6 @@ export default class DiscoverPageHeader extends React.Component {
 
     render() {
         let {random4Jazz,random4Pop} = this.props;
-        console.log(random4Pop)
         return (
             <div className="padding p-b-0">
 

@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { largeCarouselData } from '../../../fakedata/fakedata';
 import ColXs12TrackItem from '../../tracks/ColXs12TrackItem';
 import { getAllCategoriesApi } from '../../../Api/CategoryApi';
 import { getChartSongByCatIdApi } from '../../../Api/SongApi';
