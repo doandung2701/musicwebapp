@@ -10,9 +10,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "singer")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Singer implements Serializable {
 
     @Id
@@ -31,6 +28,25 @@ public class Singer implements Serializable {
     @JoinColumn(name = "song_id"))
     @JsonIgnore
     private Set<Song> songs;
+
+    @OneToMany(mappedBy = "singer",orphanRemoval = true,cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Album> albums;
+
+    public Set<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(Set<Album> albums) {
+        this.albums = albums;
+    }
+
+    public Singer(String name, String description, Set<Song> songs, Set<Album> albums) {
+        this.name = name;
+        this.description = description;
+        this.songs = songs;
+        this.albums = albums;
+    }
 
     public Singer(String name, String description, Set<Song> songs) {
         this.name = name;

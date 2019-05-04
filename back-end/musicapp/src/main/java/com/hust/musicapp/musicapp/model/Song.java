@@ -86,6 +86,18 @@ public class Song implements Serializable {
     @JsonIgnore
     private User user;
 
+    @ManyToOne
+    @JsonIgnore
+    private Album album;
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
+
     public Song() {
     }
 
