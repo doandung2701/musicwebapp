@@ -8,9 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "score_type")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "scoreId")
+
 public class ScoreType implements Serializable {
 
     @Id

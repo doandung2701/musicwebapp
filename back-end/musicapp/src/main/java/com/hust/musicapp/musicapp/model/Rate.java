@@ -7,9 +7,6 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="rate")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Rate implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,9 +9,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "comments")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "commentId")
 public class Comment implements Serializable {
 
     @Id
