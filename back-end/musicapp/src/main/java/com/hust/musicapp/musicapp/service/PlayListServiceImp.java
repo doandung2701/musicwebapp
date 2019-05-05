@@ -50,7 +50,7 @@ public class PlayListServiceImp implements PlayListService {
 
     @Override
     public List<PlayList> findAll() {
-        return repo.findAll();
+        return repo.findAllPlaylist();
     }
 
     @Override
