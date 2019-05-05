@@ -9,9 +9,6 @@ import java.util.Set;
 
 @Entity
 @Table(name="playlist")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class PlayList implements Serializable {
 
     @Id
