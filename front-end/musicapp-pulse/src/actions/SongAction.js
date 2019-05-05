@@ -8,9 +8,11 @@ import {
     GET_8_NEWEST_FAIL, GETTING_SONG_BY_SINGER_PAGING, GET_SONG_BY_SINGER_PAGING_SUCCESS,
     GET_SONG_BY_SINGER_PAGING_FAIL, GETTING_SONG_BY_ID, GET_SONG_BY_ID_SUCCESS,
     GET_SONG_BY_ID_FAIL, GETTING_SONG_BY_USER_ID, GET_SONG_BY_USER_ID_SUCCESS,
-    GET_SONG_BY_USER_ID_FAIL, LIKE_SONG_SUCCESS, LIKING_SONG, GETTING_SONGS_BY_ALBUMS_ID, GET_SONGS_BY_ALBUMS_ID_SUCCESS, GET_SONGS_BY_ALBUMS_ID_FAIL,
+    GET_SONG_BY_USER_ID_FAIL, LIKE_SONG_SUCCESS, LIKING_SONG, UPLOAD_SONG_FAIL, 
+    UPLOADING_SONG, UPLOAD_SONG_SUCCESS, GET_SONGS_BY_ALBUMS_ID_FAIL,
+     GET_SONGS_BY_ALBUMS_ID_SUCCESS, GETTING_SONGS_BY_ALBUMS_ID,
 } from "../constants/constants";
-import { getAllSongWithPagingApi, getTop5LikeApi, getTrendingSongsApi, getRandom4JazzApi, getRandom4PopApi, get8NewApi, getSongsBySingerPagingApi, getSongByIdApi, getSongByUserIdApi, getSongsByAlbumsIdApi } from "../Api/SongApi";
+import { getAllSongWithPagingApi, getTop5LikeApi, getTrendingSongsApi, getRandom4JazzApi, getRandom4PopApi, get8NewApi, getSongsBySingerPagingApi, getSongByIdApi, getSongByUserIdApi, createSong, uploadImageSong, uploadSongFile, getSongsByAlbumsIdApi } from "../Api/SongApi";
 import { likeSongApi } from "../Api/UserApi";
 import { message } from "antd";
 import $ from 'jquery';
@@ -131,16 +133,16 @@ const likeSongSuccess = (songId, userId) => ({
     userId
 })
 
-const gettingSongsByAlbumId = ()=>({
+const gettingSongsByAlbumId = () => ({
     type: GETTING_SONGS_BY_ALBUMS_ID
 })
 
-const getSongsByAlbumIdSuccess = (songs)=>({
+const getSongsByAlbumIdSuccess = (songs) => ({
     type: GET_SONGS_BY_ALBUMS_ID_SUCCESS,
     songs
 })
 
-const getSongsByAlbumIdFail = ()=>({
+const getSongsByAlbumIdFail = () => ({
     type: GET_SONGS_BY_ALBUMS_ID_FAIL
 })
 
@@ -148,7 +150,7 @@ export const getSongByAlbumId = (page, id) => {
     return async dispatch => {
         dispatch(gettingSongsByAlbumId());
         try {
-            let data = await getSongsByAlbumsIdApi(page,id);
+            let data = await getSongsByAlbumsIdApi(page, id);
             dispatch(getSongsByAlbumIdSuccess(data.data));
         } catch (err) {
             dispatch(getSongsByAlbumIdFail());
@@ -278,5 +280,35 @@ export const getDiscoverHeaderData = () => {
         } catch (err) {
             dispatch(getDiscoverHeaderDataFail())
         }
+    }
+}
+const gettingUploadSong = () => ({
+    type: UPLOADING_SONG
+})
+const uploadSongSuccess = (song) => ({
+    type: UPLOAD_SONG_SUCCESS,
+    song
+})
+const uploadSongFail = (err) => ({
+    type: UPLOAD_SONG_FAIL,
+    err
+})
+export const uploadSong = (data, image, song) => {
+    return dispatch => {
+        dispatch(gettingUploadSong())
+
+        createSong(data).then(response => {
+            let { songId } = response.data;
+            uploadImageSong(songId, image).then(data => {
+                uploadSongFile(songId, song).then(response => {
+                    console.log(response.data);
+
+                    dispatch(uploadSongSuccess(response.data))
+                })
+            })
+        }).catch(err => {
+            dispatch(uploadSongFail(err))
+        });
+
     }
 }

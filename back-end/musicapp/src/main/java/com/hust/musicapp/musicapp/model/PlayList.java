@@ -1,6 +1,7 @@
 package com.hust.musicapp.musicapp.model;
 
 import com.fasterxml.jackson.annotation.*;
+import com.hust.musicapp.musicapp.payload.PlaylistPayload;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,9 +9,6 @@ import java.util.Set;
 
 @Entity
 @Table(name="playlist")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class PlayList implements Serializable {
 
     @Id
@@ -94,5 +92,13 @@ public class PlayList implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+    public PlayList(PlaylistPayload playlistPayload){
+        this.id=playlistPayload.getId()!=null?playlistPayload.getId():null;
+        this.description=playlistPayload.getDescription();
+        this.name=playlistPayload.getName();
+        this.songs=playlistPayload.getSongs();
+        this.thumbnail=playlistPayload.getThumbnail();
+        this.user=playlistPayload.getUser();
     }
 }
