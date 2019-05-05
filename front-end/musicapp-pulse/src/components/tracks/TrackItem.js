@@ -7,16 +7,11 @@ import { TrackItemLikeBtnWithContainer } from '../../containers/WithLikeButtonCo
 
 export default class TrackItem extends React.Component {
 
-    componentDidUpdate(prevProps){
-        console.log("Prev",prevProps.track)
-        console.log("Change",this.props.track)
-    }
-
     render() {
-        console.log(this.props.track.songId);
 
         let track = this.props.track;
         let status = this.props.player.playerStatus;
+        let isTrack = this.props.type === "track";
         return (
             <div className="item r" data-id="item-116"
                 data-src="http://api.soundcloud.com/tracks/260682299/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
@@ -31,16 +26,14 @@ export default class TrackItem extends React.Component {
                     </div>
                 </div>
                 <div className="item-info">
-                    <div className="item-overlay bottom text-right dropup">
+                    {isTrack && <div className="item-overlay bottom text-right dropup">
                         <TrackItemLikeBtnWithContainer song={track}
                             songId={track.songId} />
                         <span href="#" style={{ color: 'white', cursor: 'pointer' }}
                             className="btn-more" data-toggle="dropdown">
                             <i className="fa fa-ellipsis-h" ></i></span>
                         <TrackActionModal onAddToQueue={() => this.props.addSongToQueue(track)} />
-                        {/* <div className="dropdown-menu pull-right black lt">
-                        </div> */}
-                    </div>
+                    </div>}
                     <div className="item-title text-ellipsis">
                         <Link className="text-muted"
                             to={`/${this.props.type}${track.songId}`}
@@ -54,12 +47,12 @@ export default class TrackItem extends React.Component {
                             >{track.singers[0].name}</Link>
                             : <span className="text-muted">Unknown</span>}
                     </div>
-                    <div className="item-meta text-sm text-muted">
+                    {isTrack && <div className="item-meta text-sm text-muted">
                         <span className="item-meta-stats text-xs  item-meta-right">
                             <i className="fa fa-play text-muted"></i> {track.listenCount}
                             <i className="fa fa-heart m-l-sm text-muted"></i> {track.likeCount}
                         </span>
-                    </div>
+                    </div>}
 
                 </div>
             </div>

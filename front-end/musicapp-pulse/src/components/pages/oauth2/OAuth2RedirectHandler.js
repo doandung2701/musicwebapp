@@ -17,8 +17,11 @@ class OAuth2RedirectHandler extends Component {
         if(token) {
             localStorage.setItem(ACCESS_TOKEN, token);
             this.props.loginSuccess();
+            this.props.loadCurrentUser();
+            let fromLoc =  sessionStorage.getItem('from');
+            sessionStorage.removeItem('from');
             return <Redirect to={{
-                pathname: "/user-profile",
+                pathname: fromLoc?fromLoc:'/user-profile',
                 state: { from: this.props.location }
             }}/>; 
         } else {

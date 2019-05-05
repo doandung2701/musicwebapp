@@ -4,6 +4,7 @@ import com.hust.musicapp.musicapp.exception.FileStorageException;
 import com.hust.musicapp.musicapp.exception.ResourceNotFoundException;
 import com.hust.musicapp.musicapp.model.Album;
 import com.hust.musicapp.musicapp.model.Song;
+import com.hust.musicapp.musicapp.payload.AlbumResponse;
 import com.hust.musicapp.musicapp.service.AlbumService;
 import com.hust.musicapp.musicapp.service.FileStorageService;
 import com.hust.musicapp.musicapp.service.AlbumService;
@@ -31,8 +32,9 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("albums")
+@RequestMapping("/albums")
 public class AlbumController {
+
     Logger logger= LoggerFactory.getLogger(AlbumController.class);
     @Autowired
     private AlbumService albumService;
@@ -63,7 +65,7 @@ public class AlbumController {
 
     @GetMapping("/find-by-id/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(albumService.findById(id));
+        return ResponseEntity.ok(new AlbumResponse(albumService.findById(id)));
     }
 
     @GetMapping("/find-by-name")
@@ -141,5 +143,10 @@ public class AlbumController {
         songService.save(song);
         albumService.save(album);
         return ResponseEntity.ok(song);
+    }
+
+    @GetMapping("/find-by-singer-id")
+    public ResponseEntity<?> findBySingerId(@RequestParam("singerId") Long singerId){
+        return ResponseEntity.ok(albumService.findDistinctBySingerId(singerId));
     }
 }

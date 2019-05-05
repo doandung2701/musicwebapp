@@ -24,7 +24,7 @@ export const loginUser = (loginRequest)=>{
             localStorage.setItem(ACCESS_TOKEN, response.accessToken);
             dispatch(loginSuccessFully());
             dispatch(loadCurrentUser());
-            history.push("/user-profile");
+            // history.push("/user-profile");
         }).catch(error => {
             dispatch(loginFailed())
             Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');

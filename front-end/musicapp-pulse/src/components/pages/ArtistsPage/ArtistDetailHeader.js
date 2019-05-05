@@ -28,7 +28,7 @@ class ArtistDetailHeader extends React.Component {
                 <a className="btn btn-icon white rounded btn-share pull-right" 
                 data-toggle="modal" data-target="#share-modal"><i className="fa fa-share-alt" /></a>
                 <button className="btn-playpause text-primary m-r-sm" />
-                    <span> 7 Albums, {songCount} Tracks</span>
+                    <span> {this.props.albumCount} Albums, {songCount} Tracks</span>
               </div>
               <div className="item-meta">
                 <a className="btn btn-xs rounded white">Pop</a> <a className="btn btn-xs rounded white">Happy</a>

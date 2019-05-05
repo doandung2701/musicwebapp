@@ -6,6 +6,8 @@ import { PLAYER_PLAYING } from '../../../constants/constants';
 import { getSongByIdApi } from '../../../Api/SongApi';
 import LoadingIndicator from '../../common/LoadingIndicator';
 import { gettingSongById, getSongByIdSuccess, getSongByIdFail } from '../../../actions/SongAction';
+import CommentListContainer from './Comments/CommentListContainer';
+import $ from 'jquery';
 
 class TrackPage extends React.Component {
 
@@ -14,9 +16,9 @@ class TrackPage extends React.Component {
         let id = this.props.match.params.id;
         // let singerId = this.props.location.state.singerId;
         this.props.dispatch(gettingSongById());
-        getSongByIdApi(id).then(data => {
+        getSongByIdApi(id).then(async data => {
             this.props.dispatch(getSongByIdSuccess(data.data))
-            this.props.getSongBySinger(1, data.data.singers
+            await this.props.getSongBySinger(1, data.data.singers
                 && data.data.singers.length > 0
                 && data.data.singers[0].id);
         }).catch(err => {
@@ -46,6 +48,7 @@ class TrackPage extends React.Component {
 
     render() {
         let { list, singleSong: song, isGetting, changeAudioSrc, player, addSongToQueue } = this.props;
+        let id = this.props.match.params.id;
         return (
             <Fragment>
                 <TrackPageHeader addSongToQueue={addSongToQueue}
@@ -55,7 +58,7 @@ class TrackPage extends React.Component {
                 <h5 className="m-b">From The Same Artist</h5>
                 <SubMediumTrackList type="track" list={list} />
                 <LoadingIndicator isGetting={isGetting} />
-                <CommentsList />
+                <CommentListContainer songId={id} location={this.props.location}/>
             </Fragment>
         )
     }

@@ -9,9 +9,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "comments")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "commentId")
 public class Comment implements Serializable {
 
     @Id
@@ -32,7 +29,6 @@ public class Comment implements Serializable {
     private Comment parentCmt;
 
     @OneToMany(mappedBy = "parentCmt",cascade = CascadeType.ALL,orphanRemoval = true)
-    @JsonIgnore
     private Set<Comment> replies;
 
     @ManyToOne
@@ -42,7 +38,6 @@ public class Comment implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
     public Comment(String commentCnt, Date commentDate, Comment parentCmt, Set<Comment> replies) {
@@ -50,6 +45,30 @@ public class Comment implements Serializable {
         this.commentDate = commentDate;
         this.parentCmt = parentCmt;
         this.replies = replies;
+    }
+
+    public Comment(String commentCnt, Date commentDate, Comment parentCmt, Song song, User user) {
+        this.commentCnt = commentCnt;
+        this.commentDate = commentDate;
+        this.parentCmt = parentCmt;
+        this.song = song;
+        this.user = user;
+    }
+
+    public Song getSong() {
+        return song;
+    }
+
+    public void setSong(Song song) {
+        this.song = song;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Comment(String commentCnt, Date commentDate) {

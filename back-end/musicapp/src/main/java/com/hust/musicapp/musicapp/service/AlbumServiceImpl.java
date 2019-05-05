@@ -22,6 +22,11 @@ public class AlbumServiceImpl implements AlbumService{
     }
 
     @Override
+    public List<Album> findDistinctBySingerId(Long singerId) {
+        return albumRepo.findDistinctBySingerId(singerId);
+    }
+
+    @Override
     public List<Album> findAllWithPaging(Pageable pageable) {
         return albumRepo.findAll(pageable).getContent();
     }

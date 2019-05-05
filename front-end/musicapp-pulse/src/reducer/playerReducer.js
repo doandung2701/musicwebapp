@@ -4,7 +4,8 @@ import {
     PLAYER_PAUSE,
     ADD_SONG_TO_QUEUE,
     TOGGLE_REPEAT,
-    REMOVE_ITEM_FROM_QUEUE
+    REMOVE_ITEM_FROM_QUEUE,
+    ADD_MULTI_SONG_TO_QUEUE
 } from "../constants/constants";
 import { findSongIndexInQueue } from "../helpers/helper";
 
@@ -28,6 +29,16 @@ export const playerReducer = (state = initialState, action) => {
                 ...state,
                 playerStatus: action.status
             }
+        case ADD_MULTI_SONG_TO_QUEUE:
+            let queue1 = [...state.queue];
+            for (let song of action.src) {
+                if (findSongIndexInQueue(song, queue1) < 0)
+                    queue1.push(song);
+            }
+            return {
+                ...state,
+                queue: queue1
+            }
         case CHANGE_AUDIO_SRC:
             return {
                 ...state,
@@ -47,8 +58,8 @@ export const playerReducer = (state = initialState, action) => {
                 repeat: !state.repeat
             }
         case REMOVE_ITEM_FROM_QUEUE:
-            let nowPlaying = {...state.nowPlaying};
-            if (nowPlaying.songSrc===action.songSrc){
+            let nowPlaying = { ...state.nowPlaying };
+            if (nowPlaying.songSrc === action.songSrc) {
                 // nowPlaying = initialState.nowPlaying
                 return state;
             }

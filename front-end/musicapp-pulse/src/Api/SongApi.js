@@ -90,3 +90,13 @@ export const getChartSongByCatIdApi = (id)=>{
         }
     })
 }
+
+export const getSongsByAlbumsIdApi = (page,id)=>{
+    return axios.get("find-paging-by-album",{
+        params:{
+            page,
+            id,
+            rows: 10
+        }
+    })
+}

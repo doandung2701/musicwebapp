@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface AlbumRepo extends JpaRepository<Album,Long> {
     List<Album> findByAlbumNameLike(String albumName);
+
+    List<Album> findDistinctBySingerId(Long singerId);
 }

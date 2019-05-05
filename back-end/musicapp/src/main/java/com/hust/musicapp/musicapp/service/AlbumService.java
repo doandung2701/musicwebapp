@@ -10,8 +10,13 @@ public interface AlbumService {
     List<Album> findAll();
 
     List<Album> findAllWithPaging(Pageable pageable);
+
     List<Album> findByNameLike(String ablumName);
+
     Album findById(Long id);
+
+    List<Album> findDistinctBySingerId(Long singerId);
+
 
     Long count();
 
