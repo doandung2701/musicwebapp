@@ -9,7 +9,7 @@ import {
     GET_SONG_BY_USER_ID_FAIL, LIKE_SONG_SUCCESS, GETTING_SONGS_BY_ALBUMS_ID,
     GET_SONGS_BY_ALBUMS_ID_SUCCESS, GET_SONGS_BY_ALBUMS_ID_FAIL, UPLOAD_SONG_SUCCESS,
     GETTING_RECOMMENDED_SONGS, GET_RECOMMENDED_SONGS_SUCCESS, GET_RECOMMENDED_SONGS_FAIL,
-    GETTING_SONGS_BY_PLAYLIST_ID, GET_SONGS_BY_PLAYLIST_ID_SUCCESS, GET_SONGS_BY_PLAYLIST_ID_FAIL
+    GETTING_SONGS_BY_PLAYLIST_ID, GET_SONGS_BY_PLAYLIST_ID_SUCCESS, GET_SONGS_BY_PLAYLIST_ID_FAIL, GET_LIKE_SONG_BY_USER_ID_SUCCESS, GETTING_LIKE_SONG_BY_USER_ID, GET_LIKE_SONG_BY_USER_ID_FAIL
 } from "../constants/constants";
 
 const initialState = {
@@ -38,6 +38,7 @@ export const songReducer = (state = initialState, action) => {
         case GETTING_SONG_BY_USER_ID:
         case GETTING_SONGS_BY_ALBUMS_ID:
         case GETTING_SONGS_BY_PLAYLIST_ID:
+        case GETTING_LIKE_SONG_BY_USER_ID:
             return {
                 ...state,
                 isGetting: true,
@@ -48,6 +49,7 @@ export const songReducer = (state = initialState, action) => {
         case GET_SONG_BY_USER_ID_SUCCESS:
         case GET_SONGS_BY_ALBUMS_ID_SUCCESS:
         case GET_SONGS_BY_PLAYLIST_ID_SUCCESS:
+        case GET_LIKE_SONG_BY_USER_ID_SUCCESS:        
             return {
                 ...state,
                 isGetting: false,
@@ -64,6 +66,7 @@ export const songReducer = (state = initialState, action) => {
         case GET_SONG_BY_USER_ID_FAIL:
         case GET_SONGS_BY_ALBUMS_ID_FAIL:
         case GET_SONGS_BY_PLAYLIST_ID_FAIL:
+        case GET_LIKE_SONG_BY_USER_ID_FAIL:
             return {
                 ...state,
                 isGetting: false,
