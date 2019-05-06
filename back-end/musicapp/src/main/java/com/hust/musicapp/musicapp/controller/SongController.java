@@ -7,6 +7,7 @@ import com.hust.musicapp.musicapp.service.SingerService;
 import com.hust.musicapp.musicapp.exception.FileStorageException;
 import com.hust.musicapp.musicapp.service.FileStorageService;
 import com.hust.musicapp.musicapp.service.SongService;
+import com.hust.musicapp.musicapp.service.Userservice;
 import com.hust.musicapp.musicapp.util.PageableUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,8 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import org.springframework.core.io.Resource;
 
@@ -45,6 +48,9 @@ public class SongController {
 
     @Autowired
     private FileStorageService fileStorageService;
+
+    @Autowired
+    Userservice userservice;
 
     @GetMapping("/find-all")
     public ResponseEntity<?> findAll() {
@@ -135,6 +141,22 @@ public class SongController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/find-paging-by-playlist")
+    public ResponseEntity<?> findPagingByPlaylist(@RequestParam("page") Integer page,
+                                               @RequestParam("rows") Integer rows,
+                                               @NotNull @RequestParam("id") Long playlistId,
+                                               @Nullable @RequestParam("orderBy") String order,
+                                               @Nullable @RequestParam("direction") String direction) {
+
+        Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
+        List<Song> songs = songService.findDistinctByPlayListsId(playlistId,pageable);
+        ArrayList<SongResponse> response= new ArrayList<>();
+        songs.stream().forEach(song->{
+            response.add(new SongResponse(song));
+        });
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/find-by-singer-ids")
     public ResponseEntity<?> findBySingers(@RequestParam("ids") List<Long> ids) {
         List<Song> songs=songService.findBySingerId(ids);
@@ -156,8 +178,18 @@ public class SongController {
     }
 
     @GetMapping("/find-by-category-ids")
-    public ResponseEntity<?> findByCategories(@RequestParam("ids") List<Long> ids) {
+    public ResponseEntity<?> findByCategories(@RequestParam("ids") List<String> ids) {
         List<Song> songs=songService.findByCategoriesId(ids);
+        ArrayList<SongResponse> response= new ArrayList<>();
+        songs.stream().forEach(song->{
+            response.add(new SongResponse(song));
+        });
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/find-recommended-songs")
+    public ResponseEntity<?> findRecommendedSong(@RequestParam("ids") List<String> ids) {
+        List<Song> songs=songService.findDistinctByCategoriesIn(ids);
         ArrayList<SongResponse> response= new ArrayList<>();
         songs.stream().forEach(song->{
             response.add(new SongResponse(song));
@@ -209,10 +241,12 @@ public class SongController {
         song.setSongName(songUploadPayload.getSongName());
         song.setBriefDesciption(songUploadPayload.getBriefDesciption());
         song.setChecked(songUploadPayload.isChecked());
-        song.setAuthors(songUploadPayload.getAuthors());
-        song.setSingers(songUploadPayload.getSingers());
-        song.setCategories(songUploadPayload.getCategories());
-        song.setUser(songUploadPayload.getUser());
+        song.setAuthors(new HashSet<>(songUploadPayload.getAuthors()));
+        song.setListenCount(0L);
+        song.setSingers(new HashSet<>(songUploadPayload.getSingers()));
+        song.setUploadDate(new Date(System.currentTimeMillis()));
+        song.setCategories(new HashSet<>(songUploadPayload.getCategories()));
+        song.setUser(userservice.findById(songUploadPayload.getUser()).get());
         return ResponseEntity.ok( songService.save(song));
     }
     @DeleteMapping("/delete-song")
@@ -251,6 +285,13 @@ public class SongController {
     @GetMapping("/find-newest")
     public ResponseEntity<?> getSongNewest(){
         return ResponseEntity.ok(songService.getNewestSong());
+    }
+
+    @PutMapping("/increase-listen-count")
+    public ResponseEntity<?> increaseListenCount(@RequestParam("songId") Long songId){
+        Song s = songService.findById(songId);
+        s.setListenCount(s.getListenCount()+1);
+        return ResponseEntity.ok(songService.save(s));
     }
 
     @GetMapping("/find-newest-jpa")
@@ -321,6 +362,7 @@ public class SongController {
                     .path(fileName).toUriString();
             Song song=songService.findById(id);
             song.setSongSrc(fileUri);
+            songService.save(song);
         return ResponseEntity.ok(song);
     }
     @PutMapping("/{id}/upload-image-song")

@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import UserPlayList from '../../user/UserPlayList';
 import { largeCarouselData } from '../../../fakedata/fakedata';
 import UserProfileHeader from '../../user/UserProfileHeader';
@@ -11,10 +10,30 @@ class UserProfilePage extends React.Component {
     constructor(props){
         super(props);
         this.props.loadCurrentlyLoggedInUser();
+        this.state={
+            track: true,
+            playlist: false,
+            like: false,
+            profile: false
+        }
     }
 
     componentDidMount(){
     }
+
+    changeTab = async (e)=>{
+        let target =e.target;
+        let name = target.name;
+        await this.setState({
+            track: false,
+            playlist: false,
+            like: false,
+            profile: false
+        })
+        this.setState({
+            [name]: true
+        })
+    }   
 
     render() {
         let {currentUser={
@@ -22,31 +41,31 @@ class UserProfilePage extends React.Component {
             name: 'Some name',
             id: 0
           }} = this.props.authentication;
-          
+        //   let {track,playlist,like,profile} = this.state;
         return (
             <Fragment>
                 <UserProfileHeader
                     currentUser = {currentUser}
                     changeAva = {this.props.changeAva}
-                    user={{
-                        avatar: currentUser.imageUrl,
-                        name: currentUser.name,
-                        email : currentUser.email
-                    }} />
+                   />
                 <div className="padding p-y-0 m-b-md">
                     <div className="nav-active-border b-primary bottom m-b-md m-t">
                         <ul className="nav l-h-2x" data-ui-jp="taburl">
                             <li className="nav-item m-r inline">
-                                <Link className="nav-link active" href="#" data-toggle="tab" data-target="#track" aria-expanded="true">Tracks</Link>
+                                <a className="nav-link active" name="track" /*onClick={this.changeTab}*/
+                                 data-toggle="tab" data-target="#track" aria-expanded="true">Tracks</a>
                             </li>
                             <li className="nav-item m-r inline">
-                                <Link className="nav-link" href="#" data-toggle="tab" data-target="#playlist" aria-expanded="false">Playlists</Link>
+                                <a className="nav-link" name="playlist" /*onClick={this.changeTab}*/
+                                 data-toggle="tab" data-target="#playlist" aria-expanded="false">Playlists</a>
                             </li>
                             <li className="nav-item m-r inline">
-                                <Link className="nav-link" href="#" data-toggle="tab" data-target="#like" aria-expanded="false">Likes</Link>
+                                <a className="nav-link"  name="like" /*onClick={this.changeTab}*/
+                                data-toggle="tab" data-target="#like" aria-expanded="false">Likes</a>
                             </li>
                             <li className="nav-item m-r inline">
-                                <Link className="nav-link" href="#" data-toggle="tab" data-target="#profile" aria-expanded="false">Profile</Link>
+                                <a className="nav-link" name="profile" /*onClick={this.changeTab}*/
+                                data-toggle="tab" data-target="#profile" aria-expanded="false">Profile</a>
                             </li>
                         </ul>
                     </div>
@@ -55,7 +74,9 @@ class UserProfilePage extends React.Component {
                         addSongToQueue = {this.props.addSongToQueue}
                         func={getSongByUserId} singerId={currentUser.id}
                         wipeFunc={wipeFetchOnScrollSongs}/>
-                        <UserPlayList tracks={largeCarouselData} />
+                        <UserPlayList userId = {currentUser.id}
+                        getPlayListsByUserId={this.props.getPlayListsByUserId} 
+                        playLists={this.props.playLists.playLists} />
                         <div className="tab-pane" id="like" aria-expanded="false">
                             <div className="row m-b">
                                 <div className="col-xs-4 col-sm-4 col-md-3">

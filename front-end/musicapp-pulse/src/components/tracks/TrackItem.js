@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { PLAYER_PLAYING } from '../../constants/constants';
-import { playTrack, closeSearchModal } from '../../helpers/helper';
+import { playTrack } from '../../helpers/helper';
 import { Link } from 'react-router-dom';
-import TrackActionModal from '../common/TrackActionModal';
 import { TrackItemLikeBtnWithContainer } from '../../containers/WithLikeButtonContainer';
+import TrackActionModalContainer from '../../containers/TrackActionModalContainer';
 
 export default class TrackItem extends React.Component {
 
@@ -32,7 +32,7 @@ export default class TrackItem extends React.Component {
                         <span href="#" style={{ color: 'white', cursor: 'pointer' }}
                             className="btn-more" data-toggle="dropdown">
                             <i className="fa fa-ellipsis-h" ></i></span>
-                        <TrackActionModal onAddToQueue={() => this.props.addSongToQueue(track)} />
+                        <TrackActionModalContainer onAddToQueue={() => this.props.addSongToQueue(track)} />
                     </div>}
                     <div className="item-title text-ellipsis">
                         <Link className="text-muted"

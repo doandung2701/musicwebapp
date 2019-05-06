@@ -9,19 +9,21 @@ import ShareModal from './components/common/ShareModal';
 import SideNavContainer from './components/side_nav/SideNavContainer';
 import SearchModalContainer from './components/search/SearchModalContainer';
 import FooterPlayerContainer from './components/player/FooterPlayerContainer';
+import CustomerRecommendAsk from './components/recommend/CustomerRecommendAsk';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      searchVisible: false
+      searchVisible: false,
+      askVisible: false,
     }
     this.props.loadCurrentlyLoggedInUser();
   }
 
-  componentDidUpdate(){
-    
+  componentDidUpdate() {
+
   }
 
   onOpenSearch = () => {
@@ -44,6 +46,7 @@ class App extends Component {
 
   render() {
     const location = window.location.pathname;
+    const {currentUser} = this.props.authentication;
     return (
       <Fragment>
         <div className="app dk" id="app">
@@ -56,6 +59,10 @@ class App extends Component {
           <ShareModal />
           <FooterPlayerContainer />
           <ThemeSwitcher />
+          {currentUser&&currentUser.favoriteCategory&&currentUser.favoriteCategory.length===0&&
+            <CustomerRecommendAsk saveFavCat={this.props.saveFavCat}
+            isSavingFavCat = {this.props.authentication.isSavingFavCat}
+            userId={currentUser.id}/>}
         </div>
       </Fragment>
     );

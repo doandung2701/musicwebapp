@@ -4,12 +4,13 @@ import SubMediumTrackList from "../components/tracks/SubMediumTrackList";
 import ArtistList from "../components/artist/ArtistList";
 import UserTrackList from '../components/user/UserTrackList';
 import AlbumTrackList from '../components/pages/AlbumPage/AlbumTrackList';
+import PlayListTrackList from '../components/pages/PlaylistPage/PlayListTrackList';
 
 const BrowsePageFetchOnSroll = fetchOnSroll(SubMediumTrackList);
 const ArtistListFetchOnScroll = fetchOnSroll(ArtistList);
 const UserTrackListFetchOnScroll = fetchOnSroll(UserTrackList);
 const AlbumTrackListFetchOnScroll = fetchOnSroll(AlbumTrackList);
-
+const PlayListTrackListFetchOnScroll = fetchOnSroll(PlayListTrackList);
 let mapStateToProps = (state, ownProps) => {
     switch (ownProps.me) {
         case 'artists':
@@ -25,10 +26,10 @@ let mapStateToProps = (state, ownProps) => {
 }
 
 let mapDispatchToProps = dispatch => ({
-    fetchData: (page, func,singerId) => {
-        dispatch(func(page,singerId));
+    fetchData: (page, func, singerId) => {
+        dispatch(func(page, singerId));
     },
-    wipeData: (wipeFunc)=>{
+    wipeData: (wipeFunc) => {
         dispatch(wipeFunc());
     }
 })
@@ -40,5 +41,6 @@ const ArtistListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToP
 const UserTrackListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToProps)(UserTrackListFetchOnScroll);
 
 const AlbumTrackListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToProps)(AlbumTrackListFetchOnScroll);
+const PlayListTrackListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToProps)(PlayListTrackListFetchOnScroll);
 
-export { BrowsePageFetchOnSrollContainer, ArtistListFetchOnScrollContainer,UserTrackListFetchOnScrollContainer ,AlbumTrackListFetchOnScrollContainer};
+export { BrowsePageFetchOnSrollContainer, ArtistListFetchOnScrollContainer,PlayListTrackListFetchOnScrollContainer, UserTrackListFetchOnScrollContainer, AlbumTrackListFetchOnScrollContainer };

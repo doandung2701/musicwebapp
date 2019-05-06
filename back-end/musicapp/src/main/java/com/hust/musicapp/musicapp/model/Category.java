@@ -1,5 +1,6 @@
 package com.hust.musicapp.musicapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -22,14 +23,20 @@ public class Category implements Serializable {
     @Column(name = "category_name")
     private String categoryName;
 
-    @Column(name="categoryDes")
+    @Column(name = "categoryDes")
     private String categoryDes;
 
     @ManyToMany
-    @JoinTable(name = "category_song",joinColumns = @JoinColumn(name = "category_id"),inverseJoinColumns =
+    @JoinTable(name = "category_song", joinColumns = @JoinColumn(name = "category_id"), inverseJoinColumns =
     @JoinColumn(name = "song_id"))
     @JsonIgnore
     private Set<Song> songs;
+
+    @ManyToMany
+    @JoinTable(name = "user_favorite_category", joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JsonIgnore
+    private Set<User> favoriteUser;
 
     public Category(String categoryId, String categoryName, String categoryDes, Set<Song> songs) {
         this.categoryId = categoryId;
@@ -45,6 +52,14 @@ public class Category implements Serializable {
     }
 
     public Category() {
+    }
+
+    public Set<User> getFavoriteUser() {
+        return favoriteUser;
+    }
+
+    public void setFavoriteUser(Set<User> favoriteUser) {
+        this.favoriteUser = favoriteUser;
     }
 
     public String getCategoryId() {

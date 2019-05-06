@@ -1,4 +1,5 @@
 package com.hust.musicapp.musicapp.model;
+
 import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -6,14 +7,15 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false)
@@ -37,7 +39,7 @@ public class User {
 
     private String providerId;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Comment> comments;
 
@@ -46,22 +48,38 @@ public class User {
     @Fetch(FetchMode.JOIN)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<PlayList> playLists;
 
-    @OneToMany(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Rate> rates;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Song> songs;
+
     @ManyToMany
-    @JoinTable(name = "user_like_song",joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "song_id"))
+    @JoinTable(name = "user_like_song", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "song_id"))
     @JsonIgnore
     private Set<Song> likeSongs;
+
+    private Integer songCount;
+
+    @ManyToMany
+    @JoinTable(name = "user_favorite_category", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> favoriteCategory;
+
+    public Set<Category> getFavoriteCategory() {
+        return favoriteCategory;
+    }
+
+    public void setFavoriteCategory(Set<Category> favoriteCategory) {
+        this.favoriteCategory = favoriteCategory;
+    }
 
     public Set<Song> getLikeSongs() {
         return likeSongs;
@@ -77,6 +95,14 @@ public class User {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Integer getSongCount() {
+        return songCount;
+    }
+
+    public void setSongCount(Integer songCount) {
+        this.songCount = songCount;
     }
 
     public Long getId() {

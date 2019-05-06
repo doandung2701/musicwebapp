@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -14,10 +15,10 @@ public class SongUploadPayload implements Serializable {
     private String songName;
     private String briefDesciption;
     private boolean checked;
-    private Set<Author> authors;
-    private Set<Singer> singers;
-    private Set<Category> categories;
-    private User user;
+    private List<Author> authors;
+    private List<Singer> singers;
+    private List<Category> categories;
+    private Long user;
 
     public String getSongName() {
         return songName;
@@ -43,35 +44,35 @@ public class SongUploadPayload implements Serializable {
         this.checked = checked;
     }
 
-    public Set<Author> getAuthors() {
+    public List<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<Author> authors) {
+    public void setAuthors(List<Author> authors) {
         this.authors = authors;
     }
 
-    public Set<Singer> getSingers() {
+    public List<Singer> getSingers() {
         return singers;
     }
 
-    public void setSingers(Set<Singer> singers) {
+    public void setSingers(List<Singer> singers) {
         this.singers = singers;
     }
 
-    public Set<Category> getCategories() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<Category> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
-    public User getUser() {
+    public Long getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Long user) {
         this.user = user;
     }
 }

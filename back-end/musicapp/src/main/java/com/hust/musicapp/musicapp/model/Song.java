@@ -1,10 +1,7 @@
 package com.hust.musicapp.musicapp.model;
 
 import com.fasterxml.jackson.annotation.*;
-import com.hust.musicapp.musicapp.payload.TrendingSong;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;

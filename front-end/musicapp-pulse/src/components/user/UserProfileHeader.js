@@ -25,7 +25,7 @@ class UserProfileHeader extends React.Component {
     openUploadModal = () => {
             this.setState({
                 modalVisible: true,
-                file: this.props.user.avatar
+                file: this.props.currentUser.imageUrl
             })
     }
     closeModalSong=()=>{
@@ -71,12 +71,13 @@ class UserProfileHeader extends React.Component {
 
     onAvaRemove = (info) => {
         this.setState({
-            file: this.props.user.avatar
+            file: this.props.currentUser.imageUrl
         });
     }
 
     render() {
-        let user = this.props.user;
+        let {currentUser} = this.props;
+        console.log(currentUser)
         return (
             <Fragment>
                 <div className="padding b-b" style={{ zIndex: 5 }}>
@@ -86,7 +87,7 @@ class UserProfileHeader extends React.Component {
                                 <div className="item-media">
                                     <div className="item-media-content user-ava"
                                         onClick={this.openUploadModal}
-                                        style={{ backgroundImage: `url(${user.avatar})` }} />
+                                        style={{ backgroundImage: `url(${currentUser.imageUrl})` }} />
                                     <Modal
                                         title="Upload an avatar"
                                         visible={this.state.modalVisible}
@@ -111,23 +112,25 @@ class UserProfileHeader extends React.Component {
                         <div className="col-sm">
                             <div className="p-l-md no-padding-xs">
                                 <h1 className="page-title">
-                                    <span className="h1 _800">{user.name}</span>
+                                    <span className="h1 _800">{currentUser.name}</span>
                                 </h1>
                                 <p className="item-desc text-ellipsis text-muted"
                                     data-ui-toggle-class="text-ellipsis">
-                                    {user.email}</p>
+                                    {currentUser.email}</p>
                                 <div className="item-action m-b">
                                     <a className="btn btn-sm rounded primary" onClick={this.openUploadSongModal}>Upload</a>
                                     <a href="#" className="btn btn-sm rounded white">Edit Profile</a>
                                 </div>
                                 <div className="block clearfix m-b">
-                                    <span>9</span> <span className="text-muted">Albums</span>, <span>23</span> <span className="text-muted">Tracks</span>
+                                    <span>{currentUser.playLists&&currentUser.playLists.length}</span> 
+                                    <span className="text-muted">Playlists</span>, 
+                                    <span>{currentUser.songCount}</span> <span className="text-muted">Tracks</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <SongModalContainer user={this.props.currentUser} isShow={this.state.modalSongVisible} closeModal={this.closeModalSong}/>
+                <SongModalContainer user={currentUser} isShow={this.state.modalSongVisible} closeModal={this.closeModalSong}/>
             </Fragment>
         )
     }

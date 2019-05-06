@@ -57,7 +57,7 @@ const fetchOnSroll = (Component) => {
             return (
                 <Fragment >
                     <Component list={data.list} {...rest} />
-                    <LoadingIndicator isGetting={data.isGetting} />
+                    <LoadingIndicator height={100} width={100} isGetting={data.isGetting} />
                 </Fragment>
             )
         }

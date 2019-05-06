@@ -3,6 +3,7 @@ package com.hust.musicapp.musicapp.service;
 import com.hust.musicapp.musicapp.model.Category;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CategoryService {
 
@@ -15,6 +16,8 @@ public interface CategoryService {
     List<Category> saveAll(List<Category> categories);
 
     List<Category> findAll();
+
+    Set<Category> findDistinctByCategoryIdIn(List<String> categoryIds);
 
     Long count();
 

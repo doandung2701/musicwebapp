@@ -57,7 +57,7 @@ class TrackPage extends React.Component {
                     changeAudioSrc={changeAudioSrc} song={song} />
                 <h5 className="m-b">From The Same Artist</h5>
                 <SubMediumTrackList type="track" list={list} />
-                <LoadingIndicator isGetting={isGetting} />
+                <LoadingIndicator height={100} width={100} isGetting={isGetting} />
                 <CommentListContainer songId={id} location={this.props.location}/>
             </Fragment>
         )

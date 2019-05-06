@@ -63,7 +63,7 @@ export default class SearchModal extends React.Component {
                                                 <div>No results</div>}
                                             </div>
                                         </div>
-                                        <LoadingIndicator isGetting={isSearching} />
+                                        <LoadingIndicator height={100} width={100} isGetting={isSearching} />
                                     </Fragment>}
                                 </div>
                             </div>

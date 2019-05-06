@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @Service
@@ -20,6 +21,11 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public Category findById(String id) {
         return categoryRepo.findById(id).get();
+    }
+
+    @Override
+    public Set<Category> findDistinctByCategoryIdIn(List<String> categoryIds) {
+        return categoryRepo.findDistinctByCategoryIdIn(categoryIds);
     }
 
     @Override
