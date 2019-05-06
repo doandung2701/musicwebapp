@@ -5,6 +5,7 @@ import { ScoretypeListReducer, scoretypeReducer, ScoreTypeModalReducer } from ".
 import { commentListReducer} from "../comments/CommentsReducer";
 import { userListReducer } from "../users/UsersReducer";
 import { playListListReducer, playListModalReducer} from '../playlist/PlayListReducer';
+import { albumsListReducer, AlbumModalReducer } from "../album/AlbumReducer";
 export const rootReducer=combineReducers({
     authenReducer:authenReducer,
     singerList: singerListReducer,
@@ -17,4 +18,6 @@ export const rootReducer=combineReducers({
     userReducer: userListReducer,
     playListList: playListListReducer,
     playListModal: playListModalReducer,
+    albumList:albumsListReducer,
+    albumModal:AlbumModalReducer
 })

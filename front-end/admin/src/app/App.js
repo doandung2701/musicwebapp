@@ -16,6 +16,7 @@ import ScoreTypeList from "../scoretype/ScoreTypeList";
 import ScoreTypeListContainer from "../scoretype/ScoreTypeListContainer";
 import SingerListContainer from "../singer/SingerListContainer";
 import LoginContainer from "../login/LoginContainer";
+import AlbumListContainer from "../album/AlbumListContainer";
 
 const { Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -108,6 +109,12 @@ onCollapse = (collapsed) => {
               <span>Scoretypes</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="6">
+              <Link to="/album">
+              <Icon type="pie-chart" />
+              <span>Album</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </Sider>}
         <Layout>
@@ -140,6 +147,7 @@ onCollapse = (collapsed) => {
                 <Route path="/comments"component={Comments} />
                 <Route path="/singers" component={SingerListContainer}/>
                 <Route path="/scoretypes" component={ScoreTypeListContainer}/>
+                <Route path="/album" component={AlbumListContainer}/>
               </Switch>
             </div>
           </Content>

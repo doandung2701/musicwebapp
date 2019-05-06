@@ -33,7 +33,7 @@ public class AlbumServiceImpl implements AlbumService{
 
     @Override
     public Album findById(Long id) {
-        return albumRepo.findById(id).get();
+        return albumRepo.getDetailAlbumById(id).get();
     }
 
     @Override

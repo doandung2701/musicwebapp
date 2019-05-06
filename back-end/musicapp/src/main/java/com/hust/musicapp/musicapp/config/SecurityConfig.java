@@ -107,6 +107,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js",
                             "/uploads/**",
+                            "/albums/**",
                             "/songs/**",
                             "/categories/**",
                             "/authors/**",
