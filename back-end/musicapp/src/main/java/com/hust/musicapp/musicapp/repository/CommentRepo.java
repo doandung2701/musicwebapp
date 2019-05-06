@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CommentRepo extends JpaRepository<Comment,Long> {
 
@@ -17,5 +18,10 @@ public interface CommentRepo extends JpaRepository<Comment,Long> {
 
     @Query("select c from Comment c left outer join fetch c.song s where s.songId=:id")
     List<Comment> findBySongId(@Param("id") Long id);
+
+    Set<Comment> findDistinctByUserIdAndParentCmtIsNull(Long id);
+
+    Set<Comment> findDistinctBySongSongIdAndParentCmtIsNull(Long id);
+
 
 }

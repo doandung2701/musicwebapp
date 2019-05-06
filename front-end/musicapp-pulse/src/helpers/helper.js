@@ -1,4 +1,5 @@
 import { createBrowserHistory } from 'history';
+import $ from 'jquery';
 
 export const history = createBrowserHistory({});
 
@@ -12,6 +13,23 @@ export const playTrack = function (src) {
         // document.getElementsByClassName("mejs-button mejs-playpause-button")[0].click();
         // }
     }
+}
+
+export const playAlbum = function (src) {
+    let audio = document.getElementById("footer-player");
+    if (audio.src === src[0].songSrc) {
+        document.getElementsByClassName("mejs-button mejs-playpause-button")[0].click();
+    } else {
+        this.props.changeAudioSrc(src[0]);
+        // audio.oncanplaythrough = () => {
+        // document.getElementsByClassName("mejs-button mejs-playpause-button")[0].click();
+        // }
+    }
+}
+
+
+export const toTop = (offset)=>{
+    $('html,body').animate({scrollTop: offset});
 }
 
 export const findSongIndexInQueue = (song, queue) => {

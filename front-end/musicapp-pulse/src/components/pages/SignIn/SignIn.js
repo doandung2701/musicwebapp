@@ -47,11 +47,19 @@ export default class SigninPage extends React.Component {
 
   render() {
     if (this.props.authentication.authenticated) {
-      return <Redirect
+      if (!this.props.location.state.from) {
+        return <Redirect
+          to={{
+            pathname: "/",
+            state: { from: this.props.location }
+          }} />;
+      }else{
+        return <Redirect
         to={{
-          pathname: "/",
+          pathname: this.props.location.state.from,
           state: { from: this.props.location }
-        }} />;
+        }} />
+      }
     }
     return (
       <div>
@@ -75,13 +83,13 @@ export default class SigninPage extends React.Component {
               <form name="form" onSubmit={this.handleSubmit}>
                 <div className="form-group">
                   <input
-                  value={this.state.email} onChange={this.handleInputChange} name="email"
-                  type="email" className="form-control" placeholder="Email"  required />
+                    value={this.state.email} onChange={this.handleInputChange} name="email"
+                    type="email" className="form-control" placeholder="Email" required />
                 </div>
                 <div className="form-group">
                   <input
-                   value={this.state.password} onChange={this.handleInputChange} name="password"
-                  type="password" className="form-control" placeholder="password" required />
+                    value={this.state.password} onChange={this.handleInputChange} name="password"
+                    type="password" className="form-control" placeholder="password" required />
                 </div>
                 <div className="m-b-md">
                   <label className="md-check">

@@ -7,6 +7,7 @@ import com.hust.musicapp.musicapp.model.Singer;
 import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.payload.AlbumPayload;
 import com.hust.musicapp.musicapp.service.*;
+import com.hust.musicapp.musicapp.payload.AlbumResponse;
 import com.hust.musicapp.musicapp.service.AlbumService;
 import com.hust.musicapp.musicapp.util.PageableUtil;
 import org.slf4j.Logger;
@@ -32,8 +33,9 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("albums")
+@RequestMapping("/albums")
 public class AlbumController {
+
     Logger logger= LoggerFactory.getLogger(AlbumController.class);
     @Autowired
     private AlbumService albumService;
@@ -63,10 +65,13 @@ public class AlbumController {
         Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
         return ResponseEntity.ok(albumService.findAllWithPaging(pageable));
     }
-
-    @GetMapping("/find-by-id/{id}")
+ @GetMapping("dung/find-by-id/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return ResponseEntity.ok(new AlbumPayload(albumService.findById(id)));
+    }
+    @GetMapping("dung/find-by-id/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(new AlbumResponse(albumService.findById(id)));
     }
 
     @GetMapping("/find-by-name")
@@ -193,5 +198,10 @@ public class AlbumController {
         songService.save(song);
         albumService.save(album);
         return ResponseEntity.ok(song);
+    }
+
+    @GetMapping("/find-by-singer-id")
+    public ResponseEntity<?> findBySingerId(@RequestParam("singerId") Long singerId){
+        return ResponseEntity.ok(albumService.findDistinctBySingerId(singerId));
     }
 }

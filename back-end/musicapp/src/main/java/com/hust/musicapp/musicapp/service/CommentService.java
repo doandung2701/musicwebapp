@@ -4,6 +4,7 @@ import com.hust.musicapp.musicapp.model.Comment;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CommentService {
 
@@ -18,6 +19,10 @@ public interface CommentService {
     Comment save(Comment comment);
 
     Long count();
+
+    Set<Comment> findDistinctByUserIdAndParentCmtIsNull(Long id);
+
+    Set<Comment> findDistinctBySongSongIdAndParentCmtIsNull(Long id);
 
     void delete(Comment c);
 

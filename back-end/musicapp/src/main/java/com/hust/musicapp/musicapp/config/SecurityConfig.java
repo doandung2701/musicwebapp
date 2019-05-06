@@ -110,6 +110,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             "/albums/**",
                             "/songs/**",
                             "/categories/**",
+                            "/albums/**",
                             "/authors/**",
                             "/score-types/**",
                             "/singers/**",

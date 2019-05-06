@@ -5,37 +5,64 @@ import { albums } from '../../../fakedata/fakedata';
 import TrackItemContainer from '../../tracks/TrackItemContainer';
 import { BrowsePageFetchOnSrollContainer } from '../../../containers/FetchOnSrollContainer';
 import { wipeFetchOnScrollSongs, getSongBySingerPaging } from '../../../actions/SongAction';
+import AlbumItem from '../AlbumPage/AlbumItem';
 
 class ArtistDetail extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            tracksVisible: false
+        }
         let id = this.props.match.params.id;
-        Promise.all([this.props.getSingerById(id), this.props.getTopPopular(id)]);
+        Promise.all([this.props.getSingerById(id), this.props.getTopPopular(id),
+            this.props.getAlbumsBySingerId(id)]);
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.match.params.id !== this.props.match.params.id) {
             let id = this.props.match.params.id;
-            Promise.all([this.props.getSingerById(id), this.props.getTopPopular(id)]);
+            Promise.all([this.props.getSingerById(id), this.props.getTopPopular(id),
+                this.props.getAlbumsBySingerId(id)]);
         }
     }
 
+    showTracks = ()=>{
+        this.setState(
+            {
+                tracksVisible: true
+            }
+        )
+    }
+
+    hideTracks = ()=>{
+        this.setState({
+            tracksVisible: false
+        })
+    }
+
     render() {
-        let { topPopular } = this.props;
+        let { topPopular,albums } = this.props;
         return (
             <Fragment>
-                <ArtistDetailHeader singer={this.props.singer} />
+                <ArtistDetailHeader albumCount = {albums.albums.length}
+                singer={this.props.singer} />
                 <div className="nav-active-border b-primary bottom m-b-md">
                     <ul className="nav l-h-2x">
                         <li className="nav-item m-r inline">
-                            <a className="nav-link active" href="#" data-toggle="tab" data-target="#tab_1" aria-expanded="true">Overview</a>
+                            <a className="nav-link active" href="#" data-toggle="tab" 
+                            onClick={this.hideTracks}
+                            data-target="#tab_1" aria-expanded="true">Overview</a>
                         </li>
                         <li className="nav-item m-r inline">
-                            <a className="nav-link" href="#" data-toggle="tab" data-target="#tab_2" aria-expanded="false">Tracks</a>
+                            <a className="nav-link" href="#" data-toggle="tab"
+                            onClick={this.showTracks}
+                            data-target="#tab_2" aria-expanded="false">Tracks</a>
                         </li>
                         <li className="nav-item m-r inline">
-                            <a className="nav-link" href="#" data-toggle="tab" data-target="#tab_4" aria-expanded="false">Profile</a>
+                            <a className="nav-link" href="#" data-toggle="tab" 
+                            onClick={this.hideTracks}
+                            data-target="#tab_4" aria-expanded="false">Profile</a>
                         </li>
                     </ul>
                 </div>
@@ -50,12 +77,18 @@ class ArtistDetail extends React.Component {
                             ))}
                         </div>
                         <h5 className="m-b">Albums</h5>
-                        <SubMediumTrackList type="albums" list={albums} />
-                        <a href="#" className="btn btn-sm white rounded">Show More</a>
+                        <div className="row">
+                            {albums.albums.length>0?albums.albums.map(value => (
+                                <div className="col-xs-4 col-sm-4 col-md-3" key={value.id}>
+                                    <AlbumItem album={value}
+                                    />
+                                </div>)):<div style={{width: '100%',textAlign: 'center'}}>No albums</div>}
+                        </div>
                     </div>
                     <div className="tab-pane" id="tab_2" aria-expanded="false">
+                        {this.state.tracksVisible&&
                         <BrowsePageFetchOnSrollContainer type="track" wipeFunc={wipeFetchOnScrollSongs}
-                            me="songs" func={getSongBySingerPaging} singerId={this.props.match.params.id} />
+                            me="songs" func={getSongBySingerPaging} singerId={this.props.match.params.id} />}
                     </div>
                     <div className="tab-pane" id="tab_4" aria-expanded="false">
                         <div className="row-col m-b">

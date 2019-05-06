@@ -9,7 +9,6 @@ import ChartPage from './ChartPage/ChartPage';
 import ArtistsPage from './ArtistsPage/ArtistsPage';
 import { NotFound } from './NotFound';
 import UserBgImg from '../user/UserBackGroundImg';
-import AlbumDetail from './AlbumPage/AlbumDetail';
 import DiscoverPageContainer from './DiscoverPage/DiscoverPageContainer';
 import SignInContainer from './SignIn/SignInContainer';
 import SignUpPageContainer from '../signup/SignUpPageContainer';
@@ -18,6 +17,7 @@ import DiscoverPageHeaderContainer from '../../containers/DiscoverPageHeaderCont
 import ArtistDetailContainer from './ArtistsPage/ArtistDetailContainer';
 import TrackPageContainer from './TrackPage/TrackPageContainer';
 import UserProfilePageContainer from './UserProfilePage/UserProfilePageContainer';
+import AlbumDetailContainer from './AlbumPage/AlbumDetailContainer';
 
 class PagesWrapper extends React.Component {
 
@@ -30,15 +30,17 @@ class PagesWrapper extends React.Component {
     render() {
         const isBgVisible = history.location.pathname.indexOf("/user-profile") >= 0 ||
             history.location.pathname.indexOf("/track")>=0||
-            history.location.pathname.indexOf("/artists-detail-")>= 0;
+            history.location.pathname.indexOf("/artists-detail-")>= 0|| history.location.pathname.indexOf("/albums")>= 0;
         return (
             <Switch>
                 <Route path="/signin" exact component={SignInContainer} />
                 <Route path="/signup" exact component={SignUpPageContainer} />
                 <Route path="/oauth2-redirect" component={OAuth2RedirectHandlerContainer}/> 
-                <div id="content" className="app-content white bg box-shadow-z2" role="main">
+                <div id="content" className="app-content white bg box-shadow-z2"
+                    style={{marginBottom: 50}}
+                role="main">
                     <HiddenHeader />
-                    <FooterPlayerContainer />
+                    {/* <FooterPlayerContainer /> */}
                     <div className="app-body" id="view">
                         {isBgVisible && <UserBgImg history={history} />}
                         {/* ############ PAGE START*/}
@@ -58,7 +60,7 @@ class PagesWrapper extends React.Component {
                                             <Route path="/artists"  component={ArtistsPage} />
                                             <Route path="/user-profile"   component={UserProfilePageContainer} />
                                             <Route path="/track:id"  component={TrackPageContainer} />
-                                            <Route path="/albums:id"  component={AlbumDetail} />
+                                            <Route path="/albums:id"  component={AlbumDetailContainer} />
                                             <Route path="/artists-detail-:id"  component={ArtistDetailContainer} />
                                             <Route  component={NotFound} />
                                         </Switch>

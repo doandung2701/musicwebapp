@@ -58,6 +58,11 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
+    public List<Song> findDistinctByAlbumId(Long id,Pageable pageable) {
+        return songRepo.findDistinctByAlbumId(id,pageable);
+    }
+
+    @Override
     public List<Song> getChartSongs(String id,Pageable pageable) {
         return songRepo.getChartSongs(id,pageable);
     }
