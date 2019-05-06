@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { playTrack } from '../../helpers/helper';
 import TrackActionModal from '../common/TrackActionModal';
 import { TrackPageHeaderLikeBtnWithContainer } from '../../containers/WithLikeButtonContainer';
+import TrackActionModalContainer from '../../containers/TrackActionModalContainer';
 
 class TrackPageHeader extends React.Component {
 
@@ -34,7 +35,7 @@ class TrackPageHeader extends React.Component {
                 <div className="inline dropdown m-l-xs">
                   <a className="btn btn-icon rounded btn-more" data-toggle="dropdown">
                     <i className="fa fa-ellipsis-h" /></a>
-                  <TrackActionModal onAddToQueue={() => this.props.addSongToQueue(song)} />
+                  <TrackActionModalContainer onAddToQueue={() => this.props.addSongToQueue(song)} />
                 </div>
               </div>
               <div className="item-meta">

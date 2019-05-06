@@ -1,11 +1,29 @@
 import React from 'react';
-import SubMediumTrackList from '../tracks/SubMediumTrackList';
+import PlayListItem from '../pages/PlaylistPage/PlayListItem';
 
 class UserPlayList extends React.Component {
+
+    componentDidMount(){
+        if (this.props.userId){
+            this.props.getPlayListsByUserId(this.props.userId);
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.userId && this.props.userId !== prevProps.userId) {
+            this.props.getPlayListsByUserId(this.props.userId);
+        }
+    }
+
     render() {
         return (
             <div className="tab-pane" id="playlist" aria-expanded="false">
-                <SubMediumTrackList type="track" list={this.props.tracks}/>
+                <div className="row">
+                    {this.props.playLists.map(value => (
+                        <div key={value.id} className="col-xs-4 col-sm-4 col-md-3">
+                            <PlayListItem playlist={value} />
+                        </div>))}
+                </div>
             </div>
         )
     }

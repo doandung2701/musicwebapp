@@ -1,7 +1,7 @@
 
 import Alert from 'react-s-alert';
-import { LOADING_CURRENT_USER, LOADING_CURRENT_USER_SUCCESS, LOADING_CURRENT_USER_FAIL, LOG_OUT, ACCESS_TOKEN, UPLOADING_AVA, UPLOAD_AVA_SUCCESS, UPLOAD_AVA_FAIL } from '../constants/constants';
-import { getCurrentUser, changeAvaApi } from '../Api/UserApi';
+import { LOADING_CURRENT_USER, LOADING_CURRENT_USER_SUCCESS, LOADING_CURRENT_USER_FAIL, LOG_OUT, ACCESS_TOKEN, UPLOADING_AVA, UPLOAD_AVA_SUCCESS, UPLOAD_AVA_FAIL, SAVING_FAV_CAT, SAVE_FAV_CAT_SUCCESS, SAVE_FAV_CAT_FAIL } from '../constants/constants';
+import { getCurrentUser, changeAvaApi, saveFavCatApi } from '../Api/UserApi';
 import { history } from '../helpers/helper';
 import { message } from 'antd';
 
@@ -18,6 +18,32 @@ export const loadCurrentUserFail = (error) => ({
     type: LOADING_CURRENT_USER_FAIL,
     error
 })
+
+const savingFavCat = ()=>({
+    type: SAVING_FAV_CAT
+})
+
+const saveFavCatSuccess = (user)=>({
+    type: SAVE_FAV_CAT_SUCCESS,
+    user
+})
+
+const saveFavCatFail = ()=>({
+    type: SAVE_FAV_CAT_FAIL
+})
+
+export const saveFavCat = (payload)=>{
+    return async dispatch=>{
+        dispatch(savingFavCat());
+        try{
+            let data = await saveFavCatApi(payload);
+            dispatch(saveFavCatSuccess(data.data));
+        }catch(err){
+            dispatch(saveFavCatFail());
+            message.error("Failure, an error occured :(");
+        }
+    }
+}
 
 export const loadCurrentUser = () => {
     return dispatch => {

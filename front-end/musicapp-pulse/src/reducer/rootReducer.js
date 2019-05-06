@@ -6,6 +6,7 @@ import { artistReducer } from "./artistReducer";
 import { searchReducer } from "./searchReducer";
 import { commentsReducer } from "./CommentReducer";
 import { albumsReducer } from "./albumsReducer";
+import { playListsReducer } from "./playlistReducer";
 
 const rootReducer = combineReducers({
     player: playerReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     artists: artistReducer,
     search: searchReducer,
     comments: commentsReducer,
-    albums: albumsReducer
+    albums: albumsReducer,
+    playLists: playListsReducer
 })
 
 export default rootReducer;

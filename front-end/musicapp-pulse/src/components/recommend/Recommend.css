@@ -1,0 +1,124 @@
+.body,html{
+    padding: 0;
+    margin: 0;
+}
+
+#app .rm-wrapper {
+    position: fixed;
+    margin: 0px;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(1, 1, 1, 0.7);
+}
+
+@keyframes pop-in-out{
+    0%{
+        transform: scale(0.8);
+    }
+    40%{
+        transform: scale(1.2);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
+#app .rm-inner-wrapper {
+    background-color: white;
+    border: none;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    width: 80%;
+    flex-wrap: wrap;
+    padding: 30px;
+    animation: pop-in-out 0.5s;
+
+}
+
+#app .rm-inner-wrapper > button {
+    flex: 1;
+    border: 1px solid grey;
+    padding: 15px;
+    margin: 5px;
+    cursor: pointer;
+    color: wheat;
+    font-weight: bolder;
+    font-style: oblique;
+    font-size: 18px;
+    background-image: url('https://www.bensound.com/bensound-img/happyrock.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    flex-basis: 20%;
+    transition: 0.5s;
+    border-radius: 10px;
+}
+
+#app .rm-inner-wrapper > button span{
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(1, 1, 1, 0.8);
+    padding: 5px;
+}
+#app .rm-inner-wrapper button i{
+    color: green;
+}
+
+#app .rm-inner-wrapper .header{
+    flex-basis: 100%;
+    align-self: center;
+    display: flex;
+}
+#app .rm-inner-wrapper .footer{
+    flex-basis: 100%;
+    text-align: right;
+}
+
+#app .rm-inner-wrapper .footer button{
+    padding: 10px;
+    border: none;
+    margin-right: 5px;
+    border-radius: 10px;
+    width: 75px;
+    transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity: 0.8;
+}
+
+#app .rm-inner-wrapper .footer button:hover{
+    opacity: 1;
+}
+
+#app .rm-inner-wrapper .footer .btnOk{
+    background-color: blue;
+}
+
+#app .rm-inner-wrapper .footer .btnSkip{
+    background-color: cadetblue;
+}
+
+#app .rm-inner-wrapper .header h4{
+    flex: 3;
+}
+
+#app .rm-inner-wrapper .header i{
+    flex: 1;
+    text-align:right;
+    font-size: 16px;
+    cursor: pointer;
+}
+#app .rm-inner-wrapper button:hover {
+    transform: scale(0.95);
+}
+
+@media screen and (max-width: 900px) {
+    #app .rm-inner-wrapper button {
+        flex-basis: 30%;
+    }
+}

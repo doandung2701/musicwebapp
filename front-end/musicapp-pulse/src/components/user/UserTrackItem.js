@@ -6,6 +6,7 @@ import moment from 'moment';
 import { Tooltip } from 'antd';
 import TrackActionModal from '../common/TrackActionModal';
 import { TrackItemLikeBtnWithContainer } from '../../containers/WithLikeButtonContainer';
+import TrackActionModalContainer from '../../containers/TrackActionModalContainer';
 
 export default class UserTrackItem extends React.Component {
 	render() {
@@ -32,7 +33,7 @@ export default class UserTrackItem extends React.Component {
 							<a href="#" className="btn-more" data-toggle="dropdown">
 								<i className="fa fa-ellipsis-h"></i>
 							</a>
-							<TrackActionModal onAddToQueue={() => this.props.addSongToQueue(track)} />
+							<TrackActionModalContainer onAddToQueue={() => this.props.addSongToQueue(track)} />
 						</div>
 						<div className="item-title text-ellipsis">
 							<Link to={`/track${track.songId}`}>{track.songName}</Link>

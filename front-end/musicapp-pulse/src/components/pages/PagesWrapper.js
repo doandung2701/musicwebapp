@@ -18,6 +18,7 @@ import ArtistDetailContainer from './ArtistsPage/ArtistDetailContainer';
 import TrackPageContainer from './TrackPage/TrackPageContainer';
 import UserProfilePageContainer from './UserProfilePage/UserProfilePageContainer';
 import AlbumDetailContainer from './AlbumPage/AlbumDetailContainer';
+import PlayListDetailContainer from './PlaylistPage/PlayListDetailContainer';
 
 class PagesWrapper extends React.Component {
 
@@ -30,7 +31,9 @@ class PagesWrapper extends React.Component {
     render() {
         const isBgVisible = history.location.pathname.indexOf("/user-profile") >= 0 ||
             history.location.pathname.indexOf("/track")>=0||
-            history.location.pathname.indexOf("/artists-detail-")>= 0|| history.location.pathname.indexOf("/albums")>= 0;
+            history.location.pathname.indexOf("/artists-detail-")>= 0||
+             history.location.pathname.indexOf("/albums")>= 0
+             || history.location.pathname.indexOf("/playlists")>= 0;
         return (
             <Switch>
                 <Route path="/signin" exact component={SignInContainer} />
@@ -61,6 +64,7 @@ class PagesWrapper extends React.Component {
                                             <Route path="/user-profile"   component={UserProfilePageContainer} />
                                             <Route path="/track:id"  component={TrackPageContainer} />
                                             <Route path="/albums:id"  component={AlbumDetailContainer} />
+                                            <Route path="/playlists:id"  component={PlayListDetailContainer} />
                                             <Route path="/artists-detail-:id"  component={ArtistDetailContainer} />
                                             <Route  component={NotFound} />
                                         </Switch>

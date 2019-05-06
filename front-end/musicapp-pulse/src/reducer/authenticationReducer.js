@@ -1,15 +1,32 @@
 
 import Alert from 'react-s-alert'
-import { LOADING_CURRENT_USER, LOADING_CURRENT_USER_SUCCESS, LOADING_CURRENT_USER_FAIL, LOG_OUT, LOGIN_SUCCESSFULLY, SIGNING_UP, SIGN_UP_SUCCESS, SIGN_UP_FAIL, UPLOADING_AVA, UPLOAD_AVA_SUCCESS, UPLOAD_AVA_FAIL } from '../constants/constants';
+import { LOADING_CURRENT_USER, LOADING_CURRENT_USER_SUCCESS, LOADING_CURRENT_USER_FAIL, LOG_OUT, LOGIN_SUCCESSFULLY, SIGNING_UP, SIGN_UP_SUCCESS, SIGN_UP_FAIL, UPLOADING_AVA, UPLOAD_AVA_SUCCESS, UPLOAD_AVA_FAIL, SAVING_FAV_CAT, SAVE_FAV_CAT_SUCCESS, SAVE_FAV_CAT_FAIL } from '../constants/constants';
 var initialState = {
     authenticated: localStorage.getItem("accessToken") ? true : false,
     loading: false,
     currentUser: undefined,
     isUploadingAva: false,
-    isSigningUp: false
+    isSigningUp: false,
+    isSavingFavCat: false
 }
 export const authenticateReducer = (state = initialState, action) => {
     switch (action.type) {
+        case SAVING_FAV_CAT:
+            return {
+                ...state,
+                isSavingFavCat: true
+            }
+        case SAVE_FAV_CAT_SUCCESS:
+            return {
+                ...state,
+                isSavingFavCat: false,
+                currentUser: action.user
+            }
+        case SAVE_FAV_CAT_FAIL:
+            return {
+                ...state,
+                isSavingFavCat: false
+            }
         case UPLOADING_AVA:
             return {
                 ...state,

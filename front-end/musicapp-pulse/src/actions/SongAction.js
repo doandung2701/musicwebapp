@@ -10,12 +10,11 @@ import {
     GET_SONG_BY_ID_FAIL, GETTING_SONG_BY_USER_ID, GET_SONG_BY_USER_ID_SUCCESS,
     GET_SONG_BY_USER_ID_FAIL, LIKE_SONG_SUCCESS, LIKING_SONG, UPLOAD_SONG_FAIL, 
     UPLOADING_SONG, UPLOAD_SONG_SUCCESS, GET_SONGS_BY_ALBUMS_ID_FAIL,
-     GET_SONGS_BY_ALBUMS_ID_SUCCESS, GETTING_SONGS_BY_ALBUMS_ID,
+     GET_SONGS_BY_ALBUMS_ID_SUCCESS, GETTING_SONGS_BY_ALBUMS_ID, GETTING_RECOMMENDED_SONGS, GET_RECOMMENDED_SONGS_SUCCESS, GET_RECOMMENDED_SONGS_FAIL, GETTING_SONGS_BY_PLAYLIST_ID, GET_SONGS_BY_PLAYLIST_ID_SUCCESS, GET_SONGS_BY_PLAYLIST_ID_FAIL,
 } from "../constants/constants";
-import { getAllSongWithPagingApi, getTop5LikeApi, getTrendingSongsApi, getRandom4JazzApi, getRandom4PopApi, get8NewApi, getSongsBySingerPagingApi, getSongByIdApi, getSongByUserIdApi, createSong, uploadImageSong, uploadSongFile, getSongsByAlbumsIdApi } from "../Api/SongApi";
+import { getAllSongWithPagingApi, getTop5LikeApi, getTrendingSongsApi, getRandom4JazzApi, getRandom4PopApi, get8NewApi, getSongsBySingerPagingApi, getSongByIdApi, getSongByUserIdApi, createSong, uploadImageSong, uploadSongFile, getSongsByAlbumsIdApi, getRecommendedSongsApi, getSongsByPlayListIdApi } from "../Api/SongApi";
 import { likeSongApi } from "../Api/UserApi";
 import { message } from "antd";
-import $ from 'jquery';
 import { toTop } from "../helpers/helper";
 
 const gettingAllSongPaging = () => ({
@@ -146,6 +145,45 @@ const getSongsByAlbumIdFail = () => ({
     type: GET_SONGS_BY_ALBUMS_ID_FAIL
 })
 
+const gettingSongsByPlayListId = () => ({
+    type: GETTING_SONGS_BY_PLAYLIST_ID
+})
+
+const getSongsByPlayListIdSuccess = (songs) => ({
+    type: GET_SONGS_BY_PLAYLIST_ID_SUCCESS,
+    songs
+})
+
+const getSongsByPlayListIdFail = () => ({
+    type: GET_SONGS_BY_PLAYLIST_ID_FAIL
+})
+
+const gettingRecommendedSongs = ()=>({
+    type: GETTING_RECOMMENDED_SONGS
+})
+
+const getRecommendedSongsSuccess = (songs)=>({
+    type: GET_RECOMMENDED_SONGS_SUCCESS,
+    songs
+})
+
+const getRecommendedSongsFail = ()=>({
+    type: GET_RECOMMENDED_SONGS_FAIL
+})
+
+export const getRecommendedSongs = (ids)=>{
+    return async dispatch=>{
+        dispatch(gettingRecommendedSongs());
+        try{
+            let data = await getRecommendedSongsApi(ids);
+            dispatch(getRecommendedSongsSuccess(data.data));
+            console.log("data",data.data)
+        }catch(err){
+            dispatch(getRecommendedSongsFail());
+        }
+    }
+}
+
 export const getSongByAlbumId = (page, id) => {
     return async dispatch => {
         dispatch(gettingSongsByAlbumId());
@@ -157,6 +195,19 @@ export const getSongByAlbumId = (page, id) => {
         }
     }
 }
+
+export const getSongByPlayListId = (page, id) => {
+    return async dispatch => {
+        dispatch(gettingSongsByPlayListId());
+        try {
+            let data = await getSongsByPlayListIdApi(page, id);
+            dispatch(getSongsByPlayListIdSuccess(data.data));
+        } catch (err) {
+            dispatch(getSongsByPlayListIdFail());
+        }
+    }
+}
+
 
 
 export const likeSong = (userId, songId) => {

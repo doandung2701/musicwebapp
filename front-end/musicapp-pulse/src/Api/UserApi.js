@@ -5,28 +5,28 @@ import { timeout } from "q";
 const request = (options) => {
     const headers = new Headers({
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin':'*'
+        'Access-Control-Allow-Origin': '*'
     })
-    
-    if(localStorage.getItem(ACCESS_TOKEN)) {
+
+    if (localStorage.getItem(ACCESS_TOKEN)) {
         headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
     }
 
-    const defaults = {headers: headers};
+    const defaults = { headers: headers };
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)
-    .then(response => 
-        response.json().then(json => {
-            if(!response.ok) {
-                return Promise.reject(json);
-            }
-            return json;
-        })
-    );
+        .then(response =>
+            response.json().then(json => {
+                if (!response.ok) {
+                    return Promise.reject(json);
+                }
+                return json;
+            })
+        );
 };
 export function getCurrentUser() {
-    if(!localStorage.getItem(ACCESS_TOKEN)) {
+    if (!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");
     }
 
@@ -53,10 +53,13 @@ export function signup(signupRequest) {
 }
 const axios = Axios.create({
     baseURL: API_BASE_URL,
-    timeout: 5000
+    timeout: 5000,
+    headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)
+    }
 })
-export const likeSongApi = (songId,userId)=>{
-    return Axios.put(API_BASE_URL+"/users/like-song",null,{
+export const likeSongApi = (songId, userId) => {
+    return Axios.put(API_BASE_URL + "/users/like-song", null, {
         params: {
             userId,
             songId
@@ -64,10 +67,10 @@ export const likeSongApi = (songId,userId)=>{
     })
 }
 
-export const changeAvaApi = (data,userId)=>{
-    return axios.put(`/users/${userId}/upload-image`,data,{
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)
-        }
-    });
+export const changeAvaApi = (data, userId) => {
+    return axios.put(`/users/${userId}/upload-image`, data);
 }
+
+export const saveFavCatApi = (data) => {
+    return axios.post('/users/add-fav-cat',data);
+} 

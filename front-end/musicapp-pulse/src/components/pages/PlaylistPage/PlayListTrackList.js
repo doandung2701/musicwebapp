@@ -1,7 +1,7 @@
 import React from 'react';
 import TrackItemContainer from '../../tracks/TrackItemContainer';
 
-export default class AlbumTrackList extends React.Component{
+export default class PlayListTrackList extends React.Component{
     render(){
         return(
             <div id="tracks" className="row item-list item-list-xs item-list-li m-b">

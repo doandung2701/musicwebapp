@@ -55,8 +55,9 @@ export default class SongModal extends Component {
             authors:dataAuthor.filter(data=>authors.value.includes(data.authorId+"")),
             singers:dataSinger.filter(data=>singers.value.includes(data.id+"")),
             categories:dataCategory.filter(data=>categories.value.includes(data.categoryId+"")),
-            user:this.props.user
+            user: this.props.user.id
         }
+
         this.setState({
             isLoading:true
         })

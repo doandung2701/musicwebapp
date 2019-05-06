@@ -13,11 +13,12 @@ class UserBgImg extends React.Component {
             return this.props.songThumbnail;
         }else if (location.pathname.indexOf('/album')>=0){
             return this.props.singleAlbumThumbnail;
+        }else if (location.pathname.indexOf('/playlists')>=0){
+            return this.props.singlePlaylistThumbnail;
         }
     }
 
     render() {
-        console.log(this.props)
         return (
             <Fragment>
                 <div className="page-bg" data-stellar-ratio={2}
@@ -36,7 +37,8 @@ let mapStateToProps = state =>{
             name: 'Some name'
           },
         songThumbnail: state.songs.singleSong.thumbnail,
-        singleAlbumThumbnail: state.albums.singleAlbum.thumbnail
+        singleAlbumThumbnail: state.albums.singleAlbum.thumbnail,
+        singlePlaylistThumbnail: state.playLists.singlePlayList.thumbnail
     }
 }
 

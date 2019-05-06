@@ -1,5 +1,6 @@
 package com.hust.musicapp.musicapp.repository;
 
+import com.hust.musicapp.musicapp.model.Category;
 import com.hust.musicapp.musicapp.model.Singer;
 import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.payload.DasboardPayload;
@@ -12,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public interface SongRepo extends JpaRepository<Song, Long> {
 
@@ -41,7 +43,7 @@ public interface SongRepo extends JpaRepository<Song, Long> {
     List<Song> findBySingerId(@Param("singerIds") List<Long> singerIds);
 
     @Query("select s from Song s left outer join fetch s.categories c where c.categoryId in (:categoryIds)")
-    List<Song> findByCategoriesId(@Param("categoryIds") List<Long> categoryIds);
+    List<Song> findByCategoriesId(@Param("categoryIds") List<String> categoryIds);
 
     @Query("select s from Song s left outer join fetch s.authors a where a.authorId in (:authorIds)")
     List<Song> findByAuthorId(@Param("authorIds") List<Long> authorIds);
@@ -62,6 +64,14 @@ public interface SongRepo extends JpaRepository<Song, Long> {
     ArrayList<TrendingSong> getSongNewest();
 
     List<Song> findDistinctByAlbumId(Long id,Pageable pageable);
+
+    @Query("select s from Song s left outer join fetch s.playLists p where p.id=:id")
+    List<Song> findDistinctByPlayListsId(@Param("id") Long id,Pageable pageable);
+
+    @Query(nativeQuery = true,
+            value = "select * from song inner join category_song on " +
+                    "song.song_id=category_song.song_id where category_song.category_id in (:categories) order by rand() limit 12")
+    List<Song> findDistinctByCategoriesIn(List<String> categories);
 
     @Query(value = "select s from Song s order by upload_date desc")
     ArrayList<Song> getSongNewestJpa(Pageable pageable);

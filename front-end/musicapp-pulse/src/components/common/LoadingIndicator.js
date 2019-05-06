@@ -3,7 +3,7 @@ import React from 'react';
 const LoadingIndicator = (props)=>{
     return (
         <img style={{display: props.isGetting?'block':'none',
-                    height:100,width:100,position: 'relative',marginLeft: '45%'}}
+                    height:props.height,width:props.width,position: 'relative',marginLeft: '45%'}}
                      src="/images/Ellipsis-2.5s-200px.gif"alt="loading" />
     )
 }

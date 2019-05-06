@@ -23,7 +23,7 @@ export default class DiscoverPageHeader extends React.Component {
                         <h4 style={{ color: 'white' }}>Jazz</h4>
                         <Carousel vertical className="carousel-large">
                             {random4Jazz.map(value => (
-                                <TrackItemContainer type={this.props.type} key={value.songId} track={value} />
+                                <TrackItemContainer type="track" key={value.songId} track={value} />
                             ))}
                         </Carousel>
 

@@ -2,11 +2,15 @@ package com.hust.musicapp.musicapp.controller;
 
 import com.hust.musicapp.musicapp.exception.FileStorageException;
 import com.hust.musicapp.musicapp.exception.ResourceNotFoundException;
+import com.hust.musicapp.musicapp.model.Category;
 import com.hust.musicapp.musicapp.model.PlayList;
 import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.model.User;
+import com.hust.musicapp.musicapp.payload.AddFavCatRequest;
+import com.hust.musicapp.musicapp.payload.UserResponse;
 import com.hust.musicapp.musicapp.security.CurrentUser;
 import com.hust.musicapp.musicapp.security.UserPrincipal;
+import com.hust.musicapp.musicapp.service.CategoryService;
 import com.hust.musicapp.musicapp.service.SongService;
 import com.hust.musicapp.musicapp.service.FileStorageService;
 import com.hust.musicapp.musicapp.service.Userservice;
@@ -24,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @CrossOrigin("*")
@@ -40,12 +45,29 @@ public class UserController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
         Optional<User> user = userservice.findById(userPrincipal.getId());
         if (user.isPresent()) {
-            return user.get();
+            User u = user.get();
+            u.setSongCount(u.getSongs().size());
+            return u;
+        } else {
+            throw new ResourceNotFoundException(RESOURCE_NAME, RESOURCE_ID, userPrincipal.getId());
+
+        }
+    }
+
+    @GetMapping("/user/me/detail")
+    @PreAuthorize("hasRole('USER')")
+    public UserResponse getCurrentUserDetail(@CurrentUser UserPrincipal userPrincipal) {
+        Optional<User> user = userservice.findById(userPrincipal.getId());
+        if (user.isPresent()) {
+            return new UserResponse(user.get());
         } else {
             throw new ResourceNotFoundException(RESOURCE_NAME, RESOURCE_ID, userPrincipal.getId());
 
@@ -120,4 +142,13 @@ public class UserController {
         userservice.save(user);
         return ResponseEntity.ok(fileUri);
     }
+
+    @PostMapping("/users/add-fav-cat")
+    public ResponseEntity<?> addFavCat(@RequestBody AddFavCatRequest request) {
+        Set<Category> categories = categoryService.findDistinctByCategoryIdIn(request.getCategoryIds());
+        User u = userservice.findById(request.getUserId()).get();
+        u.setFavoriteCategory(categories);
+        return ResponseEntity.ok(userservice.save(u));
+    }
+
 }

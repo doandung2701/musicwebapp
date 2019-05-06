@@ -4,8 +4,7 @@ import { PLAYER_PAUSE, PLAYER_PLAYING, PLAYER_BUFFERING, PLAYER_LOADED } from '.
 import { findSongIndexInQueue } from '../../helpers/helper';
 import FooterTrackListContainer from './FooterTrackListContainer';
 import { TrackPageHeaderLikeBtnWithContainer } from '../../containers/WithLikeButtonContainer';
-
-const stream = ['Streaming', 'Streaming.', 'Streaming..', 'Streaming...']
+import { increaseListenCountApi } from '../../Api/SongApi';
 
 export default class FooterPlayer extends React.Component {
     constructor(props) {
@@ -36,21 +35,25 @@ export default class FooterPlayer extends React.Component {
         let mejsError = document.getElementsByClassName("mejs-error")[0];
         this.player.current.onloadeddata = () => {
             try {
-            document.getElementsByClassName("mejs-duration")[0].innerHTML =
-                this.formatTime(this.player.current.duration) ?
-                    this.formatTime(this.player.current.duration) :
-                    '<img alt="" height="30px" src="/images/Infinity-10s-50px.gif"/>';
-            this.props.changePlayerStatus(PLAYER_PAUSE);
-            mejsError.style.display = "none";
-            this.rail.current.style.width = "0%";}
-            catch(err){
-                
+                document.getElementsByClassName("mejs-duration")[0].innerHTML =
+                    this.formatTime(this.player.current.duration) ?
+                        this.formatTime(this.player.current.duration) :
+                        '<img alt="" height="30px" src="/images/Infinity-10s-50px.gif"/>';
+                this.props.changePlayerStatus(PLAYER_PAUSE);
+                mejsError.style.display = "none";
+                this.rail.current.style.width = "0%";
+            }
+            catch (err) {
+
             }
         }
 
         this.player.current.oncanplaythrough = () => {
             let el = document.getElementsByClassName("mejs-button mejs-playpause-button")[0];
-            if (el) el.click();
+            if (el) {
+                el.click();
+                increaseListenCountApi(this.props.player.nowPlaying.songId);
+            }
         }
         this.player.current.onended = () => {
             clearInterval(this.playerProgress);

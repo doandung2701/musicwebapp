@@ -1,7 +1,8 @@
 import {connect} from 'react-redux';
 import App from '../App';
 import {withRouter} from 'react-router-dom';
-import { loadCurrentUser } from '../actions/AuthentcationAction';
+import { loadCurrentUser, saveFavCat } from '../actions/AuthentcationAction';
+import { getRecommendedSongs } from '../actions/SongAction';
 
 var mapStateToProp = state =>{
     return {
@@ -14,6 +15,12 @@ var mapDispatchToProps = dispatch =>{
         loadCurrentlyLoggedInUser: ()=>{
             dispatch(loadCurrentUser());
         },
+        saveFavCat : (data)=>{
+            dispatch(saveFavCat(data));
+        },
+        getRecommendedSongs : (ids)=>{
+            dispatch(getRecommendedSongs(ids));
+        }
     }
 }
 

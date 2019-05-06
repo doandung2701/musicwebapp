@@ -1,5 +1,6 @@
 package com.hust.musicapp.musicapp.service;
 
+import com.hust.musicapp.musicapp.model.Category;
 import com.hust.musicapp.musicapp.model.Singer;
 import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.payload.SongPayload;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 @Service
@@ -58,6 +60,11 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
+    public List<Song> findDistinctByCategoriesIn(List<String> categories) {
+        return songRepo.findDistinctByCategoriesIn(categories);
+    }
+
+    @Override
     public List<Song> findDistinctByAlbumId(Long id,Pageable pageable) {
         return songRepo.findDistinctByAlbumId(id,pageable);
     }
@@ -96,6 +103,11 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
+    public List<Song> findDistinctByPlayListsId(Long id, Pageable pageable) {
+        return songRepo.findDistinctByPlayListsId(id,pageable);
+    }
+
+    @Override
     public List<Song> findByUserId(Long id,Pageable pageable) {
         return songRepo.findByUserId(id,pageable);
     }
@@ -121,7 +133,7 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
-    public List<Song> findByCategoriesId(List<Long> categoryIds) {
+    public List<Song> findByCategoriesId(List<String> categoryIds) {
         return songRepo.findByCategoriesId(categoryIds);
     }
 
