@@ -77,7 +77,8 @@ export default class SongModal extends Component {
                 dataCategory: data[2].data
             })
         })
-
+            console.log(this.props.user);
+            
     }
 
     validateSelectMulti(data, name) {
