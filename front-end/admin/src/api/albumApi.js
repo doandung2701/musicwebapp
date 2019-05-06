@@ -11,7 +11,7 @@ import { API_BASE_URL } from "../constants";
  }
 
  export const getAlbumByIdApi = (id)=>{
-     return axios.get(`find-by-id/${id}`);
+     return axios.get(`dung/find-by-id/${id}`);
  }
 
  export const createAlbumApi=(album)=>{
