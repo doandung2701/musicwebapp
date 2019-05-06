@@ -66,10 +66,10 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.findAllWithPaging(pageable));
     }
  @GetMapping("dung/find-by-id/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<?> findByIdDung(@PathVariable Long id) {
         return ResponseEntity.ok(new AlbumPayload(albumService.findById(id)));
     }
-    @GetMapping("dung/find-by-id/{id}")
+    @GetMapping("/find-by-id/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return ResponseEntity.ok(new AlbumResponse(albumService.findById(id)));
     }

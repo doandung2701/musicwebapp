@@ -124,6 +124,21 @@ public class SongController {
         });
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/find-paging-likesong-by-user")
+    public ResponseEntity<?> findPagingLikeSongByUser(@RequestParam("page") Integer page,
+                                              @RequestParam("rows") Integer rows,
+                                              @NotNull @RequestParam("id") Long userId,
+                                              @Nullable @RequestParam("orderBy") String order,
+                                              @Nullable @RequestParam("direction") String direction) {
+
+        Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
+        List<Song> songs = songService.findLikeSongsByUserId(userId,pageable);
+        ArrayList<SongResponse> response= new ArrayList<>();
+        songs.stream().forEach(song->{
+            response.add(new SongResponse(song));
+        });
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/find-paging-by-album")
     public ResponseEntity<?> findPagingByAlbum(@RequestParam("page") Integer page,

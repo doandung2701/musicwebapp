@@ -83,6 +83,16 @@ export const getSongByUserIdApi = (page, id) => {
     })
 }
 
+export const getLikeSongByUserIdApi=(page,id)=>{
+    return axios.get("find-paging-likesong-by-user",{
+        params:{
+            page,
+            id,
+            rows:7
+        }
+    })
+}
+
 export const getChartSongByCatIdApi = (id) => {
     return axios.get("find-charts-jpa", {
         params: {
@@ -102,7 +112,6 @@ export const getSongsByAlbumsIdApi = (page, id) => {
 }
 
 export const getSongsByPlayListIdApi = (page, id) => {
-    console.log(id);
     return axios.get("find-paging-by-playlist", {
         params: {
             page,
@@ -113,7 +122,6 @@ export const getSongsByPlayListIdApi = (page, id) => {
 }
 
 export const createSong = (data) => {
-    console.log(data);
     return axios.post("users/upload-song", data);
 }
 export const uploadImageSong = (id, data) => {

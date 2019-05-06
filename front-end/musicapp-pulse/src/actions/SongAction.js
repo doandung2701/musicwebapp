@@ -10,9 +10,9 @@ import {
     GET_SONG_BY_ID_FAIL, GETTING_SONG_BY_USER_ID, GET_SONG_BY_USER_ID_SUCCESS,
     GET_SONG_BY_USER_ID_FAIL, LIKE_SONG_SUCCESS, LIKING_SONG, UPLOAD_SONG_FAIL, 
     UPLOADING_SONG, UPLOAD_SONG_SUCCESS, GET_SONGS_BY_ALBUMS_ID_FAIL,
-     GET_SONGS_BY_ALBUMS_ID_SUCCESS, GETTING_SONGS_BY_ALBUMS_ID, GETTING_RECOMMENDED_SONGS, GET_RECOMMENDED_SONGS_SUCCESS, GET_RECOMMENDED_SONGS_FAIL, GETTING_SONGS_BY_PLAYLIST_ID, GET_SONGS_BY_PLAYLIST_ID_SUCCESS, GET_SONGS_BY_PLAYLIST_ID_FAIL,
+     GET_SONGS_BY_ALBUMS_ID_SUCCESS, GETTING_SONGS_BY_ALBUMS_ID, GETTING_RECOMMENDED_SONGS, GET_RECOMMENDED_SONGS_SUCCESS, GET_RECOMMENDED_SONGS_FAIL, GETTING_SONGS_BY_PLAYLIST_ID, GET_SONGS_BY_PLAYLIST_ID_SUCCESS, GET_SONGS_BY_PLAYLIST_ID_FAIL, GETTING_LIKE_SONG_BY_USER_ID, GET_LIKE_SONG_BY_USER_ID_SUCCESS, GET_LIKE_SONG_BY_USER_ID_FAIL, WIPE_FETCH_ON_SCROLL_LIKE_SONGS,
 } from "../constants/constants";
-import { getAllSongWithPagingApi, getTop5LikeApi, getTrendingSongsApi, getRandom4JazzApi, getRandom4PopApi, get8NewApi, getSongsBySingerPagingApi, getSongByIdApi, getSongByUserIdApi, createSong, uploadImageSong, uploadSongFile, getSongsByAlbumsIdApi, getRecommendedSongsApi, getSongsByPlayListIdApi } from "../Api/SongApi";
+import { getAllSongWithPagingApi, getTop5LikeApi, getTrendingSongsApi, getRandom4JazzApi, getRandom4PopApi, get8NewApi, getSongsBySingerPagingApi, getSongByIdApi, getSongByUserIdApi, createSong, uploadImageSong, uploadSongFile, getSongsByAlbumsIdApi, getRecommendedSongsApi, getSongsByPlayListIdApi, getLikeSongByUserIdApi } from "../Api/SongApi";
 import { likeSongApi } from "../Api/UserApi";
 import { message } from "antd";
 import { toTop } from "../helpers/helper";
@@ -112,14 +112,26 @@ export const getSongByIdFail = () => ({
 const gettingSongByUserId = () => ({
     type: GETTING_SONG_BY_USER_ID
 })
-
+const gettingLikeSongByUserId=()=>({
+    type:GETTING_LIKE_SONG_BY_USER_ID
+})
 const getSongByUserIdSuccess = (songs) => ({
     type: GET_SONG_BY_USER_ID_SUCCESS,
     songs
 })
 
+const getLikeSongByUserIdSuccess=(songs)=>({
+    type:GET_LIKE_SONG_BY_USER_ID_SUCCESS,
+    songs
+})
+
+
 const getSongByUserIdFail = () => ({
     type: GET_SONG_BY_USER_ID_FAIL
+})
+
+const getLikeSongByUserIdFail=()=>({
+    type:GET_LIKE_SONG_BY_USER_ID_FAIL
 })
 
 const likingSong = () => ({
@@ -233,7 +245,18 @@ export const getSongByUserId = (page, id) => {
         }
     }
 }
-
+export const getLikeSongByUserId=(page,id)=>{
+    return async dispatch=>{
+        dispatch(gettingLikeSongByUserId())
+        try {
+            let data=await getLikeSongByUserIdApi(page,id);
+            console.log(data.data);
+            dispatch(getLikeSongByUserIdSuccess(data.data))
+        } catch (error) {
+            dispatch(getLikeSongByUserIdFail())
+        }
+    }
+}
 
 export const getSongById = (id) => {
     return async dispatch => {
@@ -320,6 +343,9 @@ export const getTrendingSongs = () => {
 
 export const wipeFetchOnScrollSongs = () => ({
     type: WIPE_FETCH_ON_SCROLL_SONGS
+})
+export const wipeFetchOnScrollLikeSongs=()=>({
+    type:WIPE_FETCH_ON_SCROLL_LIKE_SONGS
 })
 
 export const getDiscoverHeaderData = () => {

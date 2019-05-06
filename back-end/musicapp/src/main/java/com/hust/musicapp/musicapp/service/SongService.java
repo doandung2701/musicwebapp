@@ -74,4 +74,6 @@ public interface SongService {
     List<Song> getChartAll(Pageable pageable);
 
     void deleteSong(Song song);
+
+    List<Song> findLikeSongsByUserId(Long userId, Pageable pageable);
 }

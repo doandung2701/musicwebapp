@@ -56,7 +56,6 @@ class CommentsList extends React.Component {
     render() {
         let { comments } = this.props.comments;
         let comment = {...this.state,songId: this.props.songId,userId: this.props.userId};
-        console.log(this.state)
         return (
             <Fragment>
                 <h5 className="m-b">Comments</h5>

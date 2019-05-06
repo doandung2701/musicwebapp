@@ -19,6 +19,12 @@ public interface SongRepo extends JpaRepository<Song, Long> {
 
     @Query("select s from Song s left outer join fetch s.user u where u.id=:id")
     List<Song> findByUserId(@Param("id") Long userId,Pageable pageable);
+    @Query(nativeQuery = true,
+    value = "select distinct * from song inner join user_like_song" +
+            " on song.song_id=user_like_song.song_id where user_like_song.user_id=?1 ORDER BY song.song_id",
+    countQuery ="select count(*) from song inner join user_like_song" +
+            " on song.song_id=user_like_song.song_id where user_like_song.user_id=?1")
+    List<Song> findLikeSongByUserId(Long userId,Pageable pageable);
 
     @Query("select s from Song s where s.songName=:name")
     List<Song> findByNameExact(@Param("name") String name);
@@ -71,7 +77,7 @@ public interface SongRepo extends JpaRepository<Song, Long> {
     @Query(nativeQuery = true,
             value = "select * from song inner join category_song on " +
                     "song.song_id=category_song.song_id where category_song.category_id in (:categories) order by rand() limit 12")
-    List<Song> findDistinctByCategoriesIn(List<String> categories);
+    List<Song> findDistinctByCategoriesIn(@Param("categories") List<String> categories);
 
     @Query(value = "select s from Song s order by upload_date desc")
     ArrayList<Song> getSongNewestJpa(Pageable pageable);

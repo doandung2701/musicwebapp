@@ -80,11 +80,9 @@ export const postComment = (comment) => {
         try {
             let data = await postCommentApi(comment)
             dispatch(postReplySuccess(data.data));
-            console.log(data.data)
             message.success("Your comment has been posted.", 3)
         } catch (error) {
             if (error.response) {
-                console.log(error.response)
                 message.error("Can't post your comment because of an internal server error.", 3);
             } else {
                 message.error("Can't post your comment because of an unexpected error.", 3);
@@ -116,7 +114,6 @@ export const getCommentsBySongId = (id) => {
         dispatch(gettingCommentsBySongId());
         getCommentsBySongIdApi(id).then(data => {
             dispatch(getCommentsBySongIdSuccess(data.data));
-            console.log(data.data)
         }).catch(error => {
             dispatch(getCommentsBySongIdFail(error));
         })

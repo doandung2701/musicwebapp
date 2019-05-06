@@ -34,7 +34,6 @@ export default class ChartPage extends React.Component {
         active: i>-1?this.state.categories[i]:null
       })
     }catch(err){
-      console.log(err)
     }
   }
 
