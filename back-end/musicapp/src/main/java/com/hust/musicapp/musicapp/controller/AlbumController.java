@@ -3,12 +3,12 @@ package com.hust.musicapp.musicapp.controller;
 import com.hust.musicapp.musicapp.exception.FileStorageException;
 import com.hust.musicapp.musicapp.exception.ResourceNotFoundException;
 import com.hust.musicapp.musicapp.model.Album;
+import com.hust.musicapp.musicapp.model.Singer;
 import com.hust.musicapp.musicapp.model.Song;
+import com.hust.musicapp.musicapp.payload.AlbumPayload;
+import com.hust.musicapp.musicapp.service.*;
 import com.hust.musicapp.musicapp.payload.AlbumResponse;
 import com.hust.musicapp.musicapp.service.AlbumService;
-import com.hust.musicapp.musicapp.service.FileStorageService;
-import com.hust.musicapp.musicapp.service.AlbumService;
-import com.hust.musicapp.musicapp.service.SongService;
 import com.hust.musicapp.musicapp.util.PageableUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("*")
@@ -40,6 +41,8 @@ public class AlbumController {
     private AlbumService albumService;
     @Autowired
     private SongService songService;
+    @Autowired
+    private SingerService singerService;
     @Autowired
     private FileStorageService fileStorageService;
     @GetMapping("/find-all")
@@ -62,8 +65,11 @@ public class AlbumController {
         Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
         return ResponseEntity.ok(albumService.findAllWithPaging(pageable));
     }
-
-    @GetMapping("/find-by-id/{id}")
+ @GetMapping("dung/find-by-id/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(new AlbumPayload(albumService.findById(id)));
+    }
+    @GetMapping("dung/find-by-id/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return ResponseEntity.ok(new AlbumResponse(albumService.findById(id)));
     }
@@ -74,17 +80,66 @@ public class AlbumController {
     }
 
     @PostMapping("/save-albums")
-    public ResponseEntity<?> addAlbum(@RequestBody Album albums) {
-        return ResponseEntity.ok(albumService.save(albums));
+    public ResponseEntity<?> addAlbum(@RequestBody AlbumPayload albums) {
+        Album album=new Album();
+        album.setAlbumName(albums.getAlbumName());
+        album.setSinger(albums.getSinger());
+        album.setCreatedDate(new Date());
+        Album response=albumService.save(album);
+        List<Song> songs=new ArrayList<>(albums.getSongs());
+        for (int i = 0; i < songs.size(); i++) {
+            Song songData=songService.findById(songs.get(i).getSongId());
+            songData.setAlbum(response);
+            songService.save(songData);
+
+        }
+        return ResponseEntity.ok(response);
+    }
+    @PutMapping("{id}/update-thumbnail")
+    public ResponseEntity<?> updateThumbnail(@RequestParam("file") MultipartFile file, @PathVariable("id")Long id){
+        String fileName = "";
+
+        try {
+            fileName = fileStorageService.storeFile(file);
+
+        } catch (FileStorageException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                .path(fileName).toUriString();
+        Album album=albumService.findById(id);
+        album.setThumbnail(fileUri);
+
+        return ResponseEntity.ok( albumService.save(album));
     }
     @PutMapping("/save-albums")
-    public ResponseEntity<?> updateAlbum(@RequestBody Album album){
-        return ResponseEntity.ok(albumService.save(album));
+    public ResponseEntity<?> updateAlbum(@RequestBody AlbumPayload album){
+        Album albumData=albumService.findById(album.getId());
+        albumData.setAlbumName(album.getAlbumName());
+        albumData.setSinger(album.getSinger());
+        albumService.save(albumData);
+
+        List<Song> songs=new ArrayList<>(album.getSongs());
+        for (int i = 0; i < songs.size(); i++) {
+            Song songData=songService.findById(songs.get(i).getSongId());
+            songData.setAlbum(albumData);
+            songService.save(songData);
+
+        }
+
+
+        return ResponseEntity.ok(albumService.findById(album.getId()));
     }
     @DeleteMapping("/delete-album")
     public ResponseEntity<?> deleteAlbum(@RequestParam("id") Long id) {
         Album s = albumService.findById(id);
         if (s!=null) {
+            s.getSongs().forEach(song -> {
+                song.setAlbum(null);
+                songService.save(song);
+            });
+            s.setSinger(null);
             albumService.deleteAlbum(s);
             return ResponseEntity.ok("Delete Sucessfully!");
         }

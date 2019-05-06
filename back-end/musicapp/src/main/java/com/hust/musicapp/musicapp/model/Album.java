@@ -1,10 +1,12 @@
 package com.hust.musicapp.musicapp.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hust.musicapp.musicapp.payload.AlbumPayload;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -27,7 +29,14 @@ public class Album implements Serializable {
     @JoinColumn(name = "singer_id")
 //    @JsonIgnore
     private Singer singer;
-
+    public Album(AlbumPayload albumPayload){
+    id=albumPayload.getId()!=null?albumPayload.getId():null;
+    albumName=albumPayload.getAlbumName();
+    thumbnail=albumPayload.getThumbnail();
+    createdDate=albumPayload.getCreatedDate();
+    songs=albumPayload.getSongs();
+    singer=albumPayload.getSinger();
+    }
 
     public Singer getSinger() {
         return singer;
@@ -76,5 +85,21 @@ public class Album implements Serializable {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+    public Album(){
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Album album = (Album) o;
+        return Objects.equals(id, album.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
