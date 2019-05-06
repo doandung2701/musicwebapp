@@ -8,6 +8,7 @@ import DeleteModal from './components/common/DeleteModal';
 import ShareModal from './components/common/ShareModal';
 import SideNavContainer from './components/side_nav/SideNavContainer';
 import SearchModalContainer from './components/search/SearchModalContainer';
+import FooterPlayerContainer from './components/player/FooterPlayerContainer';
 
 class App extends Component {
 
@@ -17,6 +18,10 @@ class App extends Component {
       searchVisible: false
     }
     this.props.loadCurrentlyLoggedInUser();
+  }
+
+  componentDidUpdate(){
+    
   }
 
   onOpenSearch = () => {
@@ -49,6 +54,7 @@ class App extends Component {
           {this.state.searchVisible && <SearchModalContainer onClose={this.onCloseSearch} />}
           <DeleteModal />
           <ShareModal />
+          <FooterPlayerContainer />
           <ThemeSwitcher />
         </div>
       </Fragment>

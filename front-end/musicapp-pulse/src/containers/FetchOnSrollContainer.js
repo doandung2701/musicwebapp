@@ -3,10 +3,12 @@ import fetchOnSroll from "../components/HOC/FetchOnSroll";
 import SubMediumTrackList from "../components/tracks/SubMediumTrackList";
 import ArtistList from "../components/artist/ArtistList";
 import UserTrackList from '../components/user/UserTrackList';
+import AlbumTrackList from '../components/pages/AlbumPage/AlbumTrackList';
 
 const BrowsePageFetchOnSroll = fetchOnSroll(SubMediumTrackList);
 const ArtistListFetchOnScroll = fetchOnSroll(ArtistList);
 const UserTrackListFetchOnScroll = fetchOnSroll(UserTrackList);
+const AlbumTrackListFetchOnScroll = fetchOnSroll(AlbumTrackList);
 
 let mapStateToProps = (state, ownProps) => {
     switch (ownProps.me) {
@@ -36,4 +38,7 @@ const BrowsePageFetchOnSrollContainer = connect(mapStateToProps, mapDispatchToPr
 const ArtistListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToProps)(ArtistListFetchOnScroll);
 
 const UserTrackListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToProps)(UserTrackListFetchOnScroll);
-export { BrowsePageFetchOnSrollContainer, ArtistListFetchOnScrollContainer,UserTrackListFetchOnScrollContainer };
+
+const AlbumTrackListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToProps)(AlbumTrackListFetchOnScroll);
+
+export { BrowsePageFetchOnSrollContainer, ArtistListFetchOnScrollContainer,UserTrackListFetchOnScrollContainer ,AlbumTrackListFetchOnScrollContainer};

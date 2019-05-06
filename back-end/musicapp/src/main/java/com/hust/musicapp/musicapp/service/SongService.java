@@ -55,6 +55,8 @@ public interface SongService {
 
     List<TrendingSong> getSongTrending();
 
+    List<Song> findDistinctByAlbumId(Long id,Pageable pageable);
+
     List<TrendingSong> getNewestSong();
 
     List<TrendingSong> getTopgFiveSongLovest();

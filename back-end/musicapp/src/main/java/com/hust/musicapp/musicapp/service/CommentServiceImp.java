@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -17,6 +18,16 @@ public class CommentServiceImp implements CommentService {
 
     @Autowired
     CommentRepo  commentRepo;
+
+    @Override
+    public Set<Comment> findDistinctByUserIdAndParentCmtIsNull(Long id) {
+        return commentRepo.findDistinctByUserIdAndParentCmtIsNull(id);
+    }
+
+    @Override
+    public Set<Comment> findDistinctBySongSongIdAndParentCmtIsNull(Long id) {
+       return commentRepo.findDistinctBySongSongIdAndParentCmtIsNull(id);
+    }
 
     @Override
     public List<Comment> findAll() {

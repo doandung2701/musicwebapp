@@ -35,14 +35,19 @@ export default class FooterPlayer extends React.Component {
         }.bind(this)
         let mejsError = document.getElementsByClassName("mejs-error")[0];
         this.player.current.onloadeddata = () => {
+            try {
             document.getElementsByClassName("mejs-duration")[0].innerHTML =
                 this.formatTime(this.player.current.duration) ?
                     this.formatTime(this.player.current.duration) :
                     '<img alt="" height="30px" src="/images/Infinity-10s-50px.gif"/>';
             this.props.changePlayerStatus(PLAYER_PAUSE);
             mejsError.style.display = "none";
-            this.rail.current.style.width = "0%";
+            this.rail.current.style.width = "0%";}
+            catch(err){
+                
+            }
         }
+
         this.player.current.oncanplaythrough = () => {
             let el = document.getElementsByClassName("mejs-button mejs-playpause-button")[0];
             if (el) el.click();
@@ -211,7 +216,7 @@ export default class FooterPlayer extends React.Component {
                         </div><div className="mejs-layers"><div className="mejs-poster mejs-layer"
                             style={{ display: 'none', width: '100%', height: '40px' }} />
                                 <div className="mejs-track-actions">
-                                    <TrackPageHeaderLikeBtnWithContainer songId={player.nowPlaying.songId}/>
+                                    <TrackPageHeaderLikeBtnWithContainer songId={player.nowPlaying.songId} />
                                 </div>
                                 <a className="mejs-track-artwork" href="track.detail.html"
                                     style={{ backgroundImage: `url("${player.nowPlaying.thumbnail}")` }} />

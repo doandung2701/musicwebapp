@@ -61,6 +61,8 @@ public interface SongRepo extends JpaRepository<Song, Long> {
     @Query(nativeQuery = true, value = "select * from song order by upload_date desc limit 8")
     ArrayList<TrendingSong> getSongNewest();
 
+    List<Song> findDistinctByAlbumId(Long id,Pageable pageable);
+
     @Query(value = "select s from Song s order by upload_date desc")
     ArrayList<Song> getSongNewestJpa(Pageable pageable);
 

@@ -12,4 +12,7 @@ public interface AlbumRepo extends JpaRepository<Album,Long> {
     List<Album> findByAlbumNameLike(String albumName);
     @Query("select distinct a from Album  a left  outer join  a.songs left outer join a.singer where a.id=:id")
     Optional<Album> getDetailAlbumById(@Param("id") Long id);
+
+    List<Album> findDistinctBySingerId(Long singerId);
+
 }

@@ -4,15 +4,19 @@ import {
     GET_TOP_5_LIKE_FAIL, GETTING_TRENDING_SONGS, GET_TRENDING_SONGS_SUCCCESS,
     GET_TRENDING_SONGS_FAIL, WIPE_FETCH_ON_SCROLL_SONGS,
     GETTING_DISCOVER_HEADER_DATA, GET_DISCOVER_HEADER_DATA_SUCCESS,
-     GET_DISCOVER_HEADER_DATA_FAIL, GETTING_8_NEWEST, GET_8_NEWEST_SUCCESS,
-      GET_8_NEWEST_FAIL, GETTING_SONG_BY_SINGER_PAGING, GET_SONG_BY_SINGER_PAGING_SUCCESS, 
-      GET_SONG_BY_SINGER_PAGING_FAIL, GETTING_SONG_BY_ID, GET_SONG_BY_ID_SUCCESS, 
-      GET_SONG_BY_ID_FAIL, GETTING_SONG_BY_USER_ID, GET_SONG_BY_USER_ID_SUCCESS, 
-      GET_SONG_BY_USER_ID_FAIL, LIKE_SONG_SUCCESS, LIKING_SONG, UPLOAD_SONG_FAIL, UPLOADING_SONG, UPLOAD_SONG_SUCCESS, 
+    GET_DISCOVER_HEADER_DATA_FAIL, GETTING_8_NEWEST, GET_8_NEWEST_SUCCESS,
+    GET_8_NEWEST_FAIL, GETTING_SONG_BY_SINGER_PAGING, GET_SONG_BY_SINGER_PAGING_SUCCESS,
+    GET_SONG_BY_SINGER_PAGING_FAIL, GETTING_SONG_BY_ID, GET_SONG_BY_ID_SUCCESS,
+    GET_SONG_BY_ID_FAIL, GETTING_SONG_BY_USER_ID, GET_SONG_BY_USER_ID_SUCCESS,
+    GET_SONG_BY_USER_ID_FAIL, LIKE_SONG_SUCCESS, LIKING_SONG, UPLOAD_SONG_FAIL, 
+    UPLOADING_SONG, UPLOAD_SONG_SUCCESS, GET_SONGS_BY_ALBUMS_ID_FAIL,
+     GET_SONGS_BY_ALBUMS_ID_SUCCESS, GETTING_SONGS_BY_ALBUMS_ID,
 } from "../constants/constants";
-import { getAllSongWithPagingApi, getTop5LikeApi, getTrendingSongsApi, getRandom4JazzApi, getRandom4PopApi, get8NewApi, getSongsBySingerPagingApi, getSongByIdApi, getSongByUserIdApi, createSong, uploadImageSong, uploadSongFile } from "../Api/SongApi";
+import { getAllSongWithPagingApi, getTop5LikeApi, getTrendingSongsApi, getRandom4JazzApi, getRandom4PopApi, get8NewApi, getSongsBySingerPagingApi, getSongByIdApi, getSongByUserIdApi, createSong, uploadImageSong, uploadSongFile, getSongsByAlbumsIdApi } from "../Api/SongApi";
 import { likeSongApi } from "../Api/UserApi";
 import { message } from "antd";
+import $ from 'jquery';
+import { toTop } from "../helpers/helper";
 
 const gettingAllSongPaging = () => ({
     type: GETTING_ALL_SONG_PAGING
@@ -129,14 +133,40 @@ const likeSongSuccess = (songId, userId) => ({
     userId
 })
 
+const gettingSongsByAlbumId = () => ({
+    type: GETTING_SONGS_BY_ALBUMS_ID
+})
+
+const getSongsByAlbumIdSuccess = (songs) => ({
+    type: GET_SONGS_BY_ALBUMS_ID_SUCCESS,
+    songs
+})
+
+const getSongsByAlbumIdFail = () => ({
+    type: GET_SONGS_BY_ALBUMS_ID_FAIL
+})
+
+export const getSongByAlbumId = (page, id) => {
+    return async dispatch => {
+        dispatch(gettingSongsByAlbumId());
+        try {
+            let data = await getSongsByAlbumsIdApi(page, id);
+            dispatch(getSongsByAlbumIdSuccess(data.data));
+        } catch (err) {
+            dispatch(getSongsByAlbumIdFail());
+        }
+    }
+}
+
+
 export const likeSong = (userId, songId) => {
     return async dispatch => {
         dispatch(likingSong());
         try {
             await likeSongApi(songId, userId);
-            dispatch(likeSongSuccess(songId,userId));
+            dispatch(likeSongSuccess(songId, userId));
         } catch (err) {
-            message.error(err.toString(),3);
+            message.error(err.toString(), 3);
         }
     }
 }
@@ -200,6 +230,11 @@ export const getSongBySingerPaging = (page, singerId) => {
             setTimeout(async () => {
                 let data = await getSongsBySingerPagingApi(page, singerId);
                 dispatch(getSongBySingerPagingSuccess(data.data));
+                let scroll = sessionStorage.getItem("currentScroll");
+                if (scroll) {
+                    toTop(scroll);
+                    sessionStorage.removeItem("currentScroll");
+                }
             }, 1000)
             // console.log(data.data);
         } catch (err) {
@@ -247,31 +282,31 @@ export const getDiscoverHeaderData = () => {
         }
     }
 }
-const gettingUploadSong=()=>({
-    type:UPLOADING_SONG
+const gettingUploadSong = () => ({
+    type: UPLOADING_SONG
 })
-const uploadSongSuccess=(song)=>({
-    type:UPLOAD_SONG_SUCCESS,
+const uploadSongSuccess = (song) => ({
+    type: UPLOAD_SONG_SUCCESS,
     song
 })
-const uploadSongFail=(err)=>({
-    type:UPLOAD_SONG_FAIL,
+const uploadSongFail = (err) => ({
+    type: UPLOAD_SONG_FAIL,
     err
 })
-export const uploadSong=(data,image,song)=>{
-    return dispatch=>{
+export const uploadSong = (data, image, song) => {
+    return dispatch => {
         dispatch(gettingUploadSong())
 
-        createSong(data).then(response=>{
-            let {songId}=response.data;
-            uploadImageSong(songId,image).then(data=>{
-                uploadSongFile(songId,song).then(response=>{
+        createSong(data).then(response => {
+            let { songId } = response.data;
+            uploadImageSong(songId, image).then(data => {
+                uploadSongFile(songId, song).then(response => {
                     console.log(response.data);
-                    
+
                     dispatch(uploadSongSuccess(response.data))
                 })
             })
-        }).catch(err=>{
+        }).catch(err => {
             dispatch(uploadSongFail(err))
         });
 

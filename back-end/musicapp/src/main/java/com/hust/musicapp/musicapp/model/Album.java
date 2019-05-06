@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+
 @Entity
 @Table(name = "album")
 public class Album implements Serializable {
@@ -21,12 +22,12 @@ public class Album implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @OneToMany(mappedBy = "album")
-    @JsonIgnore
+//    @JsonIgnore
     private Set<Song> songs;
 
     @ManyToOne
     @JoinColumn(name = "singer_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Singer singer;
     public Album(AlbumPayload albumPayload){
     id=albumPayload.getId()!=null?albumPayload.getId():null;
@@ -36,6 +37,7 @@ public class Album implements Serializable {
     songs=albumPayload.getSongs();
     singer=albumPayload.getSinger();
     }
+
     public Singer getSinger() {
         return singer;
     }
