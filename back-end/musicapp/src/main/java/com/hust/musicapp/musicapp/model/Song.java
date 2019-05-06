@@ -96,6 +96,7 @@ public class Song implements Serializable {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "album_id")
     @JsonIgnore
     private Album album;
 
