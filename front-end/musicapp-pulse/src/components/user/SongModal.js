@@ -99,7 +99,6 @@ class SongModal extends Component {
     }
     componentDidMount() {
         Promise.all([getAllAuthorsApi(), getAllSinger(), getAllCategoriesApi()]).then(data => {
-            console.log(data);
 
             this.setState({
                 dataAuthor: data[0].data,
@@ -107,7 +106,7 @@ class SongModal extends Component {
                 dataCategory: data[2].data
             })
         })
-
+            
     }
 
     validateSelectMulti(data, name) {
@@ -123,7 +122,6 @@ class SongModal extends Component {
         }
     }
     handleFileChange(info,validationFun,name){
-        console.log(info.file);
         var reader=new FileReader();
         reader.readAsDataURL(info.file.originFileObj)
         var formData = new FormData();

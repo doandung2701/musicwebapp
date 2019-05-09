@@ -77,6 +77,7 @@ class UserProfileHeader extends React.Component {
 
     render() {
         let {currentUser,t} = this.props;
+
         return (
             <Fragment>
                 <div className="padding b-b" style={{ zIndex: 5 }}>

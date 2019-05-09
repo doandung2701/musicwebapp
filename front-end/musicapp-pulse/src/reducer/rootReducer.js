@@ -7,11 +7,13 @@ import { searchReducer } from "./searchReducer";
 import { commentsReducer } from "./CommentReducer";
 import { albumsReducer } from "./albumsReducer";
 import { playListsReducer } from "./playlistReducer";
+import { likeSongReducer } from "./likeSongReducer";
 
 const rootReducer = combineReducers({
     player: playerReducer,
     authentication:authenticateReducer,
     songs: songReducer,
+    likeSongs:likeSongReducer,
     artists: artistReducer,
     search: searchReducer,
     comments: commentsReducer,

@@ -123,6 +123,11 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
+    public List<Song> findLikeSongsByUserId(Long userId, Pageable pageable) {
+        return songRepo.findLikeSongByUserId(userId,pageable);
+    }
+
+    @Override
     public List<Song> findByNameExact(String name) {
         return songRepo.findByNameExact(name);
     }

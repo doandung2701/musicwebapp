@@ -67,6 +67,7 @@ public class UserController {
     public UserResponse getCurrentUserDetail(@CurrentUser UserPrincipal userPrincipal) {
         Optional<User> user = userservice.findById(userPrincipal.getId());
         if (user.isPresent()) {
+            System.out.println("Ditmemmay"+user.get().getLikeSongs().size());
             return new UserResponse(user.get());
         } else {
             throw new ResourceNotFoundException(RESOURCE_NAME, RESOURCE_ID, userPrincipal.getId());

@@ -78,4 +78,6 @@ public interface SongService {
     List<Song> findDistinctBySongIdIn(List<Long> ids);
 
     void deleteSong(Song song);
+
+    List<Song> findLikeSongsByUserId(Long userId, Pageable pageable);
 }

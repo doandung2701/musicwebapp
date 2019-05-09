@@ -5,10 +5,14 @@ import ArtistList from "../components/artist/ArtistList";
 import UserTrackList from '../components/user/UserTrackList';
 import AlbumTrackList from '../components/pages/AlbumPage/AlbumTrackList';
 import PlayListTrackList from '../components/pages/PlaylistPage/PlayListTrackList';
+import UserTrackListLike from '../components/user/UserTrackListLike';
 
 const BrowsePageFetchOnSroll = fetchOnSroll(SubMediumTrackList);
 const ArtistListFetchOnScroll = fetchOnSroll(ArtistList);
 const UserTrackListFetchOnScroll = fetchOnSroll(UserTrackList);
+
+const UserTrackListLikeFetchOnScroll=fetchOnSroll(UserTrackListLike);
+
 const AlbumTrackListFetchOnScroll = fetchOnSroll(AlbumTrackList);
 const PlayListTrackListFetchOnScroll = fetchOnSroll(PlayListTrackList);
 let mapStateToProps = (state, ownProps) => {
@@ -21,6 +25,10 @@ let mapStateToProps = (state, ownProps) => {
             return {
                 data: state.songs
             }
+        case 'likeSongs':
+        return {
+            data:state.likeSongs
+        }    
         default:
     }
 }
@@ -40,7 +48,8 @@ const ArtistListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToP
 
 const UserTrackListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToProps)(UserTrackListFetchOnScroll);
 
+const UserTrackListLikeFetchOnScrollContainer=connect(mapStateToProps,mapDispatchToProps)(UserTrackListLikeFetchOnScroll)
+
 const AlbumTrackListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToProps)(AlbumTrackListFetchOnScroll);
 const PlayListTrackListFetchOnScrollContainer = connect(mapStateToProps, mapDispatchToProps)(PlayListTrackListFetchOnScroll);
-
-export { BrowsePageFetchOnSrollContainer, ArtistListFetchOnScrollContainer,PlayListTrackListFetchOnScrollContainer, UserTrackListFetchOnScrollContainer, AlbumTrackListFetchOnScrollContainer };
+export { BrowsePageFetchOnSrollContainer, ArtistListFetchOnScrollContainer,PlayListTrackListFetchOnScrollContainer, UserTrackListFetchOnScrollContainer, AlbumTrackListFetchOnScrollContainer,UserTrackListLikeFetchOnScrollContainer };
