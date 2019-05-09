@@ -14,7 +14,7 @@ class CommentItem extends React.Component {
     }
 
     componentDidMount(){
-        if (sessionStorage.getItem("currentScroll")){
+        if (sessionStorage.getItem("currentScroll")&&sessionStorage.getItem('repCnt')){
             this.repBox.style.height = '140px';
         }
     }
@@ -40,7 +40,7 @@ class CommentItem extends React.Component {
 
     postRep = () => {
         if (this.props.userId < 0) {
-            if (window.confirm("Please login to post your comments.")) {
+            if (window.confirm(this.props.t('loginreq'))) {
                 history.push("/signin", {
                     commentCnt: this.state.cmtCnt,
                     from: this.props.location
@@ -51,7 +51,7 @@ class CommentItem extends React.Component {
             }
         } else {
             if (!this.state.cmtCnt||this.state.cmtCnt.length === 0) {
-                message.error("Comment content must not be null",3);
+                message.error(this.props.t('notnull'),3);
             } else {
                 let rep = {
                     ...this.state,
@@ -70,7 +70,7 @@ class CommentItem extends React.Component {
 
 
     render() {
-        let { cmt, songId } = this.props;
+        let { cmt, songId,t } = this.props;
         return (
             <div className="sl-item">
                 <div className="sl-left">
@@ -91,7 +91,7 @@ class CommentItem extends React.Component {
                     ))}
                     <div className="sl-footer">
                         <a href="#" data-toggle="collapse" onClick={this.toggleRepBox} aria-expanded="true">
-                            <i className="fa fa-fw fa-mail-reply text-muted" /> Reply
+                            <i className="fa fa-fw fa-mail-reply text-muted" /> {t('rep')}
                         </a>
                     </div>
                     <div className="box m-a-0 b-a collapse in" ref={el => this.repBox = el}
@@ -103,11 +103,11 @@ class CommentItem extends React.Component {
                             <textarea value={this.state.cmtCnt} onChange={this.handleInputChange}
                                 name="cmtCnt"
                                 className="form-control no-border"
-                                rows={3} placeholder="Type something..." />
+                                rows={3} placeholder={t('typesth')} />
                         </form>
                         <div className="box-footer clearfix">
                             <button onClick={this.postRep}
-                                className="btn btn-info pull-right btn-sm">Post</button>
+                                className="btn btn-info pull-right btn-sm">{t('post')}</button>
                         </div>
                     </div>
                 </div>

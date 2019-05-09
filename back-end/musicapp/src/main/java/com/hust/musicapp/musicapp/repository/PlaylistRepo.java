@@ -17,4 +17,5 @@ public interface PlaylistRepo extends JpaRepository<PlayList,Long> {
     @Query("select distinct p from PlayList p left outer join  fetch p.songs left outer join  fetch p.user")
     List<PlayList> findAllPlaylist();
 
+    List<PlayList> findDistinctByIdIn(List<Long> ids);
 }

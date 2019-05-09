@@ -6,7 +6,8 @@ import PlayListDetail from './PlayListDetail';
 var mapStateToProp = state =>{
     return {
         playLists: state.playLists,
-        list: state.songs.list
+        list: state.songs.list,
+        authenticated: state.authentication.authenticated
     }
 }
 

@@ -5,6 +5,7 @@ import com.hust.musicapp.musicapp.payload.PlaylistPayload;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -25,10 +26,14 @@ public class PlayList implements Serializable {
     @Column(name="playlist_description")
     private String description;
 
+    @Column(name="created_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
     @ManyToMany
     @JoinTable(name = "playlist_song",joinColumns = @JoinColumn(name="playlist_id"),
     inverseJoinColumns = @JoinColumn(name = "song_id"))
-    @JsonIgnore
+//    @JsonIgnore
     private Set<Song> songs;
 
     @ManyToOne
@@ -44,6 +49,14 @@ public class PlayList implements Serializable {
     }
 
     public PlayList() {
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Long getId() {

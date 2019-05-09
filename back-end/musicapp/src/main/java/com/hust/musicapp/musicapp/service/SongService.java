@@ -73,5 +73,9 @@ public interface SongService {
 
     List<Song> getChartAll(Pageable pageable);
 
+    List<Song> findPagingByCategoriesId( String id, Pageable pageable);
+
+    List<Song> findDistinctBySongIdIn(List<Long> ids);
+
     void deleteSong(Song song);
 }

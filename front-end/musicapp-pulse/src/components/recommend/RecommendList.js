@@ -26,10 +26,10 @@ export default class RecommendList extends React.Component {
     }
 
     render() {
-        let {recommendedSongs} = this.props;
+        let {recommendedSongs,t} = this.props;
         return (
             <Fragment>
-                <h2 className="widget-title h4 m-b">Recommended for you</h2>
+                <h2 className="widget-title h4 m-b">{/*Recommended for you*/}{t('recommend')}</h2>
                 <div className="row item-list item-list-md m-b">
                     {recommendedSongs.map(value => (
                         <RecommentItem key={value.songId} type="track" track={value}/>

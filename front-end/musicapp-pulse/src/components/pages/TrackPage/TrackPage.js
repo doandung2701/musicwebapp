@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react';
 import SubMediumTrackList from '../../tracks/SubMediumTrackList';
 import TrackPageHeader from '../../tracks/TrackPageHeader';
-import CommentsList from './Comments/CommentsList';
 import { PLAYER_PLAYING } from '../../../constants/constants';
 import { getSongByIdApi } from '../../../Api/SongApi';
 import LoadingIndicator from '../../common/LoadingIndicator';
 import { gettingSongById, getSongByIdSuccess, getSongByIdFail } from '../../../actions/SongAction';
 import CommentListContainer from './Comments/CommentListContainer';
-import $ from 'jquery';
+import {withTranslation} from 'react-i18next';
 
 class TrackPage extends React.Component {
 
@@ -47,7 +46,7 @@ class TrackPage extends React.Component {
     }
 
     render() {
-        let { list, singleSong: song, isGetting, changeAudioSrc, player, addSongToQueue } = this.props;
+        let { list, singleSong: song, isGetting, changeAudioSrc, player, addSongToQueue,t } = this.props;
         let id = this.props.match.params.id;
         return (
             <Fragment>
@@ -55,7 +54,7 @@ class TrackPage extends React.Component {
                     currentSrc={player.nowPlaying.songSrc}
                     isPlaying={player.playerStatus === PLAYER_PLAYING}
                     changeAudioSrc={changeAudioSrc} song={song} />
-                <h5 className="m-b">From The Same Artist</h5>
+                <h5 className="m-b">{t('sameartist')}</h5>
                 <SubMediumTrackList type="track" list={list} />
                 <LoadingIndicator height={100} width={100} isGetting={isGetting} />
                 <CommentListContainer songId={id} location={this.props.location}/>
@@ -64,4 +63,4 @@ class TrackPage extends React.Component {
     }
 }
 
-export default TrackPage;
+export default withTranslation('track')(TrackPage);

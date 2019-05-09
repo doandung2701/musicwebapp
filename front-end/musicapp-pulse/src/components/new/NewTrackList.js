@@ -9,10 +9,10 @@ export default class NewTrackList extends React.Component {
     }
 
     render() {
-        let {newest8Songs,isGetting} = this.props;
+        let {newest8Songs,isGetting,t} = this.props;
         return (
             <Fragment>
-                <h2 className="widget-title h4 m-b">New</h2>
+                <h2 className="widget-title h4 m-b">{t('new')}</h2>
                 <SubMediumTrackList type="track" list={newest8Songs}/>
             </Fragment>
         )

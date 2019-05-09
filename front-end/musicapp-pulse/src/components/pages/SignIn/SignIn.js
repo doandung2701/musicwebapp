@@ -3,8 +3,9 @@ import { Link, Redirect } from 'react-router-dom';
 import SigninHeader from '../../headers/SigninHeader';
 import Alert from 'react-s-alert';
 import { FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL } from '../../../constants/constants';
+import { withTranslation } from 'react-i18next';
 
-export default class SigninPage extends React.Component {
+class SigninPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -61,6 +62,7 @@ export default class SigninPage extends React.Component {
         }} />
       }
     }
+    let {t} = this.props;
     return (
       <div>
         <SigninHeader />
@@ -70,15 +72,17 @@ export default class SigninPage extends React.Component {
               <div>
                 <a href={FACEBOOK_AUTH_URL} className="btn btn-block indigo text-white m-b-sm">
                   <i className="fa fa-facebook pull-left" />
-                  Sign in with Facebook
+                  {/* Sign in with Facebook */}
+                  {t('signinfb')}
                 </a>
                 <a href={GOOGLE_AUTH_URL} className="btn btn-block red text-white">
                   <i className="fa fa-google-plus pull-left" />
-                  Sign in with Google+
+                  {/* Sign in with Google+ */}
+                  {t('signingp')}
                 </a>
               </div>
               <div className="m-y text-sm">
-                OR
+              {t('common:or')}                
               </div>
               <form name="form" onSubmit={this.handleSubmit}>
                 <div className="form-group">
@@ -89,21 +93,23 @@ export default class SigninPage extends React.Component {
                 <div className="form-group">
                   <input
                     value={this.state.password} onChange={this.handleInputChange} name="password"
-                    type="password" className="form-control" placeholder="password" required />
+                    type="password" className="form-control" placeholder={t('common:password')} required />
                 </div>
                 <div className="m-b-md">
                   <label className="md-check">
-                    <input type="checkbox" /><i className="primary" /> Keep me signed in
+                    <input type="checkbox" /><i className="primary" /> &nbsp;
+                    {t('keepsignin')}
                   </label>
                 </div>
-                <button type="submit" className="btn btn-lg black p-x-lg">Sign in</button>
+                <button type="submit" className="btn btn-lg black p-x-lg">{t('common:signin')}</button>
               </form>
               <div className="m-y">
-                <a href="forgot-password.html" className="_600">Forgot password?</a>
+                <a href="forgot-password.html" className="_600">{t('forgot')}</a>
               </div>
               <div>
-                Do not have an account?
-                <Link to="/signup" className="text-primary _600">Sign up</Link>
+                {/* Do not have an account? */}
+                {t('noacc')}&nbsp;
+                <Link to="/signup" className="text-primary _600">{t('common:signup')}</Link>
               </div>
             </div>
           </div>
@@ -112,3 +118,5 @@ export default class SigninPage extends React.Component {
     )
   }
 }
+
+export default withTranslation(['signinout','common'])(SigninPage);

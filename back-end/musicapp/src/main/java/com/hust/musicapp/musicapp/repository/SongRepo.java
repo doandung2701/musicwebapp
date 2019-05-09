@@ -23,6 +23,8 @@ public interface SongRepo extends JpaRepository<Song, Long> {
     @Query("select s from Song s where s.songName=:name")
     List<Song> findByNameExact(@Param("name") String name);
 
+    List<Song> findDistinctBySongIdIn(List<Long> ids);
+
     @Query(nativeQuery = true,
             value = "select * from song inner join category_song on " +
                     "song.song_id=category_song.song_id where category_song.category_id=:id order by rand() limit 4")
@@ -44,6 +46,9 @@ public interface SongRepo extends JpaRepository<Song, Long> {
 
     @Query("select s from Song s left outer join fetch s.categories c where c.categoryId in (:categoryIds)")
     List<Song> findByCategoriesId(@Param("categoryIds") List<String> categoryIds);
+
+    @Query("select s from Song s left outer join fetch s.categories c where c.categoryId =:categoryId")
+    List<Song> findPagingByCategoriesId(@Param("categoryId") String id,Pageable pageable);
 
     @Query("select s from Song s left outer join fetch s.authors a where a.authorId in (:authorIds)")
     List<Song> findByAuthorId(@Param("authorIds") List<Long> authorIds);

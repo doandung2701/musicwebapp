@@ -26,9 +26,10 @@ export default class Trending extends React.Component {
 
     render() {
         let res = this.splitDataToRender();
+        let {t} = this.props;
         return (
             <Fragment>
-                <h2 className="widget-title h4 m-b">Trending</h2>
+                <h2 className="widget-title h4 m-b">{t("trending")}</h2>
                 <Carousel vertical={false} className="carousel-sm">
                     {res.map((value, index) => (
                         <div key={index}>

@@ -5,6 +5,7 @@ import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.model.User;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 public class PlaylistPayload implements Serializable {
@@ -20,6 +21,16 @@ public class PlaylistPayload implements Serializable {
     private Set<Song> songs;
 
     private User user;
+
+    private Date createdDate;
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public Long getId() {
         return id;
@@ -76,5 +87,6 @@ public class PlaylistPayload implements Serializable {
         this.songs=playList.getSongs();
         this.user=playList.getUser();
         this.thumbnail=playList.getThumbnail();
+        this.createdDate = playList.getCreatedDate();
     }
 }

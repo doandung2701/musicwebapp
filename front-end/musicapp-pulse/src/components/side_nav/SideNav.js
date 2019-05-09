@@ -1,15 +1,36 @@
 import React, { Fragment } from 'react';
 import SideNavAccountSection from './SideNavAccountSection';
 import { NavLink } from 'react-router-dom';
+import { withTranslation } from 'react-i18next';
+import ReactCountryFlag from "react-country-flag";
 
-export default class SideNav extends React.Component {
+const lang = [
+  { code: 'gb', text: "English" },
+  { code: 'vn', text: "Tiếng Việt" },
+  { code: "cn", text: "中國" },
+  { code: 'jp', text: "日本語" }];
+
+class SideNav extends React.Component {
+
+  state = {
+    lang: localStorage.getItem('lang')?localStorage.getItem('lang'):"vn"
+  }
+
+  changeLanguage = (code) => {
+    this.setState({
+      lang: code
+    })
+    this.props.i18n.changeLanguage(code);
+    localStorage.setItem('lang',code);
+  }
 
   render() {
-    const {authentication}=this.props;
-    let {currentUser={
+    const { authentication, t, i18n } = this.props;
+    let { currentUser = {
       imageUrl: '/images/a14.jpg',
       name: 'Some name'
-    }} = authentication;
+    } } = authentication;
+    console.log(this.props)
     return (
       <Fragment>
         {/* <!-- aside --> */}
@@ -29,7 +50,7 @@ export default class SideNav extends React.Component {
                 </svg>
 
                 <img src="images/logo.png" alt="." className="hide" />
-                <span >pulse</span>
+                <span >musik</span>
               </NavLink>
               {/* <!-- / brand --> */}
             </div>
@@ -38,7 +59,7 @@ export default class SideNav extends React.Component {
 
                 <ul className="nav" data-ui-nav>
                   <li className="nav-header hidden-folded">
-                    <span className="text-xs text-muted">Main</span>
+                    <span className="text-xs text-muted">{t('main')}</span>
                   </li>
                   <li>
                     <NavLink to="/discover" onClick={this.props.onCloseSearch}>
@@ -47,7 +68,7 @@ export default class SideNav extends React.Component {
                           play_circle_outline
                     </i>
                       </span>
-                      <span className="nav-text">Discover</span>
+                      <span className="nav-text">{t('discover')}</span>
                     </NavLink>
                   </li>
                   <li>
@@ -57,7 +78,7 @@ export default class SideNav extends React.Component {
                           sort
                     </i>
                       </span>
-                      <span className="nav-text">Browse</span>
+                      <span className="nav-text">{t('browse')}</span>
                     </NavLink>
                   </li>
                   <li>
@@ -67,7 +88,7 @@ export default class SideNav extends React.Component {
                           trending_up
                     </i>
                       </span>
-                      <span className="nav-text">Charts</span>
+                      <span className="nav-text">{t('charts')}</span>
                     </NavLink>
                   </li>
                   <li>
@@ -77,7 +98,7 @@ export default class SideNav extends React.Component {
                           portrait
                     </i>
                       </span>
-                      <span className="nav-text">Artist</span>
+                      <span className="nav-text">{t('artist')}</span>
                     </NavLink>
                   </li>
                   <li>
@@ -87,28 +108,49 @@ export default class SideNav extends React.Component {
                           search
                     </i>
                       </span>
-                      <span className="nav-text">Search</span>
+                      <span className="nav-text">{t('search')}</span>
                     </a>
                   </li>
 
 
                   <li className="nav-header hidden-folded m-t">
-                    <span className="text-xs text-muted">Your profile</span>
+                    <span className="text-xs text-muted">{t('profile')}</span>
+                  </li>
+                  <li>
+                    <a data-toggle="dropdown">
+                      <span className="nav-icon">
+                        <ReactCountryFlag code={this.state.lang} svg styleProps={{
+                          marginBottom: 5
+                        }} />
+                      </span>
+                      <span className="nav-text">{t('language')}</span>
+                    </a>
+                    <div className="dropdown-menu w dropdown-menu-scale ">
+                      {lang.map(value => (
+                        <a key={value.code}
+                          className="dropdown-item" onClick={() => this.changeLanguage(value.code)}>
+                          <ReactCountryFlag code={value.code} svg styleProps={{
+                            marginBottom: 5,
+                            marginRight: 15
+                          }} /> {value.text}</a>
+                      ))}
+
+                    </div>
                   </li>
                   <li onClick={this.props.onCloseSearch}>
-                    {authentication.authenticated==true&& 
-                    <NavLink to="/user-profile">
-                      <span className="nav-label">
-                        <b className="label">8</b>
-                      </span>
-                      <span className="nav-icon">
-                        <i className="material-icons">
-                          account_circle
+                    {authentication.authenticated == true &&
+                      <NavLink to="/user-profile">
+                        <span className="nav-label">
+                          <b className="label">8</b>
+                        </span>
+                        <span className="nav-icon">
+                          <i className="material-icons">
+                            account_circle
                     </i>
-                      </span>
-                      <span className="nav-text">Your profile</span>
-                    </NavLink>}
-                   
+                        </span>
+                        <span className="nav-text">{t('profile')}</span>
+                      </NavLink>}
+
                   </li>
                   {/* <li>
                     <NavLink href="/user-profile#playlists">
@@ -131,29 +173,32 @@ export default class SideNav extends React.Component {
                     </NavLink>
                   </li>*/}
                   <li>
-                  {authentication.authenticated==false&& 
-                  <NavLink to="/signin" >
-                  <span className="nav-icon">
-                    <i className="material-icons">
-                      play_circle_outline
+                    {authentication.authenticated == false &&
+                      <NavLink to="/signin" >
+                        <span className="nav-icon">
+                          <i className="material-icons">
+                            play_circle_outline
                 </i>
-                  </span>
-                  <span className="nav-text">Sign in</span>
-                </NavLink>}
-                    
+                        </span>
+                        <span className="nav-text">{t('signin')}</span>
+                      </NavLink>}
+
                   </li>
                 </ul>
               </nav>
             </div>
-            <SideNavAccountSection 
-            onLogout={this.props.logout}
-            user={{
-              avatar: currentUser.imageUrl,
-              name: currentUser.name
-            }} />
+            <SideNavAccountSection
+              t={t}
+              onLogout={this.props.logout}
+              user={{
+                avatar: currentUser.imageUrl,
+                name: currentUser.name
+              }} />
           </div>
         </div>
       </Fragment>
     )
   }
 }
+
+export default withTranslation('common')(SideNav);

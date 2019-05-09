@@ -5,6 +5,7 @@ import AlbumDetailHeader from './AlbumDetailHeader';
 import { AlbumTrackListFetchOnScrollContainer } from '../../../containers/FetchOnSrollContainer';
 import { getSongByAlbumId, wipeFetchOnScrollSongs } from '../../../actions/SongAction';
 import {Link} from 'react-router-dom';
+import {withTranslation} from 'react-i18next';
 
 class AlbumDetail extends React.Component {
 
@@ -17,17 +18,18 @@ class AlbumDetail extends React.Component {
     render() {
         let {singleAlbum} = this.props.albums;
         let {singer={id: '',name: ''}} = singleAlbum;
+        let {t} = this.props;
         return (
             <Fragment>
                 <AlbumDetailHeader changeAudioSrc = {this.props.changeAudioSrc}
                  addMultiSongsToQueue={this.props.addMultiSongsToQueue}
                  list={this.props.list} album={singleAlbum} />
                 <h6 className="m-b">
-                    <span className="text-muted">by &nbsp;</span>
+                    <span className="text-muted">{t('by')} &nbsp;</span>
                     <Link to={`artists-detail-${singer.id}`}
                      data-pjax="" className="item-author _600">
                     {singer.name}</Link>
-                    <span className="text-muted text-sm">- {singleAlbum.songsCount} songs</span>
+                    <span className="text-muted text-sm">- {singleAlbum.songsCount} {t('songs').toLowerCase()}</span>
                 </h6>
                 <AlbumTrackListFetchOnScrollContainer me="songs" func={getSongByAlbumId} 
                 wipeFunc={wipeFetchOnScrollSongs} singerId={this.props.match.params.id}/>
@@ -39,4 +41,4 @@ class AlbumDetail extends React.Component {
     }
 }
 
-export default AlbumDetail;
+export default withTranslation('common')(AlbumDetail);

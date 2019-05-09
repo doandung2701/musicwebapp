@@ -5,7 +5,8 @@ import {
     ADD_SONG_TO_QUEUE,
     TOGGLE_REPEAT,
     REMOVE_ITEM_FROM_QUEUE,
-    ADD_MULTI_SONG_TO_QUEUE
+    ADD_MULTI_SONG_TO_QUEUE,
+    LIKE_PLAYING_SONG_SUCCESS
 } from "../constants/constants";
 import { findSongIndexInQueue } from "../helpers/helper";
 
@@ -70,6 +71,16 @@ export const playerReducer = (state = initialState, action) => {
                 ...state,
                 queue,
                 // nowPlaying
+            }
+        case LIKE_PLAYING_SONG_SUCCESS: 
+            if (state.nowPlaying.songId===action.songId){
+                nowPlaying = {...state,likeUserIds: [...state.nowPlaying.likeUserIds,action.userId]};
+                return {
+                    ...state,
+                    nowPlaying
+                }
+            }else{
+                return state;
             }
         default: return state;
     }

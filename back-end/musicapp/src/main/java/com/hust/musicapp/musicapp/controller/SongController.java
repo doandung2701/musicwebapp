@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+
 import org.springframework.core.io.Resource;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/songs")//all request starting with /songs go here
 @CrossOrigin("*")//enable cross origin resources sharing
 public class SongController {
-    Logger logger= LoggerFactory.getLogger(SongController.class);
+    Logger logger = LoggerFactory.getLogger(SongController.class);
     @Autowired
     private SongService songService;
 
@@ -55,18 +56,18 @@ public class SongController {
     @GetMapping("/find-all")
     public ResponseEntity<?> findAll() {
         List<Song> songs = songService.findAll();
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/find/find-by-cate-limit-4")
-    public ResponseEntity<?> select4RandomByCategory(@RequestParam("id") Long categoryId){
-        List<Song> songs=songService.select4RandomByCategory(categoryId);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+    public ResponseEntity<?> select4RandomByCategory(@RequestParam("id") Long categoryId) {
+        List<Song> songs = songService.select4RandomByCategory(categoryId);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -86,8 +87,8 @@ public class SongController {
 
         Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
         List<Song> songs = songService.findAllWithPaging(pageable);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -95,15 +96,15 @@ public class SongController {
 
     @GetMapping("/find-paging-by-singer")
     public ResponseEntity<?> findPagingBySinger(@RequestParam("page") Integer page,
-                                                 @RequestParam("rows") Integer rows,
-                                                 @NotNull @RequestParam("id") Long singerId,
-                                                 @Nullable @RequestParam("orderBy") String order,
-                                                 @Nullable @RequestParam("direction") String direction) {
+                                                @RequestParam("rows") Integer rows,
+                                                @NotNull @RequestParam("id") Long singerId,
+                                                @Nullable @RequestParam("orderBy") String order,
+                                                @Nullable @RequestParam("direction") String direction) {
 
         Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
-        List<Song> songs = songService.findDistinctBySingers(singerId,pageable);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        List<Song> songs = songService.findDistinctBySingers(singerId, pageable);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -111,15 +112,15 @@ public class SongController {
 
     @GetMapping("/find-paging-by-user")
     public ResponseEntity<?> findPagingByUser(@RequestParam("page") Integer page,
-                                                         @RequestParam("rows") Integer rows,
-                                                         @NotNull @RequestParam("id") Long userId,
-                                                         @Nullable @RequestParam("orderBy") String order,
-                                                         @Nullable @RequestParam("direction") String direction) {
+                                              @RequestParam("rows") Integer rows,
+                                              @NotNull @RequestParam("id") Long userId,
+                                              @Nullable @RequestParam("orderBy") String order,
+                                              @Nullable @RequestParam("direction") String direction) {
 
         Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
-        List<Song> songs = songService.findByUserId(userId,pageable);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        List<Song> songs = songService.findByUserId(userId, pageable);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -127,15 +128,15 @@ public class SongController {
 
     @GetMapping("/find-paging-by-album")
     public ResponseEntity<?> findPagingByAlbum(@RequestParam("page") Integer page,
-                                              @RequestParam("rows") Integer rows,
-                                              @NotNull @RequestParam("id") Long albumId,
-                                              @Nullable @RequestParam("orderBy") String order,
-                                              @Nullable @RequestParam("direction") String direction) {
+                                               @RequestParam("rows") Integer rows,
+                                               @NotNull @RequestParam("id") Long albumId,
+                                               @Nullable @RequestParam("orderBy") String order,
+                                               @Nullable @RequestParam("direction") String direction) {
 
         Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
-        List<Song> songs = songService.findDistinctByAlbumId(albumId,pageable);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        List<Song> songs = songService.findDistinctByAlbumId(albumId, pageable);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -143,15 +144,38 @@ public class SongController {
 
     @GetMapping("/find-paging-by-playlist")
     public ResponseEntity<?> findPagingByPlaylist(@RequestParam("page") Integer page,
-                                               @RequestParam("rows") Integer rows,
-                                               @NotNull @RequestParam("id") Long playlistId,
-                                               @Nullable @RequestParam("orderBy") String order,
-                                               @Nullable @RequestParam("direction") String direction) {
+                                                  @RequestParam("rows") Integer rows,
+                                                  @NotNull @RequestParam("id") Long playlistId,
+                                                  @Nullable @RequestParam("orderBy") String order,
+                                                  @Nullable @RequestParam("direction") String direction) {
 
         Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
-        List<Song> songs = songService.findDistinctByPlayListsId(playlistId,pageable);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        List<Song> songs = songService.findDistinctByPlayListsId(playlistId, pageable);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
+            response.add(new SongResponse(song));
+        });
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/find-paging-by-category")
+    public ResponseEntity<?> findPagingByCategory(@RequestParam("page") Integer page,
+                                                  @RequestParam("rows") Integer rows,
+                                                  @NotNull @RequestParam("id") String id,
+                                                  @Nullable @RequestParam("orderBy") String order,
+                                                  @Nullable @RequestParam("direction") String direction) {
+
+        Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
+        List<Song> songs;
+        System.out.println("ID" + id);
+        if (id.equals("0")) {
+            System.out.println("Here");
+            songs = songService.findAllWithPaging(pageable);
+        } else {
+            songs = songService.findPagingByCategoriesId(id, pageable);
+        }
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -159,9 +183,9 @@ public class SongController {
 
     @GetMapping("/find-by-singer-ids")
     public ResponseEntity<?> findBySingers(@RequestParam("ids") List<Long> ids) {
-        List<Song> songs=songService.findBySingerId(ids);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        List<Song> songs = songService.findBySingerId(ids);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -169,9 +193,9 @@ public class SongController {
 
     @GetMapping("/find-by-author-ids")
     public ResponseEntity<?> findByAuthors(@RequestParam("ids") List<Long> ids) {
-        List<Song> songs=songService.findByAuthorId(ids);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        List<Song> songs = songService.findByAuthorId(ids);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -179,9 +203,9 @@ public class SongController {
 
     @GetMapping("/find-by-category-ids")
     public ResponseEntity<?> findByCategories(@RequestParam("ids") List<String> ids) {
-        List<Song> songs=songService.findByCategoriesId(ids);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        List<Song> songs = songService.findByCategoriesId(ids);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -189,9 +213,9 @@ public class SongController {
 
     @GetMapping("/find-recommended-songs")
     public ResponseEntity<?> findRecommendedSong(@RequestParam("ids") List<String> ids) {
-        List<Song> songs=songService.findDistinctByCategoriesIn(ids);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        List<Song> songs = songService.findDistinctByCategoriesIn(ids);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -199,26 +223,26 @@ public class SongController {
 
     @GetMapping("/find-by-id/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
-        Song songs=songService.findById(id);
+        Song songs = songService.findById(id);
         return ResponseEntity.ok(new SongResponse(songs));
 
     }
 
     @GetMapping("/find-by-name")
-    public ResponseEntity<?> findByName( @RequestParam("name") String name) {
-        List<Song> songs=songService.findByNameLike(name);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+    public ResponseEntity<?> findByName(@RequestParam("name") String name) {
+        List<Song> songs = songService.findByNameLike(name);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/find-top-popular-by-singer")
-    public ResponseEntity<?> findTopByListenCountAndSingers(@RequestParam("id") Long singerId){
-        List<Song> songs=songService.findTopByListenCountAndSingers(PageRequest.of(0,4),singerId);
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+    public ResponseEntity<?> findTopByListenCountAndSingers(@RequestParam("id") Long singerId) {
+        List<Song> songs = songService.findTopByListenCountAndSingers(PageRequest.of(0, 4), singerId);
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -234,10 +258,11 @@ public class SongController {
     public ResponseEntity<?> updateSong(@RequestBody List<Song> songs) {
         return ResponseEntity.ok(songService.saveAll(songs));
     }
+
     @PostMapping("/users/upload-song")
-    public ResponseEntity<?> uploadSong(@RequestBody SongUploadPayload songUploadPayload){
+    public ResponseEntity<?> uploadSong(@RequestBody SongUploadPayload songUploadPayload) {
         Song song
-                =new Song();
+                = new Song();
         song.setSongName(songUploadPayload.getSongName());
         song.setBriefDesciption(songUploadPayload.getBriefDesciption());
         song.setChecked(songUploadPayload.isChecked());
@@ -247,58 +272,59 @@ public class SongController {
         song.setUploadDate(new Date(System.currentTimeMillis()));
         song.setCategories(new HashSet<>(songUploadPayload.getCategories()));
         song.setUser(userservice.findById(songUploadPayload.getUser()).get());
-        return ResponseEntity.ok( songService.save(song));
+        return ResponseEntity.ok(songService.save(song));
     }
+
     @DeleteMapping("/delete-song")
     public ResponseEntity<?> deleteSong(@RequestBody Song song) {
         Song s = songService.findById(song.getSongId());
-        if (s!=null) {
+        if (s != null) {
             songService.deleteSong(s);
             return ResponseEntity.ok("Delete Sucessfully!");
-        }
-        else return  ResponseEntity.notFound().build();
+        } else return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/count/get-listen-count")
-    public ResponseEntity<?> getListenCount(@RequestParam("songId") Long id){
+    public ResponseEntity<?> getListenCount(@RequestParam("songId") Long id) {
         Song song = songService.findById(id);
-        if (song==null){
+        if (song == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(song.getListenCount());
     }
+
     @GetMapping("/find-trending")
-    public ResponseEntity<?> getSongTrending(){
-    return ResponseEntity.ok(songService.getSongTrending());
+    public ResponseEntity<?> getSongTrending() {
+        return ResponseEntity.ok(songService.getSongTrending());
     }
 
     @GetMapping("/find-trending-jpa")
-    public ResponseEntity<?> getSongTrendingJpa(){
-        List<Song> songs=songService.getSongTrending(PageRequest.of(0,9));
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+    public ResponseEntity<?> getSongTrendingJpa() {
+        List<Song> songs = songService.getSongTrending(PageRequest.of(0, 9));
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/find-newest")
-    public ResponseEntity<?> getSongNewest(){
+    public ResponseEntity<?> getSongNewest() {
         return ResponseEntity.ok(songService.getNewestSong());
     }
 
     @PutMapping("/increase-listen-count")
-    public ResponseEntity<?> increaseListenCount(@RequestParam("songId") Long songId){
+    public ResponseEntity<?> increaseListenCount(@RequestParam("songId") Long songId) {
         Song s = songService.findById(songId);
-        s.setListenCount(s.getListenCount()+1);
+        s.setListenCount(s.getListenCount() + 1);
         return ResponseEntity.ok(songService.save(s));
     }
 
     @GetMapping("/find-newest-jpa")
-    public ResponseEntity<?> getSongNewestJpa(){
-        List<Song> songs=songService.getSongNewestJpa(PageRequest.of(0,8));
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+    public ResponseEntity<?> getSongNewestJpa() {
+        List<Song> songs = songService.getSongNewestJpa(PageRequest.of(0, 8));
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -306,35 +332,35 @@ public class SongController {
     }
 
     @GetMapping("/find-lovest-jpa")
-    public ResponseEntity<?> getTopFiveSongLovestJpa(){
-        List<Song> songs=songService.findTopByLikeCount(PageRequest.of(0,5));
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+    public ResponseEntity<?> getTopFiveSongLovestJpa() {
+        List<Song> songs = songService.findTopByLikeCount(PageRequest.of(0, 5));
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
     }
+
     @GetMapping("/find-charts")
-    public ResponseEntity<?> getChartSongs(){
+    public ResponseEntity<?> getChartSongs() {
         return ResponseEntity.ok(songService.getChartSongs());
     }
 
     @GetMapping("/find-charts-jpa")
-    public ResponseEntity<?> getChartSongs(@Nullable @RequestParam("id") String categoryId){
+    public ResponseEntity<?> getChartSongs(@Nullable @RequestParam("id") String categoryId) {
 
 
-
-        if (categoryId==null){
-            List<Song> songs=songService.getChartAll(PageRequest.of(0,10));
-            ArrayList<SongResponse> response= new ArrayList<>();
-            songs.stream().forEach(song->{
+        if (categoryId == null) {
+            List<Song> songs = songService.getChartAll(PageRequest.of(0, 10));
+            ArrayList<SongResponse> response = new ArrayList<>();
+            songs.stream().forEach(song -> {
                 response.add(new SongResponse(song));
             });
             return ResponseEntity.ok(response);
         }
-        List<Song> songs=songService.getChartSongs(categoryId,PageRequest.of(0,10));
-        ArrayList<SongResponse> response= new ArrayList<>();
-        songs.stream().forEach(song->{
+        List<Song> songs = songService.getChartSongs(categoryId, PageRequest.of(0, 10));
+        ArrayList<SongResponse> response = new ArrayList<>();
+        songs.stream().forEach(song -> {
             response.add(new SongResponse(song));
         });
         return ResponseEntity.ok(response);
@@ -347,54 +373,57 @@ public class SongController {
         sdf.setLenient(true);
         binder.registerCustomEditor(java.sql.Date.class, new CustomDateEditor(sdf, true));
     }
+
     @PutMapping("/{id}/upload-song")
-    public ResponseEntity uploadSong(@RequestParam("file") MultipartFile file, @PathVariable("id")Long id) throws Exception{
+    public ResponseEntity uploadSong(@RequestParam("file") MultipartFile file, @PathVariable("id") Long id) throws Exception {
         String fileName = "";
 
-            try {
-                fileName = fileStorageService.storeFile(file);
+        try {
+            fileName = fileStorageService.storeFile(file);
 
-            } catch (FileStorageException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
-                    .path(fileName).toUriString();
-            Song song=songService.findById(id);
-            song.setSongSrc(fileUri);
-            songService.save(song);
+        } catch (FileStorageException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                .path(fileName).toUriString();
+        Song song = songService.findById(id);
+        song.setSongSrc(fileUri);
+        songService.save(song);
         return ResponseEntity.ok(song);
     }
+
     @PutMapping("/{id}/upload-image-song")
-    public ResponseEntity uploadThumbnail(@RequestParam("file") MultipartFile file,@PathVariable("id") Long id) throws Exception{
+    public ResponseEntity uploadThumbnail(@RequestParam("file") MultipartFile file, @PathVariable("id") Long id) throws Exception {
         String fileName = "";
 
-            try {
-                fileName = fileStorageService.storeFile(file);
+        try {
+            fileName = fileStorageService.storeFile(file);
 
-            } catch (FileStorageException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
-                    .path(fileName).toUriString();
-            Song song=songService.findById(id);
-            song.setThumbnail(fileUri);
-            songService.save(song);
+        } catch (FileStorageException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                .path(fileName).toUriString();
+        Song song = songService.findById(id);
+        song.setThumbnail(fileUri);
+        songService.save(song);
 
         return ResponseEntity.ok(songService.save(song));
     }
+
     @GetMapping("downloadSong/{fileName:.+}")
-    public ResponseEntity<Resource> downloadSong(@PathVariable String fileName, HttpServletRequest request){
-        Resource resource=fileStorageService.loadFileAsResource(fileName);
-        String contentType=null;
+    public ResponseEntity<Resource> downloadSong(@PathVariable String fileName, HttpServletRequest request) {
+        Resource resource = fileStorageService.loadFileAsResource(fileName);
+        String contentType = null;
         try {
-            contentType=request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        }catch (IOException e){
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException e) {
             logger.info("Could not determine file type.");
 
         }
-        if (contentType==null){
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
         return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))

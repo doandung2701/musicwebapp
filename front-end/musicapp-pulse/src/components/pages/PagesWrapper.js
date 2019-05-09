@@ -1,5 +1,4 @@
 import React from 'react';
-import FooterPlayerContainer from '../player/FooterPlayerContainer';
 import HiddenHeader from '../headers/HiddenHeader';
 import PageRight from './PageRight';
 import BrowsePage from './BrowsePage/BrowsePage';
@@ -45,12 +44,11 @@ class PagesWrapper extends React.Component {
                     <HiddenHeader />
                     {/* <FooterPlayerContainer /> */}
                     <div className="app-body" id="view">
-                        {isBgVisible && <UserBgImg history={history} />}
+                        {isBgVisible && <UserBgImg />}
                         {/* ############ PAGE START*/}
                         <div className="page-content">
                             {(history.location.pathname === "/discover" || history.location.pathname === "/")
                                 && <DiscoverPageHeaderContainer />}
-                          
                             <div className="row-col">
                                 <div className="col-lg-9 b-r no-border-md">
                                     <div className="padding">

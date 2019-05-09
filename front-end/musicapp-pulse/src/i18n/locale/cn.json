@@ -1,0 +1,123 @@
+{
+    "common": {
+        "discover": "發現",
+        "charts": "圖表",
+        "browse": "瀏覽",
+        "artist": "藝術家",
+        "search": "搜索",
+        "main": "主要",
+        "profile": "你的個人資料",
+        "signin": "登錄",
+        "signup": "註冊",
+        "signout": "退出",
+        "language": "英語",
+        "all": "全部",
+        "songs": "歌曲",
+        "or": "或",
+        "and": "和",
+        "email": "電子郵件",
+        "password": "密碼",
+        "username": "用戶名",
+        "playlist": "播放列表",
+        "playlists": "播放列表",
+        "track": "軌道",
+        "tracks": "曲目",
+        "like": "喜歡",
+        "likes": "喜歡",
+        "edit": "編輯",
+        "delete": "刪除",
+        "cancel": "取消",
+        "album": "專輯",
+        "albums": "專輯",
+        "overview": "概述",
+        "nosongs": "沒有找到歌曲",
+        "by": "by",
+        "share": "分享",
+        "remove": "刪除",
+        "sure": "你確定嗎?",
+        "error": "錯誤",
+        "sucess": "成功",
+        "description": "描述",
+        "name": "名字",
+        "author": "作者",
+        "authors": "作者",
+        "singer": "歌手",
+        "singers": "歌手",
+        "category": "類別",
+        "categories": "類別",
+        "ok": "OK",
+        "download": "下載"
+    },
+    "validate": {
+        "tooshort": "太短（至少需要3個字符。）",
+        "toolong": "太長（最多40個字符）",
+        "toolongdes": "太長（最多150個字符）。",
+        "required": "是必需的",
+        "image": "圖像",
+        "format": "格式不匹配",
+        "size": "文件太大,最大1048576KB"
+    },
+    "discoverpage": {
+        "discover": "發現",
+        "trending": "趨勢",
+        "new": "新",
+        "recommend": "推薦給你",
+        "liking": "你喜歡什麼？"
+    },
+    "searchpage": {
+        "placeholder": "類型關鍵字...",
+        "results": "找到的結果:",
+        "noresults": "沒有結果"
+    },
+    "signinout": {
+        "signinfb": "使用Facebook登錄",
+        "signingp": "使用Google +登錄",
+        "keepsignin": "讓我登錄",
+        "forgot": "忘了你的密碼？",
+        "noacc": "沒有賬號？",
+        "byclick": "通過點擊",
+        "agree": ",我同意",
+        "tos": "服務條款",
+        "pp": "隱私政策",
+        "haveacc": "已經有賬號？",
+        "signupfb": "註冊Facebook",
+        "signupgp": "使用Google +註冊"
+    },
+    "user": {
+        "upload": "上傳",
+        "edit": "編輯個人資料",
+        "profile": "個人資料",
+        "upava": "上傳頭像",
+        "addnewtrack": "添加新曲目"
+    },
+    "artist": {
+        "popular": "熱門",
+        "noalbums": "沒有專輯"
+    },
+    "track": {
+        "sameartist": "來自同一位藝術家",
+        "addtoqueue": "添加到隊列",
+        "addtopp": "添加到播放列表",
+        "unknown": "未知",
+        "select": "選擇一個或多個",
+        "selectplaceholder": "點擊此處選擇"
+    },
+    "comment": {
+        "comments": "評論",
+        "leavecmt": "在這裡留言",
+        "typesth": "輸入一些東西......",
+        "post": "崗位",
+        "rep": "回复",
+        "loginreq": "請登錄發表評論",
+        "notnull": "評論的內容不得為空"
+    },
+    "pageright": {
+        "about": "關於",
+        "contact": "聯繫方式",
+        "policy": "政策",
+        "mobile": "移動",
+        "downloadon": "下載",
+        "getiton": "搞定",
+        "5likes": "5贊"
+    }
+}

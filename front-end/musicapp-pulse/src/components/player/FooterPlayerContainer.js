@@ -3,7 +3,8 @@ import { changePlayerStatus, changeAudioSrc, toggleRepeat } from './PlayerAction
 import FooterPlayer from './FooterPlayer';
 
 let mapStateToProps = state=>({
-    player: state.player
+    player: state.player,
+    authenticated: state.authentication.authenticated
 })
 
 let mapDispatchToProps = dispatch =>({

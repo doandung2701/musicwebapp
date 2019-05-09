@@ -10,9 +10,9 @@ import {
     GET_SONG_BY_ID_FAIL, GETTING_SONG_BY_USER_ID, GET_SONG_BY_USER_ID_SUCCESS,
     GET_SONG_BY_USER_ID_FAIL, LIKE_SONG_SUCCESS, LIKING_SONG, UPLOAD_SONG_FAIL, 
     UPLOADING_SONG, UPLOAD_SONG_SUCCESS, GET_SONGS_BY_ALBUMS_ID_FAIL,
-     GET_SONGS_BY_ALBUMS_ID_SUCCESS, GETTING_SONGS_BY_ALBUMS_ID, GETTING_RECOMMENDED_SONGS, GET_RECOMMENDED_SONGS_SUCCESS, GET_RECOMMENDED_SONGS_FAIL, GETTING_SONGS_BY_PLAYLIST_ID, GET_SONGS_BY_PLAYLIST_ID_SUCCESS, GET_SONGS_BY_PLAYLIST_ID_FAIL,
+     GET_SONGS_BY_ALBUMS_ID_SUCCESS, GETTING_SONGS_BY_ALBUMS_ID, GETTING_RECOMMENDED_SONGS, GET_RECOMMENDED_SONGS_SUCCESS, GET_RECOMMENDED_SONGS_FAIL, GETTING_SONGS_BY_PLAYLIST_ID, GET_SONGS_BY_PLAYLIST_ID_SUCCESS, GET_SONGS_BY_PLAYLIST_ID_FAIL, GETTING_SONGS_BY_CATEGORY_PAGING, GET_SONGS_BY_CATEGORY_PAGING_SUCCESS, GET_SONGS_BY_CATEGORY_PAGING_FAIL, LIKE_PLAYING_SONG_SUCCESS,
 } from "../constants/constants";
-import { getAllSongWithPagingApi, getTop5LikeApi, getTrendingSongsApi, getRandom4JazzApi, getRandom4PopApi, get8NewApi, getSongsBySingerPagingApi, getSongByIdApi, getSongByUserIdApi, createSong, uploadImageSong, uploadSongFile, getSongsByAlbumsIdApi, getRecommendedSongsApi, getSongsByPlayListIdApi } from "../Api/SongApi";
+import { getAllSongWithPagingApi, getTop5LikeApi, getTrendingSongsApi, getRandom4JazzApi, getRandom4PopApi, get8NewApi, getSongsBySingerPagingApi, getSongByIdApi, getSongByUserIdApi, createSong, uploadImageSong, uploadSongFile, getSongsByAlbumsIdApi, getRecommendedSongsApi, getSongsByPlayListIdApi, getSongsByCategoryIdApi } from "../Api/SongApi";
 import { likeSongApi } from "../Api/UserApi";
 import { message } from "antd";
 import { toTop } from "../helpers/helper";
@@ -171,13 +171,16 @@ const getRecommendedSongsFail = ()=>({
     type: GET_RECOMMENDED_SONGS_FAIL
 })
 
+const likePlayingSongSuccess = (songId,userId)=>({
+    type: LIKE_PLAYING_SONG_SUCCESS
+})
+
 export const getRecommendedSongs = (ids)=>{
     return async dispatch=>{
         dispatch(gettingRecommendedSongs());
         try{
             let data = await getRecommendedSongsApi(ids);
             dispatch(getRecommendedSongsSuccess(data.data));
-            console.log("data",data.data)
         }catch(err){
             dispatch(getRecommendedSongsFail());
         }
@@ -216,6 +219,7 @@ export const likeSong = (userId, songId) => {
         try {
             await likeSongApi(songId, userId);
             dispatch(likeSongSuccess(songId, userId));
+            dispatch(likePlayingSongSuccess(songId,userId))
         } catch (err) {
             message.error(err.toString(), 3);
         }
@@ -344,6 +348,35 @@ const uploadSongFail = (err) => ({
     type: UPLOAD_SONG_FAIL,
     err
 })
+
+const gettingSongsByCatPaging = ()=>({
+    type: GETTING_SONGS_BY_CATEGORY_PAGING
+})
+
+const getSongsByCatPagingSuccess= (songs)=>({
+    type: GET_SONGS_BY_CATEGORY_PAGING_SUCCESS,
+    songs
+})
+
+const getSongsByCatPagingFail = ()=>({
+    type: GET_SONGS_BY_CATEGORY_PAGING_FAIL
+})
+
+export const getSongsByCategoryPaging = (page,id) => {
+    return async dispatch => {
+        dispatch(gettingSongsByCatPaging());
+        try {
+            setTimeout(async () => {
+                let data = await getSongsByCategoryIdApi(page,id);
+                dispatch(getSongsByCatPagingSuccess(data.data));
+            }, 1000)
+            // console.log(data.data);
+        } catch (err) {
+            dispatch(getSongsByCatPagingFail());
+        }
+    }
+}
+
 export const uploadSong = (data, image, song) => {
     return dispatch => {
         dispatch(gettingUploadSong())
@@ -352,8 +385,6 @@ export const uploadSong = (data, image, song) => {
             let { songId } = response.data;
             uploadImageSong(songId, image).then(data => {
                 uploadSongFile(songId, song).then(response => {
-                    console.log(response.data);
-
                     dispatch(uploadSongSuccess(response.data))
                 })
             })

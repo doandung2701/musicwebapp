@@ -20,3 +20,27 @@ export const getPlaylistsByUserIdApi = (id)=>{
 export const getPlaylistsByIdApi = (id)=>{
     return axios.get(`find-by-id/${id}`);
 }
+
+export const createPlaylistApi = (payload)=>{
+    return axios.post('save-playlist',payload);
+}
+
+export const editPlaylistApi = (payload)=>{
+    return axios.put('save-playlist',payload);
+}
+
+export const deletePlayListApi = (id)=>{
+    return axios.delete('delete-playlist',{
+        params:{
+            id
+        }
+    })
+}
+
+export const addSongsToPlaylistApi = (payload)=>{
+    return axios.put('add-songs',payload)
+}
+
+export const removeSongsFromPlaylistApi = (payload)=>{
+    return axios.put('remove-songs',payload);
+}

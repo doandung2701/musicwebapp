@@ -102,7 +102,6 @@ export const getSongsByAlbumsIdApi = (page, id) => {
 }
 
 export const getSongsByPlayListIdApi = (page, id) => {
-    console.log(id);
     return axios.get("find-paging-by-playlist", {
         params: {
             page,
@@ -111,6 +110,18 @@ export const getSongsByPlayListIdApi = (page, id) => {
         }
     })
 }
+
+export const getSongsByCategoryIdApi = (page, id) => {
+    return axios.get("find-paging-by-category", {
+        params: {
+            page,
+            id,
+            rows: 12
+        }
+    })
+}
+
+
 
 export const createSong = (data) => {
     console.log(data);
@@ -145,4 +156,12 @@ export const increaseListenCountApi = (songId)=>{
             songId
         }
     })
+}
+export const downloadSongApi = (name)=>{
+    console.log(name)
+    return axios.get(`downloadSong/${name}`,{
+        headers: {
+            "Accept": "application/octet-stream"
+        }
+    });
 }

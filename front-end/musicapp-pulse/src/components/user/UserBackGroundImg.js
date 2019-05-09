@@ -3,18 +3,33 @@ import {connect} from 'react-redux';
 
 class UserBgImg extends React.Component {
 
+    constructor(props){
+        super(props);
+        this.state = {
+            pathname: window.location.pathname
+        }
+    }
+
     determineBg = ()=>{
-        let location = this.props.history.location;
-        if (location.pathname.indexOf('/artists-detail-')>=0){
+        let {pathname} = this.state; 
+        if (pathname.indexOf('/artists-detail-')>=0){
             return this.props.singer.thumbnail;
-        }else if (location.pathname.indexOf('/user-profile')>=0){
+        }else if (pathname.indexOf('/user-profile')>=0){
             return this.props.currentUser.imageUrl;
-        }else if (location.pathname.indexOf('/track')>=0){
+        }else if (pathname.indexOf('/track')>=0){
             return this.props.songThumbnail;
-        }else if (location.pathname.indexOf('/album')>=0){
+        }else if (pathname.indexOf('/album')>=0){
             return this.props.singleAlbumThumbnail;
-        }else if (location.pathname.indexOf('/playlists')>=0){
+        }else if (pathname.indexOf('/playlist')>=0){
             return this.props.singlePlaylistThumbnail;
+        }
+    }
+
+    componentDidUpdate(){
+        if (this.state.pathname!==window.location.pathname){
+            this.setState({
+                pathname: window.location.pathname
+            })
         }
     }
 
