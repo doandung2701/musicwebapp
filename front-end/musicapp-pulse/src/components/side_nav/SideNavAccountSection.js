@@ -21,12 +21,13 @@ export default class SideNavAccountSection extends React.Component {
                             <span className="block _500 text-ellipsis" >{user.name}</span>
                         </span>
                     </a>
+                    {user.name!='Some name'&&
                     <div className="dropdown-menu w dropdown-menu-scale ">
                         <Link className="dropdown-item" to="/user-profile">
                             <span>{t('profile')}</span>
                         </Link>
-                        <a className="dropdown-item" onClick={this.props.onLogout}>{t('signout')}</a>
-                    </div>
+                       <a className="dropdown-item" onClick={this.props.onLogout}>{t('signout')}</a>
+                    </div>}
                 </div>
 
             </div>

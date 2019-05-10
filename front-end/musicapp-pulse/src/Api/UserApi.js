@@ -74,3 +74,6 @@ export const changeAvaApi = (data, userId) => {
 export const saveFavCatApi = (data) => {
     return axios.post('/users/add-fav-cat',data);
 } 
+export const updateFavCatApi=(name,data)=>{
+    return axios.put(`/users/add-fav-cat?name=${name}`,data);
+}
