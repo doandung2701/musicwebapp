@@ -89,6 +89,22 @@ public class PlayListController {
         return ResponseEntity.ok(new PlaylistPayload(playListService.findById(id)));
     }
 
+    @PostMapping("/save-playlist-thumbnail")
+    public ResponseEntity<?> addPlaylistThumbail(@RequestParam("file") MultipartFile file) {
+        System.out.println(file);
+        String fileName = "";
+        try {
+            fileName = fileStorageService.storeFile(file);
+
+        } catch (FileStorageException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                .path(fileName).toUriString();
+        return ResponseEntity.ok(fileUri);
+    }
+
     @PostMapping("/save-playlist")
     public ResponseEntity<?> addPlaylist(@RequestBody PlaylistPayload playlist) {
         return ResponseEntity.ok(playListService.save(new PlayList(playlist)));
