@@ -93,6 +93,16 @@ public class SongServiceImp implements SongService {
     }
 
     @Override
+    public List<Song> findPagingByCategoriesId(String id,Pageable pageable) {
+        return songRepo.findPagingByCategoriesId(id,pageable);
+    }
+
+    @Override
+    public List<Song> findDistinctBySongIdIn(List<Long> ids) {
+        return songRepo.findDistinctBySongIdIn(ids);
+    }
+
+    @Override
     public List<Song> findAllWithPaging(Pageable pageable) {
         return songRepo.findAll(pageable).getContent();
     }

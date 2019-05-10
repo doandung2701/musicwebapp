@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import { Tooltip } from 'antd';
 import moment from 'moment';
-import { playAlbum } from '../../../helpers/helper';
+import { playAlbum, getIdList, getSrcList } from '../../../helpers/helper';
 import TrackActionModalContainer from '../../../containers/TrackActionModalContainer';
 
 class PlayListDetailHeader extends React.Component {
   render() {
-    let {playlist,addMultiSongsToQueue,list} = this.props;
+    let {playlist,addMultiSongsToQueue} = this.props;
     return (
       <div className="padding b-b">
         <div className="row-col">
@@ -29,11 +29,14 @@ class PlayListDetailHeader extends React.Component {
                 <a className="btn btn-icon white rounded btn-share pull-right" 
                 data-toggle="modal" data-target="#share-modal"><i className="fa fa-share-alt" /></a>
                 <button className="btn-playpause text-primary m-r-sm" 
-                  onClick={()=>{playAlbum.bind(this)(list) ;addMultiSongsToQueue(list)}}
+                  onClick={()=>{playAlbum.bind(this)(playlist.songs) ;addMultiSongsToQueue(playlist.songs)}}
                 />
                 <div className="inline dropdown m-l-xs">
                   <a className="btn btn-icon rounded btn-more" data-toggle="dropdown"><i className="fa fa-ellipsis-h" /></a>
-                  <TrackActionModalContainer onAddToQueue={()=>addMultiSongsToQueue(list)} />
+                  <TrackActionModalContainer playlistId={playlist.id} isInList={true}
+                  songSrcs={getSrcList(playlist.songs?playlist.songs:[])}
+                  songIds = {getIdList(playlist.songs?playlist.songs:[])}
+                  onAddToQueue={()=>addMultiSongsToQueue(playlist.songs)} />
                 </div>
               </div>
               <div className="item-meta">

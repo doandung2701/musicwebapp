@@ -1,12 +1,17 @@
 import React from 'react';
 
-const TrackPageHeaderLikeBtn = ({isLiked,likeSong,userId,songId}) => (
-    <button style={{
-        color: 'white',
-        border: 'none', background: 'transparent', cursor: 'pointer', marginRight: 10
-    }} className="btn btn-icon rounded btn-favorite" onClick={()=>likeSong(userId,songId)}>
-        <i className={`fa fa-heart${isLiked?'':'-o'}`} />
-    </button>
-)
+export default class TrackPageHeaderLikeBtn extends React.Component {
 
-export default TrackPageHeaderLikeBtn;
+
+    render() {
+        let { isLiked, likeSong, userId, songId } = this.props;
+        return (
+            <button style={{
+                color: 'white',
+                border: 'none', background: 'transparent', cursor: 'pointer', marginRight: 10
+            }} className="btn btn-icon rounded btn-favorite" onClick={() => likeSong(userId, songId)}>
+                <i className={`fa fa-heart${isLiked ? '' : '-o'}`} />
+            </button>
+        )
+    }
+}

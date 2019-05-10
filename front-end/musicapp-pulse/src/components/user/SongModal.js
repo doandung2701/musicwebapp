@@ -4,10 +4,12 @@ import { getAllAuthorsApi } from '../../Api/AuthorApi';
 import { getAllSinger } from '../../Api/SingerApi';
 import { getAllCategoriesApi } from '../../Api/CategoryApi';
 import { dummyRequest } from '../../helpers/helper';
+import {withTranslation} from 'react-i18next';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-export default class SongModal extends Component {
+class SongModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -73,7 +75,34 @@ export default class SongModal extends Component {
         this.setState({
             isLoading:false
         })
-        this.close();
+
+        this.setState({
+            songName: {
+                value: ''
+            },
+            briefDesciption: {
+                value: ''
+            },
+            authors: {
+                value: []
+            },
+            singers: {
+                value: []
+            },
+            categories: {
+                value: []
+            },
+            formDataSong: {
+                value: null
+            },
+            formDataThumbnail: {
+                value: null
+            },
+            dataAuthor: [],
+            dataSinger: [],
+            dataCategory: [],
+            isLoading:false,
+        })
         this.props.closeModal();
 
     }
@@ -155,15 +184,16 @@ export default class SongModal extends Component {
         });
     }
     validateName(name) {
+        let {t} = this.props;
         if (name.length < 3) {
             return {
                 validateStatus: 'error',
-                errorMsg: `Name is too short (Minimum 3 characters needed.)`
+                errorMsg: t('name')+" "+t("validate:tooshort")
             }
         } else if (name.length > 40) {
             return {
                 validationStatus: 'error',
-                errorMsg: `Name is too long (Maximum 40 characters allowed.)`
+                errorMsg: t('name')+" "+t("validate:toolong")
             }
         } else {
             return {
@@ -173,15 +203,16 @@ export default class SongModal extends Component {
         }
     }
     validateDescription(description) {
+        let {t} = this.props;
         if (description.length < 3) {
             return {
                 validateStatus: 'error',
-                errorMsg: `Description is too short (Minimum 3 characters needed.)`
+                errorMsg: t('description')+" "+t("validate:tooshort")
             }
         } else if (description.length > 150) {
             return {
                 validationStatus: 'error',
-                errorMsg: `Description is too long (Maximum 150 characters allowed.)`
+                errorMsg: t('description')+" "+t("validate:toolongdes")
             }
         } else {
             return {
@@ -190,22 +221,24 @@ export default class SongModal extends Component {
             }
         }
     }
-    validateThumbnail(file) {
-        
+    validateThumbnail(file) {     
+              let {t} = this.props;
+
         if (this.state.formDataThumbnail.value == null) {
+        if (file === null) {
             return {
                 validateStatus: 'error',
-                errorMsg: `Image is required`
+                errorMsg: t('validate:image')+" "+t("validate:required")
             }
         } else if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(file.name)) {
             return {
                 validationStatus: 'error',
-                errorMsg: `Image not using format`
+                errorMsg: t('validate:image')+" "+t("validate:format")
             }
         }else if(file.size>=1048576){
             return {
                 validationStatus: 'error',
-                errorMsg: `File size to big. file size < 1048576`
+                errorMsg: t("validate:size")
             }
         }
         
@@ -217,16 +250,18 @@ export default class SongModal extends Component {
         }
     }
     validateSong(file) {
+        let {t} = this.props;
 
         if (this.state.formDataSong.value == null) {
+        if (file === null) {
             return {
                 validateStatus: 'error',
-                errorMsg: `Song file is required`
+                errorMsg: t('song')+" "+t("validate:required")
             }
         } else if (!(/\.(?:wav|mp3)$/i).test(file.name)) {
             return {
                 validationStatus: 'error',
-                errorMsg: `Song file not using format`
+                errorMsg: t('song')+" "+t("validate:format")
             }
         } 
         else {
@@ -251,7 +286,8 @@ export default class SongModal extends Component {
                 value: null
             }
         })
-    }
+        }
+
     isFormInvalid() {
         return !(this.state.songName.validateStatus === 'success' &&
             this.state.briefDesciption.validateStatus === 'success' &&
@@ -304,22 +340,22 @@ export default class SongModal extends Component {
         this.props.closeModal();
     }
     render() {
-        const { isShow } = this.props;
+        const { isShow,t } = this.props;
         if (isShow) {
             return <div>
                 <Spin spinning={this.state.isLoading}>
                     <Modal
                         style={{ top: 0 }}
-                        title={"Add new Track"}
+                        title={t('user:addnewtrack')}
                         visible={isShow}
                         onOk={this.handleOk}
                         onCancel={()=>this.cancelModal()}
                         footer={[
-                            <Button key="back" onClick={()=>this.cancelModal()}>Return</Button>,
+                            <Button key="back" onClick={()=>this.cancelModal()}>{t('cancel')}</Button>,
                             <Button
                                 disabled={this.isFormInvalid()}
                                 key="submit" type="primary" loading={this.state.isLoading} onClick={this.handleOk}>
-                                Submit
+                                {t('ok')}
             </Button>,
                         ]}
                     >
@@ -328,38 +364,38 @@ export default class SongModal extends Component {
                             <Row gutter={16}>
                                 <Col span={12} className="gutter-row">
                                     <FormItem className="gutter-box" style={{ marginBottom: 0 }}
-                                        label="Song Name"
+                                        label={t('name')}
                                         validateStatus={this.state.songName.validateStatus}
                                         help={this.state.songName.errorMsg}>
                                         <Input
                                             size="large"
                                             name="songName"
-                                            placeholder="Song name"
+                                            placeholder={t('name')}
                                             onChange={(event) => this.handleInputChange(event, this.validateName)} />
                                     </FormItem>
                                 </Col>
                                 <Col span={12} className="gutter-row">
-                                    <FormItem label="Song Description" className="gutter-box" style={{ marginBottom: 0 }}
+                                    <FormItem label={t('description')} className="gutter-box" style={{ marginBottom: 0 }}
                                         validateStatus={this.state.briefDesciption.validateStatus}
                                         help={this.state.briefDesciption.errorMsg}>
                                         <Input
                                             defaultValue={""}
                                             size="large"
                                             name="briefDesciption"
-                                            placeholder="Description about song"
+                                            placeholder={t('description')}
                                             onChange={(event) => this.handleInputChange(event, this.validateDescription)} />
                                     </FormItem>
                                 </Col>
                             </Row>
                             <Row gutter={16}>
                                 <Col span={12} className="gutter-row">
-                                    <FormItem label="Authors" style={{ marginBottom: 0 }}
+                                    <FormItem label={t('authors')} style={{ marginBottom: 0 }}
                                         validateStatus={this.state.authors.validateStatus}
                                         help={this.state.authors.errorMsg}>
                                         <Select
                                             mode="multiple"
                                             name="authors"
-                                            placeholder="Authors"
+                                            placeholder={t('authors')}
                                             onChange={(event) => this.handleSelectChange(event, this.validateSelectMulti, "authors")} >
                                             {this.state.dataAuthor.map(data => (
                                                 <Option key={data.authorId}>
@@ -370,13 +406,13 @@ export default class SongModal extends Component {
                                     </FormItem>
                                 </Col>
                                 <Col span={12} className="gutter-row">
-                                    <FormItem label="Singers" style={{ marginBottom: 0 }}
+                                    <FormItem label={t('singers')} style={{ marginBottom: 0 }}
                                         validateStatus={this.state.singers.validateStatus}
                                         help={this.state.singers.errorMsg}>
                                         <Select
                                             mode="multiple"
                                             name="singers"
-                                            placeholder="Singers"
+                                            placeholder={t('singers')}
                                             onChange={(event) => this.handleSelectChange(event, this.validateSelectMulti, "singers")} >
                                             {this.state.dataSinger.map(data => (
                                                 <Option key={data.id}>
@@ -387,13 +423,13 @@ export default class SongModal extends Component {
                                     </FormItem>
                                 </Col>
                             </Row>
-                            <FormItem label="Categories" style={{ marginBottom: 0 }}
+                            <FormItem label={t('categories')} style={{ marginBottom: 0 }}
                                 validateStatus={this.state.categories.validateStatus}
                                 help={this.state.categories.errorMsg}>
                                 <Select
                                     mode="multiple"
                                     name="categories"
-                                    placeholder="Categories"
+                                    placeholder={t('categories')}
                                     onChange={(event) => this.handleSelectChange(event, this.validateSelectMulti, "categories")} >
                                     {this.state.dataCategory.map(data => (
                                         <Option key={data.categoryId}>
@@ -408,7 +444,7 @@ export default class SongModal extends Component {
                             <Row gutter={16}>
                             <Col span={12} className="gutter-row">
                             <FormItem className="gutter-box" style={{marginBottom:0}}
-                                label="Song file"
+                                label={t('song')}
                                 validateStatus={this.state.formDataSong.validateStatus}
                                 help={this.state.formDataSong.errorMsg}>
                                 <Upload
@@ -425,7 +461,7 @@ export default class SongModal extends Component {
                             </FormItem>
                             </Col>
                             <Col span={12} className="gutter-row">
-                            <FormItem label="Image file" className="gutter-box" style={{marginBottom:0}}
+                            <FormItem label={t('validate:image')}className="gutter-box" style={{marginBottom:0}}
                                 validateStatus={this.state.formDataThumbnail.validateStatus}
                                 help={this.state.formDataThumbnail.errorMsg}>
                                 <Upload
@@ -450,3 +486,5 @@ export default class SongModal extends Component {
         return null;
     }
 }
+
+export default withTranslation(['common','validate','user'])(SongModal);

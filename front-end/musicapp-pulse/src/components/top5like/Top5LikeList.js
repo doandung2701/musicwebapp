@@ -11,7 +11,7 @@ export default class Top5LikeList extends React.Component {
     render() {
         return (
             <Fragment>
-                <h6 className="text text-muted">5 Likes</h6>
+                <h6 className="text text-muted">{this.props.t('5likes')}</h6>
                 <div className="row item-list item-list-sm m-b">
                     {this.props.songs.top5Like.map(value => (
                         <ColXs12TrackItem type="track" key={value.songId} track={value} />

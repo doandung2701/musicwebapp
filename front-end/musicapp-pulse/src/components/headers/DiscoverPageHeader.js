@@ -2,8 +2,9 @@ import React from 'react';
 import { Carousel } from 'antd';
 import TrackItemContainer from '../tracks/TrackItemContainer';
 import MediumTrackItem from '../tracks/MediumTrackItem';
+import { withTranslation } from 'react-i18next';
 
-export default class DiscoverPageHeader extends React.Component {
+class DiscoverPageHeader extends React.Component {
 
     constructor(props){
         super(props);
@@ -11,12 +12,12 @@ export default class DiscoverPageHeader extends React.Component {
     }
 
     render() {
-        let {random4Jazz,random4Pop} = this.props;
+        let {random4Jazz,random4Pop,t} = this.props;
         return (
             <div className="padding p-b-0">
 
                 <div className="page-title m-b">
-                    <h1 className="inline m-a-0">Discover</h1>
+                    <h1 className="inline m-a-0">{t('discover')}</h1>
                 </div>
                 <div className="row row-sm item-masonry item-info-overlay">
                     <div className="col-sm-6 text-white m-b-sm" >
@@ -39,3 +40,5 @@ export default class DiscoverPageHeader extends React.Component {
         )
     }
 }
+
+export default withTranslation('common')(DiscoverPageHeader);

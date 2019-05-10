@@ -1,11 +1,14 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { Tooltip, Popconfirm } from 'antd';
+import {withTranslation} from 'react-i18next';
 
-export default class PlayListItem extends React.Component {
+class PlayListItem extends React.Component {
 
     render() {
 
         let playlist = this.props.playlist;
+        let {t} = this.props;
         // let status = this.props.player.playerStatus;
         return (
             <div className="item r" data-id="item-116"
@@ -21,6 +24,25 @@ export default class PlayListItem extends React.Component {
                     </div>
                 </div>
                 <div className="item-info">
+                    <div className="item-overlay bottom text-right dropup">
+                        <Tooltip title={t('edit')}
+                        >
+                            <span onClick={() => this.props.openModal(false, playlist)}
+                                style={{ color: 'white', cursor: 'pointer' }}
+                                className="btn-more" data-toggle="dropdown">
+                                <i className="fa fa-pencil" ></i></span>
+                        </Tooltip>&nbsp;&nbsp;
+                        <Tooltip title={t('delete')}
+                        >
+                            <Popconfirm title={t('sure')} cancelText={t('cancel')}
+                            onConfirm={() => this.props.deletePlayList(playlist.id)}>
+                                <span 
+                                    style={{ color: 'white', cursor: 'pointer' }}
+                                    className="btn-more" data-toggle="dropdown">
+                                    <i className="fa fa-trash" ></i></span>
+                            </Popconfirm>
+                        </Tooltip>
+                    </div>
                     <div className="item-title text-ellipsis">
                         <Link className="text-muted"
                             to={`/playlists${playlist.id}`}
@@ -32,3 +54,5 @@ export default class PlayListItem extends React.Component {
         )
     }
 }
+
+export default withTranslation("common")(PlayListItem);

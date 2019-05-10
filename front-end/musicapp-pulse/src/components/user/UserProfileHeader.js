@@ -76,7 +76,8 @@ class UserProfileHeader extends React.Component {
     }
 
     render() {
-        let {currentUser} = this.props;
+        let {currentUser,t} = this.props;
+
         return (
             <Fragment>
                 <div className="padding b-b" style={{ zIndex: 5 }}>
@@ -88,9 +89,10 @@ class UserProfileHeader extends React.Component {
                                         onClick={this.openUploadModal}
                                         style={{ backgroundImage: `url(${currentUser.imageUrl})` }} />
                                     <Modal
-                                        title="Upload an avatar"
+                                        title={t('upava')}
                                         visible={this.state.modalVisible}
                                         onOk={this.handleOk}
+                                        cancelText={t('common:cancel')}
                                         onCancel={this.handleCancel}
                                     >
                                         <Upload style={{
@@ -117,19 +119,22 @@ class UserProfileHeader extends React.Component {
                                     data-ui-toggle-class="text-ellipsis">
                                     {currentUser.email}</p>
                                 <div className="item-action m-b">
-                                    <a className="btn btn-sm rounded primary" onClick={this.openUploadSongModal}>Upload</a>
-                                    <a href="#" className="btn btn-sm rounded white">Edit Profile</a>
+                                    <a className="btn btn-sm rounded primary" onClick={this.openUploadSongModal}>
+                                    {t('upload')}</a>
+                                    <a href="#" className="btn btn-sm rounded white">{t('edit')}</a>
                                 </div>
                                 <div className="block clearfix m-b">
-                                    <span>{currentUser.playLists&&currentUser.playLists.length}</span> 
-                                    <span className="text-muted">Playlists</span>, 
-                                    <span>{currentUser.songCount}</span> <span className="text-muted">Tracks</span>
+                                    <span>{this.props.playLists.length}</span>&nbsp;
+                                    <span className="text-muted">{t('common:playlists')}</span>, 
+                                    <span>{currentUser.songCount}</span>&nbsp;
+                                    <span className="text-muted">{t('common:tracks')}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <SongModalContainer user={currentUser} isShow={this.state.modalSongVisible} closeModal={this.closeModalSong}/>
+                <SongModalContainer t={t}
+                user={currentUser} isShow={this.state.modalSongVisible} closeModal={this.closeModalSong}/>
             </Fragment>
         )
     }

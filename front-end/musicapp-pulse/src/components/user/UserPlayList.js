@@ -3,8 +3,8 @@ import PlayListItem from '../pages/PlaylistPage/PlayListItem';
 
 class UserPlayList extends React.Component {
 
-    componentDidMount(){
-        if (this.props.userId){
+    componentDidMount() {
+        if (this.props.userId) {
             this.props.getPlayListsByUserId(this.props.userId);
         }
     }
@@ -21,10 +21,16 @@ class UserPlayList extends React.Component {
                 <div className="row">
                     {this.props.playLists.map(value => (
                         <div key={value.id} className="col-xs-4 col-sm-4 col-md-3">
-                            <PlayListItem playlist={value} />
+                            <PlayListItem deletePlayList={this.props.deletePlayList}
+                            playlist={value} openModal={this.props.openCreatePlaylistModal} />
                         </div>))}
+                    <div className="col-xs-4 col-sm-4 col-md-3" id="variants">
+                        <button onClick={()=>this.props.openCreatePlaylistModal(true,{})}>
+                        <i className="fa fa-plus"></i></button>
+                    </div>
                 </div>
-            </div>
+
+            </div >
         )
     }
 }

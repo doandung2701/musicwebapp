@@ -17,7 +17,7 @@ export default class HiddenHeader extends React.Component{
                                 <circle cx={24} cy={24} r={3} fill="#000000" />
                             </svg>
                             <img src="images/logo.png" alt="." className="hide" />
-                            <span className="hidden-folded inline">pulse</span>
+                            <span className="hidden-folded inline">musik</span>
                         </Link>
                         {/* / brand */}
                         {/* nabar right */}

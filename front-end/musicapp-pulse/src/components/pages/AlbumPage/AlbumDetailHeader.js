@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
 import { Tooltip } from 'antd';
 import moment from 'moment';
-import { playAlbum } from '../../../helpers/helper';
+import { playAlbum, getIdList, getSrcList } from '../../../helpers/helper';
 import TrackActionModalContainer from '../../../containers/TrackActionModalContainer';
 
 class AlbumDetailHeader extends React.Component {
+
   render() {
     let {album,addMultiSongsToQueue,list} = this.props;
     return (
@@ -36,7 +37,9 @@ class AlbumDetailHeader extends React.Component {
                 <span className="text-muted">{album.likeCount}</span>
                 <div className="inline dropdown m-l-xs">
                   <a className="btn btn-icon rounded btn-more" data-toggle="dropdown"><i className="fa fa-ellipsis-h" /></a>
-                  <TrackActionModalContainer onAddToQueue={()=>addMultiSongsToQueue(list)} />
+                  <TrackActionModalContainer songSrcs ={getSrcList(list)}
+                   songIds = {getIdList(list)}
+                  onAddToQueue={()=>addMultiSongsToQueue(list)} />
                 </div>
               </div>
               <div className="item-meta">

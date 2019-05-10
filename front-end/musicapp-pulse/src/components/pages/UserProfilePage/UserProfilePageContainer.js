@@ -3,7 +3,7 @@ import UserProfilePage from './UserProfilePage';
 import { loadCurrentUser, changeAva, saveFavCatSuccess, logout } from '../../../actions/AuthentcationAction';
 import { getSongByUserId } from '../../../actions/SongAction';
 import { addSongToQueue } from '../../player/PlayerAction';
-import { getPlaylistsByUserId } from '../../../actions/PlayListsAction';
+import { getPlaylistsByUserId, createPlaylist, editPlaylist, deletePlaylist } from '../../../actions/PlayListsAction';
 
 var mapStateToProp = state =>{
     return {
@@ -34,7 +34,16 @@ var mapDispatchToProps = dispatch =>{
         },
         logOut:()=>{
             dispatch(logout())
-        }
+        },
+        editPlayList: (payload)=>{
+            dispatch(editPlaylist(payload));
+        },
+        detetePlayList: (id)=>{
+            dispatch(deletePlaylist(id));
+        },
+        createPlayList: (payload)=>{
+            dispatch(createPlaylist(payload));
+        },
     }
 }
 

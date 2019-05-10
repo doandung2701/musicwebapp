@@ -22,8 +22,11 @@ class App extends Component {
     this.props.loadCurrentlyLoggedInUser();
   }
 
-  componentDidUpdate() {
-
+  componentDidUpdate(prevProps) {
+    if (this.props.authentication.currentUser&&this.props.authentication.currentUser!==
+      prevProps.authentication.currentUser){
+        this.props.getPlayListsByUserId(this.props.authentication.currentUser.id)
+      }
   }
 
   onOpenSearch = () => {
@@ -45,6 +48,7 @@ class App extends Component {
   // }
 
   render() {
+    console.log(this.props)
     const location = window.location.pathname;
     const {currentUser} = this.props.authentication;
     return (

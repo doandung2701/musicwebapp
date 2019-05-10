@@ -3,6 +3,7 @@ import App from '../App';
 import {withRouter} from 'react-router-dom';
 import { loadCurrentUser, saveFavCat } from '../actions/AuthentcationAction';
 import { getRecommendedSongs } from '../actions/SongAction';
+import { getPlaylistsByUserId } from '../actions/PlayListsAction';
 
 var mapStateToProp = state =>{
     return {
@@ -17,6 +18,9 @@ var mapDispatchToProps = dispatch =>{
         },
         saveFavCat : (data)=>{
             dispatch(saveFavCat(data));
+        },
+        getPlayListsByUserId: (userId)=>{
+            dispatch(getPlaylistsByUserId(userId));
         },
         getRecommendedSongs : (ids)=>{
             dispatch(getRecommendedSongs(ids));

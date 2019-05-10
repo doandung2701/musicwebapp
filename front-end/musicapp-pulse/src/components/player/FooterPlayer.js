@@ -1,10 +1,10 @@
 import React from 'react';
 import $ from 'jquery';
 import { PLAYER_PAUSE, PLAYER_PLAYING, PLAYER_BUFFERING, PLAYER_LOADED } from '../../constants/constants';
-import { findSongIndexInQueue } from '../../helpers/helper';
+import { findSongIndexInQueue, getSongName, downloadSong, history } from '../../helpers/helper';
 import FooterTrackListContainer from './FooterTrackListContainer';
 import { TrackPageHeaderLikeBtnWithContainer } from '../../containers/WithLikeButtonContainer';
-import { increaseListenCountApi } from '../../Api/SongApi';
+import { increaseListenCountApi, downloadSongApi } from '../../Api/SongApi';
 
 export default class FooterPlayer extends React.Component {
     constructor(props) {
@@ -85,6 +85,9 @@ export default class FooterPlayer extends React.Component {
             clearInterval(this.updateTime);
         }
         this.player.current.onplay = () => {
+            if (this.rail.current)
+                this.rail.current.style.width =
+                    0 + "px";
             this.props.changePlayerStatus(PLAYER_PLAYING);
             this.playerProgress = setInterval(() => {
                 if (this.rail.current)
@@ -202,6 +205,19 @@ export default class FooterPlayer extends React.Component {
             this.props.changeAudioSrc(queue[curr - 1]);
     }
 
+    downloadSong = async (audioSrc)=>{
+        let pathname = window.location.pathname;
+        if (!this.props.authenticated) {
+            if (window.confirm("Please login to use this feature")) {
+                sessionStorage.setItem('from', pathname);
+                history.push("/signin");
+            }
+        } else {
+            let name = getSongName(audioSrc);
+            downloadSong(name);
+        }
+    }
+
     render() {
         let audioSrc = this.props.player.nowPlaying.songSrc;
         let status = this.props.player.playerStatus;
@@ -219,7 +235,14 @@ export default class FooterPlayer extends React.Component {
                         </div><div className="mejs-layers"><div className="mejs-poster mejs-layer"
                             style={{ display: 'none', width: '100%', height: '40px' }} />
                                 <div className="mejs-track-actions">
-                                    <TrackPageHeaderLikeBtnWithContainer songId={player.nowPlaying.songId} />
+                                    <TrackPageHeaderLikeBtnWithContainer song={player.nowPlaying}
+                                        songId={player.nowPlaying.songId} />
+                                    <button style={{
+                                        color: 'white',
+                                        border: 'none', background: 'transparent', cursor: 'pointer', marginRight: 10
+                                    }} className="btn btn-icon rounded btn-favorite" onClick={()=>this.downloadSong(audioSrc)}>
+                                        <i className="fa fa-download" />
+                                    </button>
                                 </div>
                                 <a className="mejs-track-artwork" href="track.detail.html"
                                     style={{ backgroundImage: `url("${player.nowPlaying.thumbnail}")` }} />
@@ -282,6 +305,7 @@ export default class FooterPlayer extends React.Component {
                                         title="Repeat" /></div>
                                 <div className="mejs-button mejs-shuffle-button mejs-repeat">
                                     <button type="button" aria-controls="mep_0" title="Shuffle" /></div>
+
                                 <div className="mejs-button mejs-toggle-playlist-button mejs-toggle-playlist is-closed">
                                     <button type="button" onClick={this.toggleTrackList}
                                         aria-controls="mep_0" title="Toggle Playlist" /></div></div>

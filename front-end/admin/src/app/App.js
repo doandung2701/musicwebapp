@@ -152,7 +152,7 @@ onCollapse = (collapsed) => {
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
-       Music app admin section ©2018 Created by AkuraTeam
+       Musik app admin section ©2018 Created by 18+xx
       </Footer>
         </Layout>
         </Layout>

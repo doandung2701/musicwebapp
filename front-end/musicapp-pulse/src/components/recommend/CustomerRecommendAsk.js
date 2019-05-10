@@ -3,8 +3,9 @@ import './Recommend.css';
 import { Divider, message } from 'antd';
 import { getAllCategoriesApi } from '../../Api/CategoryApi';
 import LoadingIndicator from '../common/LoadingIndicator';
+import {withTranslation} from 'react-i18next';
 
-export default class CustomerRecommendAsk extends React.Component {
+class CustomerRecommendAsk extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -51,11 +52,12 @@ export default class CustomerRecommendAsk extends React.Component {
 
     render() {
         let { categories } = this.state;
+        let {t} = this.props;
         return (
             <div className="rm-wrapper">
                 <div className="rm-inner-wrapper">
                     <div className="header">
-                        <h4>What is your liking ?</h4>
+                        <h4>{t('liking')}</h4>
                     </div>
                     {categories.map((value, index) =>
                         (<button onClick={()=>this.onSelectFavCat(value.categoryId)}
@@ -75,3 +77,5 @@ export default class CustomerRecommendAsk extends React.Component {
         )
     }
 }
+
+export default withTranslation('discoverpage')(CustomerRecommendAsk);

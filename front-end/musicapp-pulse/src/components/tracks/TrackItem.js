@@ -4,12 +4,13 @@ import { playTrack } from '../../helpers/helper';
 import { Link } from 'react-router-dom';
 import { TrackItemLikeBtnWithContainer } from '../../containers/WithLikeButtonContainer';
 import TrackActionModalContainer from '../../containers/TrackActionModalContainer';
+import {withTranslation} from 'react-i18next';
 
-export default class TrackItem extends React.Component {
+class TrackItem extends React.Component {
 
     render() {
 
-        let track = this.props.track;
+        let {t,track} = this.props;
         let status = this.props.player.playerStatus;
         let isTrack = this.props.type === "track";
         return (
@@ -32,7 +33,11 @@ export default class TrackItem extends React.Component {
                         <span href="#" style={{ color: 'white', cursor: 'pointer' }}
                             className="btn-more" data-toggle="dropdown">
                             <i className="fa fa-ellipsis-h" ></i></span>
-                        <TrackActionModalContainer onAddToQueue={() => this.props.addSongToQueue(track)} />
+                        <TrackActionModalContainer playlistId = {this.props.playlistId}
+                        songSrcs = {[track.songSrc]}
+                        isInList={this.props.isInList}
+                        songIds = {[track.songId]}
+                        onAddToQueue={() => this.props.addSongToQueue(track)} />
                     </div>}
                     <div className="item-title text-ellipsis">
                         <Link className="text-muted"
@@ -45,7 +50,7 @@ export default class TrackItem extends React.Component {
                                 to={`/artists-detail-${track.singers[0].id}`}
                                 className="text-muted"
                             >{track.singers[0].name}</Link>
-                            : <span className="text-muted">Unknown</span>}
+                            : <span className="text-muted">{t('unknown')}</span>}
                     </div>
                     {isTrack && <div className="item-meta text-sm text-muted">
                         <span className="item-meta-stats text-xs  item-meta-right">
@@ -59,3 +64,5 @@ export default class TrackItem extends React.Component {
         )
     }
 }
+
+export default withTranslation(['track','common'])(TrackItem);

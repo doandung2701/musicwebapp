@@ -5,8 +5,9 @@ import TrendingContainer from '../../trending/TrendingContainer';
 import NewTrackListContainer from '../../new/NewTrackListContainer';
 import { toTop } from '../../../helpers/helper';
 import RecommendListContainer from '../../recommend/RecommendListContainer';
+import { withTranslation } from 'react-i18next';
 
-export default class DiscoverPage extends React.Component {
+class DiscoverPage extends React.Component {
     componentDidMount() {
         // Axios.get(`${API_BASE_URL}/user/me`).then(response=>{
             
@@ -16,12 +17,15 @@ export default class DiscoverPage extends React.Component {
   }
 
     render() {
+        let {t} = this.props;
         return (
             <Fragment>
-                <TrendingContainer />
-                <NewTrackListContainer />
-                {this.props.authentication.currentUser&&<RecommendListContainer />}
+                <TrendingContainer t={t}/>
+                <NewTrackListContainer t={t} />
+                {this.props.authentication.currentUser&&<RecommendListContainer t={t}/>}
             </Fragment>
         )
     }
 }
+
+export default withTranslation("discoverpage")(DiscoverPage);

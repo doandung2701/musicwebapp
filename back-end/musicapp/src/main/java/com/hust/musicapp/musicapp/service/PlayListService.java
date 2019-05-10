@@ -13,6 +13,10 @@ public interface PlayListService {
 
     PlayList save(PlayList p);
 
+    List<PlayList> findDistinctByIdIn(List<Long> ids);
+
+    List<PlayList> saveAll(List<PlayList> playLists);
+
     Long count();
 
     void delete(PlayList p);

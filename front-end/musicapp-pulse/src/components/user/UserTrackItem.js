@@ -4,14 +4,15 @@ import { PLAYER_PLAYING } from '../../constants/constants';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Tooltip } from 'antd';
-import TrackActionModal from '../common/TrackActionModal';
+import {withTranslation} from 'react-i18next';
 import { TrackItemLikeBtnWithContainer } from '../../containers/WithLikeButtonContainer';
 import TrackActionModalContainer from '../../containers/TrackActionModalContainer';
 
-export default class UserTrackItem extends React.Component {
+class UserTrackItem extends React.Component {
 	render() {
 		let track = this.props.track;
 		let status = this.props.player.playerStatus;
+		let {t} = this.props;
 		let { categories = [{ categoryId: 1, categoryName: "Jazz" }] } = track;
 		return (
 			<div className="col-xs-12">
@@ -33,7 +34,9 @@ export default class UserTrackItem extends React.Component {
 							<a href="#" className="btn-more" data-toggle="dropdown">
 								<i className="fa fa-ellipsis-h"></i>
 							</a>
-							<TrackActionModalContainer onAddToQueue={() => this.props.addSongToQueue(track)} />
+							<TrackActionModalContainer songIds = {[track.songId]}
+							songSrcs = {[track.songSrc]}
+							onAddToQueue={() => this.props.addSongToQueue(track)} />
 						</div>
 						<div className="item-title text-ellipsis">
 							<Link to={`/track${track.songId}`}>{track.songName}</Link>
@@ -44,7 +47,7 @@ export default class UserTrackItem extends React.Component {
 									to={`/artists-detail-${track.singers[0].id}`}
 									className="text-muted"
 								>{track.singers[0].name}</Link>
-								: <span className="text-muted">Unknown</span>}
+								: <span className="text-muted">{t('unknown')}</span>}
 						</div>
 						<div className="item-meta text-sm text-muted">
 							<span className="item-meta-category">
@@ -64,7 +67,9 @@ export default class UserTrackItem extends React.Component {
 						</div>
 
 						<div className="item-action visible-list m-t-sm">
-							<a href="#" className="btn btn-xs white">Edit</a>
+							<a href="#" className="btn btn-xs white">{t('common:edit')}</a>
+							<a href="#" className="btn btn-xs white" 
+							data-toggle="modal" data-target="#delete-modal">{t('common:delete')}</a>
 						</div>
 					</div>
 				</div>
@@ -72,3 +77,5 @@ export default class UserTrackItem extends React.Component {
 		)
 	}
 }
+
+export default withTranslation(['track','common'])(UserTrackItem);
