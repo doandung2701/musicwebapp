@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import UserProfilePage from './UserProfilePage';
-import { loadCurrentUser, changeAva } from '../../../actions/AuthentcationAction';
+import { loadCurrentUser, changeAva, saveFavCatSuccess, logout } from '../../../actions/AuthentcationAction';
 import { getSongByUserId } from '../../../actions/SongAction';
 import { addSongToQueue } from '../../player/PlayerAction';
 import { getPlaylistsByUserId } from '../../../actions/PlayListsAction';
@@ -28,6 +28,12 @@ var mapDispatchToProps = dispatch =>{
         },
         getPlayListsByUserId: (userId)=>{
             dispatch(getPlaylistsByUserId(userId));
+        },
+        saveFavCatSuccess:(data)=>{
+            dispatch(saveFavCatSuccess(data))
+        },
+        logOut:()=>{
+            dispatch(logout())
         }
     }
 }

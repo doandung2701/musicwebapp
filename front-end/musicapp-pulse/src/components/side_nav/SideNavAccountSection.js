@@ -10,6 +10,8 @@ export default class SideNavAccountSection extends React.Component {
 
     render() {
         let user = this.props.user;
+        console.log(user);
+        
         return (
             <div data-flex-no-shrink onClick={this.toggleNavigation}>
                 <div className="nav-fold dropup" >
@@ -21,12 +23,12 @@ export default class SideNavAccountSection extends React.Component {
                             <span className="block _500 text-ellipsis" >{user.name}</span>
                         </span>
                     </a>
-                    <div className="dropdown-menu w dropdown-menu-scale ">
+                    {user.name!='Some name'&&<div className="dropdown-menu w dropdown-menu-scale ">
                         <Link className="dropdown-item" to="/user-profile">
                             <span>Profile</span>
                         </Link>
                         <a className="dropdown-item" onClick={this.props.onLogout}>Sign out</a>
-                    </div>
+                    </div>}
                 </div>
 
             </div>

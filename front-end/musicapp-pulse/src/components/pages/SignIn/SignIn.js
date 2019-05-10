@@ -91,11 +91,6 @@ export default class SigninPage extends React.Component {
                     value={this.state.password} onChange={this.handleInputChange} name="password"
                     type="password" className="form-control" placeholder="password" required />
                 </div>
-                <div className="m-b-md">
-                  <label className="md-check">
-                    <input type="checkbox" /><i className="primary" /> Keep me signed in
-                  </label>
-                </div>
                 <button type="submit" className="btn btn-lg black p-x-lg">Sign in</button>
               </form>
               <div className="m-y">

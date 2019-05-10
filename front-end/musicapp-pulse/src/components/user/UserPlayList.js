@@ -17,7 +17,7 @@ class UserPlayList extends React.Component {
 
     render() {
         return (
-            <div className="tab-pane" id="playlist" aria-expanded="false">
+            <div className="tab-pane active" id="playlist" aria-expanded="false">
                 <div className="row">
                     {this.props.playLists.map(value => (
                         <div key={value.id} className="col-xs-4 col-sm-4 col-md-3">

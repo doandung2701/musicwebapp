@@ -250,8 +250,7 @@ export const getLikeSongByUserId=(page,id)=>{
         dispatch(gettingLikeSongByUserId())
         try {
             let data=await getLikeSongByUserIdApi(page,id);
-            console.log(data.data);
-            dispatch(getLikeSongByUserIdSuccess(data.data))
+            dispatch(getLikeSongByUserIdSuccess(data.data));
         } catch (error) {
             dispatch(getLikeSongByUserIdFail())
         }

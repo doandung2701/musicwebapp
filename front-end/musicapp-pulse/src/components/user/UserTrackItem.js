@@ -65,7 +65,6 @@ export default class UserTrackItem extends React.Component {
 
 						<div className="item-action visible-list m-t-sm">
 							<a href="#" className="btn btn-xs white">Edit</a>
-							<a href="#" className="btn btn-xs white" data-toggle="modal" data-target="#delete-modal">Delete</a>
 						</div>
 					</div>
 				</div>

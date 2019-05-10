@@ -15,11 +15,20 @@ export const likeSongReducer = (state = initialState, action) => {
                 error: false
             }
         case GET_LIKE_SONG_BY_USER_ID_SUCCESS:
+        if(action.songs){
             return {
                 ...state,
                 isGetting: false,
-                list: [...state.list, ...action.songs],
+                list: [...state.list,...action.songs],
             }
+           
+        }else{
+            return {
+                ...state,
+                isGetting: false,
+            }
+        }
+           
         case GET_LIKE_SONG_BY_USER_ID_FAIL:
             return {
                 ...state,

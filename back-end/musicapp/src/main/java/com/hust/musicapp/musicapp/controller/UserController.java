@@ -151,5 +151,12 @@ public class UserController {
         u.setFavoriteCategory(categories);
         return ResponseEntity.ok(userservice.save(u));
     }
-
+    @PutMapping("/users/add-fav-cat")
+    public ResponseEntity<?> updateFavCat(@RequestParam("name")String name,@RequestBody AddFavCatRequest request) {
+        Set<Category> categories = categoryService.findDistinctByCategoryIdIn(request.getCategoryIds());
+        User u = userservice.findById(request.getUserId()).get();
+        u.setName(name);
+        u.setFavoriteCategory(categories);
+        return ResponseEntity.ok(userservice.save(u));
+    }
 }

@@ -3,6 +3,7 @@ import { LOGINING, LOGIN_SUCCESSFULLY, LOGIN_FAILED, ACCESS_TOKEN } from '../../
 import { login } from '../../../Api/UserApi';
 import { loadCurrentUser } from '../../../actions/AuthentcationAction';
 import { history } from '../../../helpers/helper';
+import { message } from 'antd';
 
 export const loggingIn = ()=>({
     type: LOGINING
@@ -22,12 +23,15 @@ export const loginUser = (loginRequest)=>{
         login(loginRequest)
         .then(response => {
             localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+            message.success('loggin success');
+            history.push("/");
+
             dispatch(loginSuccessFully());
             dispatch(loadCurrentUser());
             // history.push("/user-profile");
         }).catch(error => {
             dispatch(loginFailed())
-            Alert.error((error && error.message) || 'Oops! Something went wrong. Please try again!');
+            message.error((error && error.message) || 'Oops! Something went wrong. Please try again!');
         });
     }
 }

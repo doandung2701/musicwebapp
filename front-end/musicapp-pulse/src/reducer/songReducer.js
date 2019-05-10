@@ -38,7 +38,6 @@ export const songReducer = (state = initialState, action) => {
         case GETTING_SONG_BY_USER_ID:
         case GETTING_SONGS_BY_ALBUMS_ID:
         case GETTING_SONGS_BY_PLAYLIST_ID:
-        case GETTING_LIKE_SONG_BY_USER_ID:
             return {
                 ...state,
                 isGetting: true,
@@ -49,12 +48,13 @@ export const songReducer = (state = initialState, action) => {
         case GET_SONG_BY_USER_ID_SUCCESS:
         case GET_SONGS_BY_ALBUMS_ID_SUCCESS:
         case GET_SONGS_BY_PLAYLIST_ID_SUCCESS:
-        case GET_LIKE_SONG_BY_USER_ID_SUCCESS:        
-            return {
-                ...state,
-                isGetting: false,
-                list: [...state.list, ...action.songs],
-            }
+                return {
+                    ...state,
+                    isGetting: false,
+                    list: [...state.list, ...action.songs],
+
+                }
+            
         case UPLOAD_SONG_SUCCESS:
             return {
                 ...state,
@@ -66,7 +66,6 @@ export const songReducer = (state = initialState, action) => {
         case GET_SONG_BY_USER_ID_FAIL:
         case GET_SONGS_BY_ALBUMS_ID_FAIL:
         case GET_SONGS_BY_PLAYLIST_ID_FAIL:
-        case GET_LIKE_SONG_BY_USER_ID_FAIL:
             return {
                 ...state,
                 isGetting: false,

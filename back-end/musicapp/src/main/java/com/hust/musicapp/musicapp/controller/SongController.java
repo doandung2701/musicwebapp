@@ -137,6 +137,7 @@ public class SongController {
         songs.stream().forEach(song->{
             response.add(new SongResponse(song));
         });
+        System.out.println("Size concac"+response.size());
         return ResponseEntity.ok(response);
     }
 

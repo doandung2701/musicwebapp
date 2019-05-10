@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Spin, Button, Form, Input, Select, Row, Col, Upload } from 'antd';
+import { Modal, Spin, Button, Form, Input, Select, Row, Col, Upload,message } from 'antd';
 import { getAllAuthorsApi } from '../../Api/AuthorApi';
 import { getAllSinger } from '../../Api/SingerApi';
 import { getAllCategoriesApi } from '../../Api/CategoryApi';
@@ -44,6 +44,8 @@ export default class SongModal extends Component {
         this.validateSong = this.validateSong.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
         this.validateSelectMulti = this.validateSelectMulti.bind(this);
+        this.onImageRemove=this.onImageRemove.bind(this);
+        this.onSongRemove=this.onSongRemove.bind(this);
 
     }
     handleOk=()=>{
@@ -57,16 +59,52 @@ export default class SongModal extends Component {
             categories:dataCategory.filter(data=>categories.value.includes(data.categoryId+"")),
             user: this.props.user.id
         }
-
+        console.log(this.state);
+        
         this.setState({
             isLoading:true
         })
-        this.props.uploadSong(payload,formDataThumbnail.value,formDataSong.value);
+        if(formDataSong.value==null||formDataThumbnail.value==null){
+            message.error('You need add file song and image of song');
+            return ;
+            
+        }
+       this.props.uploadSong(payload,formDataThumbnail.value,formDataSong.value);
         this.setState({
             isLoading:false
         })
+        this.close();
         this.props.closeModal();
 
+    }
+    close=()=>{
+        this.setState({
+            songName: {
+                value: ''
+            },
+            briefDesciption: {
+                value: ''
+            },
+            authors: {
+                value: []
+            },
+            singers: {
+                value: []
+            },
+            categories: {
+                value: []
+            },
+            formDataSong: {
+                value: null
+            },
+            formDataThumbnail: {
+                value: null
+            },
+            dataAuthor: [],
+            dataSinger: [],
+            dataCategory: [],
+            isLoading:false,
+        })
     }
     componentDidMount() {
         Promise.all([getAllAuthorsApi(), getAllSinger(), getAllCategoriesApi()]).then(data => {
@@ -153,7 +191,8 @@ export default class SongModal extends Component {
         }
     }
     validateThumbnail(file) {
-        if (file === null) {
+        
+        if (this.state.formDataThumbnail.value == null) {
             return {
                 validateStatus: 'error',
                 errorMsg: `Image is required`
@@ -178,7 +217,8 @@ export default class SongModal extends Component {
         }
     }
     validateSong(file) {
-        if (file === null) {
+
+        if (this.state.formDataSong.value == null) {
             return {
                 validateStatus: 'error',
                 errorMsg: `Song file is required`
@@ -196,11 +236,21 @@ export default class SongModal extends Component {
             }
         }
     }
-    onSongRemove=()=>{
-
+    onSongRemove(file){
+        
+          this.setState({
+            formDataSong: {
+                value: null
+            }
+          
+        })
     }
-    onImageRemove=()=>{
-
+    onImageRemove(file){
+        this.setState({
+            formDataThumbnail: {
+                value: null
+            }
+        })
     }
     isFormInvalid() {
         return !(this.state.songName.validateStatus === 'success' &&
@@ -209,7 +259,9 @@ export default class SongModal extends Component {
             this.state.formDataThumbnail.validateStatus === 'success' &&
             (this.state.authors.value.length >= 1) &&
             (this.state.singers.value.length >= 1) &&
-            (this.state.categories.value.length >= 1)
+            (this.state.categories.value.length >= 1)&&
+            (this.state.formDataSong.value!=null)&&
+            (this.state.formDataThumbnail.value!=null)
         );
     }
     handleSelectChange(event, validateFun, name) {
@@ -221,6 +273,36 @@ export default class SongModal extends Component {
         })
 
     }
+    cancelModal=()=>{
+        this.setState({
+            songName: {
+                value: ''
+            },
+            briefDesciption: {
+                value: ''
+            },
+            authors: {
+                value: []
+            },
+            singers: {
+                value: []
+            },
+            categories: {
+                value: []
+            },
+            formDataSong: {
+                value: null
+            },
+            formDataThumbnail: {
+                value: null
+            },
+            dataAuthor: [],
+            dataSinger: [],
+            dataCategory: [],
+            isLoading:false,
+        })
+        this.props.closeModal();
+    }
     render() {
         const { isShow } = this.props;
         if (isShow) {
@@ -231,9 +313,9 @@ export default class SongModal extends Component {
                         title={"Add new Track"}
                         visible={isShow}
                         onOk={this.handleOk}
-                        onCancel={this.props.closeModal}
+                        onCancel={()=>this.cancelModal()}
                         footer={[
-                            <Button key="back" onClick={this.props.closeModal}>Return</Button>,
+                            <Button key="back" onClick={()=>this.cancelModal()}>Return</Button>,
                             <Button
                                 disabled={this.isFormInvalid()}
                                 key="submit" type="primary" loading={this.state.isLoading} onClick={this.handleOk}>

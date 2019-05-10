@@ -23,7 +23,7 @@ const savingFavCat = ()=>({
     type: SAVING_FAV_CAT
 })
 
-const saveFavCatSuccess = (user)=>({
+export const saveFavCatSuccess = (user)=>({
     type: SAVE_FAV_CAT_SUCCESS,
     user
 })
