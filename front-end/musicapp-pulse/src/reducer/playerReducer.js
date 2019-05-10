@@ -15,9 +15,9 @@ let initialState = {
     nowPlaying: {
         songSrc: 'http://streaming.radionomy.com/JamendoLounge',
         songId: '',
-        songName: '',
+        songName: 'Radio',
         singers: [],
-        thumbnail: '/images/a1.jpg',
+        thumbnail: '/images/a14.jpg',
     },
     queue: [],
     repeat: false

@@ -1,9 +1,12 @@
 import Axios from "axios";
-import { API_BASE_URL } from "../constants";
+import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
 
  var axios = Axios.create({
      baseURL: API_BASE_URL+"albums/",
-     timeout: 10000
+     timeout: 10000,
+     headers: {
+         "Authorization": "Bearer " + localStorage.getItem(ACCESS_TOKEN)
+     }
  })
 
  export const getAlAlbumsApi = ()=>{

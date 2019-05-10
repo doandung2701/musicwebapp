@@ -47,7 +47,8 @@
         "category": "Thể loại",
         "categories": "Thể loại",
         "ok": "OK",
-        "download": "Tải xuống"
+        "download": "Tải xuống",
+        "radio": "Radio"
     },
     "validate": {
         "tooshort": "quá ngắn (cần ít nhất 3 kí tự).",

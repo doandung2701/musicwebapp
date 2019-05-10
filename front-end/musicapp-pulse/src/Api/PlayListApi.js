@@ -22,11 +22,11 @@ export const getPlaylistsByIdApi = (id)=>{
 }
 
 export const createPlaylistApi = (payload)=>{
-    return axios.post('save-playlist',payload);
+    return axios.post('save-playlist-user',payload);
 }
 
 export const editPlaylistApi = (payload)=>{
-    return axios.put('save-playlist',payload);
+    return axios.put('save-playlist-user',payload);
 }
 
 export const deletePlayListApi = (id)=>{

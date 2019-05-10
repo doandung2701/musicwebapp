@@ -89,13 +89,13 @@ public class PlayListController {
         return ResponseEntity.ok(new PlaylistPayload(playListService.findById(id)));
     }
 
-//    @PostMapping("/save-playlist")
-//    public ResponseEntity<?> addPlaylist(@RequestBody PlaylistPayload playlist) {
-//        return ResponseEntity.ok(playListService.save(new PlayList(playlist)));
-//    }
-
     @PostMapping("/save-playlist")
-    public ResponseEntity<?> addPlaylist(@RequestParam(name="userId") Long userId,
+    public ResponseEntity<?> addPlaylist(@RequestBody PlaylistPayload playlist) {
+        return ResponseEntity.ok(playListService.save(new PlayList(playlist)));
+    }
+
+    @PostMapping("/save-playlist-user")
+    public ResponseEntity<?> addPlaylistUser(@RequestParam(name="userId") Long userId,
                                          @RequestParam(name = "description") String description,
                                          @RequestParam(name = "name") String name,
                                          @RequestParam(name = "thumbnail") MultipartFile thumbnail) {
@@ -118,11 +118,12 @@ public class PlayListController {
         return ResponseEntity.ok(playListService.save(p));
     }
 
-    @PutMapping("/save-playlist")
+    @PutMapping("/save-playlist-user")
     public ResponseEntity<?> savePlaylist(@RequestParam(name="userId") Long userId,
                                          @RequestParam(name = "playlistId") Long playlistId,
                                          @RequestParam(name = "description") String description,
-                                         @RequestParam(name = "name") String name, @Nullable  @RequestParam(name = "thumbnail") MultipartFile thumbnail) {
+                                         @RequestParam(name = "name") String name,
+                                          @Nullable  @RequestParam(name = "thumbnail") MultipartFile thumbnail) {
         String fileName = "";
         PlayList p = playListService.findById(playlistId);
         User u = p.getUser();
@@ -146,10 +147,10 @@ public class PlayListController {
         return ResponseEntity.ok(playListService.save(p));
     }
 
-//    @PutMapping("/save-playlist")
-//    public ResponseEntity<?> updatePlaylist(@RequestBody PlaylistPayload playlist) {
-//        return ResponseEntity.ok(playListService.save(new PlayList(playlist)));
-//    }
+    @PutMapping("/save-playlist")
+    public ResponseEntity<?> updatePlaylist(@RequestBody PlaylistPayload playlist) {
+        return ResponseEntity.ok(playListService.save(new PlayList(playlist)));
+    }
 
 
     @DeleteMapping("/delete-playlist")

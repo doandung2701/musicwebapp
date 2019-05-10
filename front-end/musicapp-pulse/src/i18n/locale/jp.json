@@ -47,7 +47,8 @@
         "category": "カテゴリ",
         "categories": "カテゴリ",
         "ok": "OK",
-        "download": "ダウンロード"
+        "download": "ダウンロード",
+        "radio": "ラジオ"
     },
     "validate": {
         "tooshort": "短すぎる（最低3文字が必要）",

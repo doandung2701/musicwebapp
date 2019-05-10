@@ -47,7 +47,8 @@
         "category": "Category",
         "categories": "Categories",
         "ok": "OK",
-        "download": "Download"
+        "download": "Download",
+        "radio": "Radio"
     },
     "validate": {
         "tooshort": "is too short (at least 3 characters needed.)",

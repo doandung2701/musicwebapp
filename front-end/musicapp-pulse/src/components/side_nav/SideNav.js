@@ -3,6 +3,7 @@ import SideNavAccountSection from './SideNavAccountSection';
 import { NavLink } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import ReactCountryFlag from "react-country-flag";
+import { Radio } from 'antd';
 
 const lang = [
   { code: 'gb', text: "English" },
@@ -25,7 +26,7 @@ class SideNav extends React.Component {
   }
 
   render() {
-    const { authentication, t, i18n } = this.props;
+    const { authentication, t, changeAudioSrc } = this.props;
     let { currentUser = {
       imageUrl: '/images/a14.jpg',
       name: 'Some name'
@@ -100,6 +101,16 @@ class SideNav extends React.Component {
                       </span>
                       <span className="nav-text">{t('artist')}</span>
                     </NavLink>
+                  </li>
+                  <li>
+                    <a  onClick={()=>
+                      changeAudioSrc({songSrc: 'http://streaming.radionomy.com/JamendoLounge',
+                      songName: 'Radio',thumbnail: "/images/a1.jpg"})}>
+                      <span className="nav-icon">
+                        <i className="fa fa-rss" />
+                      </span>
+                      <span className="nav-text">{t('radio')}</span>
+                    </a>
                   </li>
                   <li>
                     <a href="#" onClick={this.props.onOpenSearch}>

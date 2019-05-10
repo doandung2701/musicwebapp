@@ -12,6 +12,7 @@
         "signout": "退出",
         "language": "英語",
         "all": "全部",
+        "song": "歌曲",
         "songs": "歌曲",
         "or": "或",
         "and": "和",
@@ -46,7 +47,8 @@
         "category": "類別",
         "categories": "類別",
         "ok": "OK",
-        "download": "下載"
+        "download": "下載",
+        "radio": "電台"
     },
     "validate": {
         "tooshort": "太短（至少需要3個字符。）",
