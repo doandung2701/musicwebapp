@@ -49,5 +49,5 @@ export const updateCommentApi = (commentId, commentDetail) => {
 }
 
 export const deleteCommentApi = (id) => {
-    return axios.delete(`delete-comment/${id}`)
+    return axios.delete(`delete-comment?id=${id}`)
 }

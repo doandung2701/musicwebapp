@@ -30,11 +30,6 @@ export const commentListReducer = (state = initialState, action ) => {
             }
         case actionConstanst.GET_COMMENTS_SUCCESS:
             let payload = [...action.payload];
-            payload.forEach((data) => {
-                if (data.parentCmt===undefined||data.parentCmt===null) 
-                    data.parentCmt = 'No data';
-                data.commentDate = new Date(1540447577000).toLocaleDateString();
-            })
             return {
                 ...state,
                 isGettingSingerList: false, 

@@ -33,9 +33,9 @@ const deletingComment = () => ({
     type: actionConstants.DELETING_COMMENT,
 })
 
-const deleteCommentSuccess = (commentId) => ({
+const deleteCommentSuccess = (comment) => ({
     type: actionConstants.DELETE_COMMENT_SUCCESS,
-    payload: commentId
+    payload: comment
 })
 
 const deleteCommentFail = (error) => ({
@@ -105,7 +105,7 @@ export const updateComment = (commentId,commentDetail) => {
 
 export const deleteComment = (commentId) => {
     return dispatch => {
-        dispatch(deletingComment);
+        dispatch(deletingComment());
         commentsApi.deleteCommentApi(commentId).then(data => {
             dispatch(deleteCommentSuccess(commentId));
         }).catch(error => {

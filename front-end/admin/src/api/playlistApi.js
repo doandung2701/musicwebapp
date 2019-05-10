@@ -40,16 +40,21 @@ export const findPlayListByIdApi = (id) => {
     })
 }
 
-export const createPlayListApi = (playlist) => {
-    return axios.post("save-playlist",playlist)
+export const createPlayListApi = (playList) => {
+    let {name, thumbnail, description, user, songs } = playList;
+    return axios.post("save-playlist",playList)
+}
+
+export const upImagePlayListApi = (thumbnail) => {
+    return axios.post("save-playlist-thumbnail",thumbnail)
 }
 
 export const updatePlayListApi = (playlist) => {
     return axios.put("save-playlist",playlist)
 }
 
-export const deletePlayListApi = (playlist) => {
-    console.log(playlist);
-    return axios.delete("delete-playlist",playlist); //doc lại axios
+export const deletePlayListApi = (playlistId) => {
+    console.log(playlistId);
+    return axios.delete(`delete-playlist?id=${playlistId}`); //doc lại axios
 }
 

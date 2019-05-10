@@ -10,7 +10,7 @@ var initialStateModal = {
         name: '',
         thumbnail: '',
         description: '',
-        user: null,
+        user: 1,
         playListSong: [],
     },
     idLoading: false,
@@ -23,7 +23,7 @@ export const playListModalReducer = (state = initialStateModal, action) => {
             return {
                 ...state,
                 isShow: true,
-                playlist: action.payload
+                playList: action.payload
             }
         case PLAYLIST_CLOSE_MODAL:
             return {
@@ -47,26 +47,26 @@ export const playListModalReducer = (state = initialStateModal, action) => {
                 isLoading: false,
                 error: action.error
             }
-            case actions.CREATING_PLAYLIST: {
-                return {
-                    ...state,
-                    isLoading: true
-                }
-    
+        case actions.CREATING_PLAYLIST: {
+            return {
+                ...state,
+                isLoading: true
             }
-            case actions.CREATE_PLAYLIST_SUCCESS:
-                return {
-                    ...state,
-                    isLoading: false,
-                    isShow: false
-                }
-            case actions.CREATE_PLAYLIST_FAIL: {
-                return {
-                    ...state,
-                    isLoading: false,
-                    error: action.error
-                }
+
+        }
+        case actions.CREATE_PLAYLIST_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                isShow: false
             }
+        case actions.CREATE_PLAYLIST_FAIL: {
+            return {
+                ...state,
+                isLoading: false,
+                error: action.error
+            }
+        }
         default:
             return state;
     }
@@ -105,12 +105,11 @@ export const playListListReducer = (state = initialState, action)=> {
             }
         case actions.CREATE_PLAYLIST_SUCCESS:
             openNotificationWithIcon('success', 'PlayList', 'Create PlayList success');
+            console.log(action.payload);
             return {
                 ...state,
                 playListList: [...state.playListList, action.payload] //trả về mảng với list ban đầu với, phần tử mới thêm vào
             }
-        case actions.CREATE_COMMENT_FAIL:
-            openNotificationWithIcon('error', 'PlayList', 'Create PlayList error');
         case actions.CREATE_PLAYLIST_FAIL:
             return {
                 ...state,
@@ -122,7 +121,7 @@ export const playListListReducer = (state = initialState, action)=> {
                 isLoadingDelete: true,
             }
         case actions.DELETE_PLAYLIST_SUCCESS:
-            var playListListResult = state.playListList.filter(item => item.id != action.payload.id)
+            var playListListResult = state.playListList.filter(item => item.id != action.payload)
             openNotificationWithIcon('success', 'PlayList', 'Delete PlayList success');
             return {
                 ...state,
@@ -135,6 +134,24 @@ export const playListListReducer = (state = initialState, action)=> {
                 ...state,
                 isLoadingDelete: false,
                 error: action.error
+            }
+            case actions.UPDATING_PLAYLIST:
+            return {
+                ...state,
+            }
+        case actions.UPDATE_PLAYLIST_SUCCESS:
+            openNotificationWithIcon('success', 'PlayList', 'Update PlayList success');
+            var index = state.playListList.findIndex(item => item.id == action.payload.id);
+            let playListNew = state.playListList;
+            playListNew[index] = action.payload;
+            return {
+                ...state,
+                playListList: playListNew
+            }
+        case actions.UPDATE_COMMENT_FAIL: 
+        openNotificationWithIcon('error', 'PlayList', 'Update PlayList error');
+            return {
+                ...state,
             }
         default: 
             return state
