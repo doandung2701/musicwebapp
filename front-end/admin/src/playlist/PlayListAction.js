@@ -5,9 +5,9 @@ import { SINGER_CLOSE_MODAL } from '../singer/SingerConstants';
 export const openModal = (data = {
     id: 0,
     name: '',
-    thumbnail: '',
+    thumbnail: null,
     description: '',
-    user: null,
+    user: 1,
     playlistSong: [],
 })=> ({
     type: PLAYLIST_SHOW_MODAL,
@@ -80,6 +80,8 @@ export const getAllPlayLists = () => {
         playListApi.getAllPlayListApi().then(data => {
             dispatch(getPlayListsSuccess(data.data));
         }).catch(error => {
+            console.log(error);
+            
             if (error.respone) {
                 dispatch(getPlayListFail(error.respone.data));
             }else {
@@ -92,11 +94,25 @@ export const getAllPlayLists = () => {
 export const createPlayList = (playlist) => {
     return dispatch => {
         dispatch(creatingPlayList());
-        playListApi.createPlayListApi(playlist).then(data=> {
-            dispatch(createPLayListSuccess(playlist));
-        }).catch(error => {
-            if (error.response){
-                dispatch(createPlayListFail(error.response.data));
+        playListApi.upImagePlayListApi(playlist.thumbnail).then((rs) => {
+            console.log(rs.data);
+            playlist.thumbnail = rs.data;
+            playListApi.createPlayListApi(playlist).then(data=> {
+                playlist = {
+                    ...playlist,
+                    id: data.data.id
+                }
+                dispatch(createPLayListSuccess(playlist));
+            }).catch(error => {
+                if (error.response){
+                    dispatch(createPlayListFail(error.response.data));
+                }else{
+                    dispatch(createPlayListFail("Unexpected error occured"));
+                }
+            })
+        }).catch((err)=> {
+            if (err.response){
+                dispatch(createPlayListFail(err.response.data));
             }else{
                 dispatch(createPlayListFail("Unexpected error occured"));
             }
@@ -104,26 +120,56 @@ export const createPlayList = (playlist) => {
     }
 }
 
-export const updatePlayList = (id, playlistDetail) => {
+export const updatePlayList = (playlistDetail) => {
     return dispatch => {
         dispatch(updatingPlayList());
-        playListApi.updatePlayListApi(id, playlistDetail).then((data) => {
-            dispatch(updatePlayListSuccess(data.data));
-        }).catch(error => {
-            if (error.response){
-                dispatch(updatePlayListFail(error.response.data));
-            }else{
-                dispatch(updatePlayListFail("Unexpected error occured"));
-            }
-        })
+        // playListApi.updatePlayListApi(playlistDetail).then((data) => {
+        //     dispatch(updatePlayListSuccess(playlistDetail));
+        // }).catch(error => {
+        //     if (error.response){
+        //         dispatch(updatePlayListFail(error.response.data));
+        //     }else{
+        //         dispatch(updatePlayListFail("Unexpected error occured"));
+        //     }
+        // })
+        if (typeof(playlistDetail.thumbnail) == "object") {
+            playListApi.upImagePlayListApi(playlistDetail.thumbnail).then((rs) => {
+                playlistDetail.thumbnail = rs.data;
+                playListApi.updatePlayListApi(playlistDetail).then((data) => {
+                    dispatch(updatePlayListSuccess(playlistDetail));
+                }).catch(error => {
+                    if (error.response){
+                        dispatch(updatePlayListFail(error.response.data));
+                    }else{
+                        dispatch(updatePlayListFail("Unexpected error occured"));
+                    }
+                })
+            }).catch((err) => {
+                if (err.response){
+                    dispatch(updatePlayListFail(err.response.data));
+                }else{
+                    dispatch(updatePlayListFail("Unexpected error occured"));
+                }
+            })
+        } else if (typeof(playlistDetail.thumbnail) == "string"){
+            playListApi.updatePlayListApi(playlistDetail).then((data) => {
+                dispatch(updatePlayListSuccess(playlistDetail));
+            }).catch(error => {
+                if (error.response){
+                    dispatch(updatePlayListFail(error.response.data));
+                }else{
+                    dispatch(updatePlayListFail("Unexpected error occured"));
+                }
+            })
+        }
     }
 }
 
-export const deletePlayList = (playlist) => {
+export const deletePlayList = (playlistId) => {
     return dispatch => {
         dispatch(deletingPLayList());
-        playListApi.deletePlayListApi(playlist).then((data) => {
-            dispatch(deletePlayListSuccess(playlist));
+        playListApi.deletePlayListApi(playlistId).then((data) => {
+            dispatch(deletePlayListSuccess(playlistId));
         }).catch(error => {
             if (error.response){
                 dispatch(deletePlayListFail(error.response.data));

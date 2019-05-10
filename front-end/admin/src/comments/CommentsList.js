@@ -5,6 +5,7 @@ import * as actions from './CommentsAction';
 import {connect} from 'react-redux';
 
 class CommentsList extends React.Component {
+
     getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({
             setSelectedKeys, selectedKeys, confirm, clearFilters,
@@ -89,16 +90,16 @@ class CommentsList extends React.Component {
                 ...this.getColumnSearchProps('commentDate'),
                 // sorter: (a, b) => a.value - b.value,
             },
-            {
-                title: 'PARENT COMMNET',
-                dataIndex: 'parentCmt',
-                key: 'parentCmt',
-                onFilter: (value, record) => record.parentCmt.indexOf(value) === 0,
-                sorter: (a, b) => a.parentCmt.length - b.parentCmt.length,
-                sortDirections: ['descend', 'ascend'],
-                ...this.getColumnSearchProps('parentCmt'),
-                // sorter: (a, b) => a.value - b.value,
-            },
+            // {
+            //     title: 'PARENT COMMNET',
+            //     dataIndex: 'parentCmt',
+            //     key: 'parentCmt',
+            //     onFilter: (value, record) => record.parentCmt.indexOf(value) === 0,
+            //     sorter: (a, b) => a.parentCmt.length - b.parentCmt.length,
+            //     sortDirections: ['descend', 'ascend'],
+            //     ...this.getColumnSearchProps('parentCmt'),
+            //     // sorter: (a, b) => a.value - b.value,
+            // },
             {
                 title: 'operation',
                 dataIndex: 'operation',
@@ -126,8 +127,8 @@ class CommentsList extends React.Component {
             {
                 commentId: data.commentId,
                 commentCnt: data.commentCnt,
-                commentDate: data.commentDate,
-                parentCmt: data.commentCnt
+                commentDate: new Date(data.commentDate).toLocaleDateString(),
+                parentCmt: data.parentCmt
             }
         ))
         return (
@@ -160,7 +161,9 @@ const mapDispatchToProps = dispatch => {
         getAllComments: () => {
             dispatch(actions.getAllComments());
         },
-        deleteComment: (commentId) => dispatch(actions.deleteComment(commentId))
+        deleteComment: (comment) => {
+            dispatch(actions.deleteComment(comment));
+        }
     }
 }
 
