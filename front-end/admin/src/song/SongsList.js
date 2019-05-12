@@ -1,10 +1,19 @@
-import React from 'react';
-import {connect} from 'react-redux';
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Table, Popconfirm, Divider, Button, Input, Icon } from 'antd';
 import Highlighter from 'react-highlight-words';
 import * as actions from './SongsAction';
+import SongModal from './SongModal';
+import ListSinger from './ListSinger';
+import ListCategory from './ListCategory';
 
 class SongList extends React.Component {
+
+    // state = {
+    //     modalSongVisible: false,
+    //     type: 'upload',
+    //     songToEdit: null
+    // }
     getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({
             setSelectedKeys, selectedKeys, confirm, clearFilters,
@@ -67,7 +76,7 @@ class SongList extends React.Component {
                 title: 'SONG Id',
                 dataIndex: 'songId',
                 key: 'songId',
-            }, 
+            },
             {
                 title: 'SONG NAME',
                 dataIndex: 'songName',
@@ -97,10 +106,11 @@ class SongList extends React.Component {
                 sorter: (a, b) => a.songSrc.length - b.songSrc.length,
                 sortDirections: ['descend', 'ascend'],
                 ...this.getColumnSearchProps('songSrc'),
+                render: (text, record) => <a href={record.songSrc} target="_blank">Link Song</a>,
                 // sorter: (a, b) => a.value - b.value,
             },
             {
-                title: 'BDRIEF DESCIPTION',
+                title: 'BRIEF DESCIPTION',
                 dataIndex: 'briefDesciption',
                 key: 'briefDesciption',
                 onFilter: (value, record) => record.briefDesciption.indexOf(value) === 0,
@@ -117,6 +127,7 @@ class SongList extends React.Component {
                 sorter: (a, b) => a.thumbnail.length - b.thumbnail.length,
                 sortDirections: ['descend', 'ascend'],
                 ...this.getColumnSearchProps('thumbnail'),
+                render: (text, record) => <a href={record.thumbnail} target="_blank">View Thumbnail</a>,
                 // sorter: (a, b) => a.value - b.value,
             },
             {
@@ -129,16 +140,16 @@ class SongList extends React.Component {
                 ...this.getColumnSearchProps('checked'),
                 // sorter: (a, b) => a.value - b.value,
             },
-            {
-                title: 'AUTHORS',
-                dataIndex: 'authors',
-                key: 'authors',
-                onFilter: (value, record) => record.authors.indexOf(value) === 0,
-                sorter: (a, b) => a.authors.length - b.authors.length,
-                sortDirections: ['descend', 'ascend'],
-                ...this.getColumnSearchProps('authors'),
-                // sorter: (a, b) => a.value - b.value,
-            },
+            // {
+            //     title: 'AUTHORS',
+            //     dataIndex: 'authors',
+            //     key: 'authors',
+            //     onFilter: (value, record) => record.authors.indexOf(value) === 0,
+            //     sorter: (a, b) => a.authors.length - b.authors.length,
+            //     sortDirections: ['descend', 'ascend'],
+            //     ...this.getColumnSearchProps('authors'),
+            //     // sorter: (a, b) => a.value - b.value,
+            // },
             {
                 title: 'SINGERS',
                 dataIndex: 'singers',
@@ -148,6 +159,7 @@ class SongList extends React.Component {
                 sortDirections: ['descend', 'ascend'],
                 ...this.getColumnSearchProps('singers'),
                 // sorter: (a, b) => a.value - b.value,
+                render: (text, record) => <ListSinger listSinger={record.singers}/>,
             },
             {
                 title: 'CATEGORIES',
@@ -157,38 +169,50 @@ class SongList extends React.Component {
                 sorter: (a, b) => a.categories.length - b.categories.length,
                 sortDirections: ['descend', 'ascend'],
                 ...this.getColumnSearchProps('categories'),
+                render: (text, record) => <ListCategory listCategory={record.categories}/>,
                 // sorter: (a, b) => a.value - b.value,
             },
-            {
-                title: 'PLAYLISTS',
-                dataIndex: 'playLists',
-                key: 'playLists',
-                onFilter: (value, record) => record.playLists.indexOf(value) === 0,
-                sorter: (a, b) => a.playLists.length - b.playLists.length,
-                sortDirections: ['descend', 'ascend'],
-                ...this.getColumnSearchProps('playLists'),
-                // sorter: (a, b) => a.value - b.value,
-            },
-            {
-                title: 'USER',
-                dataIndex: 'user',
-                key: 'user',
-                onFilter: (value, record) => record.user.indexOf(value) === 0,
-                sorter: (a, b) => a.user.length - b.user.length,
-                sortDirections: ['descend', 'ascend'],
-                ...this.getColumnSearchProps('user'),
-                // sorter: (a, b) => a.value - b.value,
-            },
+            // {
+            //     title: 'PLAYLISTS',
+            //     dataIndex: 'playLists',
+            //     key: 'playLists',
+            //     onFilter: (value, record) => record.playLists.indexOf(value) === 0,
+            //     sorter: (a, b) => a.playLists.length - b.playLists.length,
+            //     sortDirections: ['descend', 'ascend'],
+            //     ...this.getColumnSearchProps('playLists'),
+            //     // sorter: (a, b) => a.value - b.value,
+            // },
+            // {
+            //     title: 'USER',
+            //     dataIndex: 'user',
+            //     key: 'user',
+            //     onFilter: (value, record) => record.user.indexOf(value) === 0,
+            //     sorter: (a, b) => a.user.length - b.user.length,
+            //     sortDirections: ['descend', 'ascend'],
+            //     ...this.getColumnSearchProps('user'),
+            //     // sorter: (a, b) => a.value - b.value,
+            // },
             {
                 title: 'operation',
                 dataIndex: 'operation',
                 render: (text, record) => (
                     <span>
                         {this.props.songReducer.songList.length >= 1
-                            ? (
-                                <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteSinger(record.id)}>
+                            ? (<Fragment>
+                                {/* <a href="javascript:;" onClick={()=>{this.setState({
+                                    type: 'edit',
+                                    songToEdit: record,
+                                    modalSongVisible: true
+                                }); 
+                                this.props.openModal({songId: record.songId, songName: record.songName, briefDesciption: record.briefDesciption, authors: record.authors, singers: record.singers,categories: record.categories})}}
+                                style={{ marginLeft: 5, marginRight: 5 }}
+                                >Edit</a> */}
+
+                                <Popconfirm
+                                    title="Sure to delete?" onConfirm={() => this.props.deleteSong(record.songId)}>
                                     <a href="javascript:;">Delete</a>
                                 </Popconfirm>
+                            </Fragment>
                             ) : null}
                     </span>
                 ),
@@ -198,28 +222,48 @@ class SongList extends React.Component {
         this.props.getAllSongs();
         this.state = {
             searchText: '',
+            modalSongVisible: false,
+            type: 'upload',
+            songToEdit: null
         };
     }
+
+    closeModalSong = () => {
+        this.setState({
+            modalSongVisible: false
+        })
+    }
+    openUploadSongModal = () => {
+        this.props.openModal();
+        this.setState({
+            modalSongVisible: true,
+            type: 'upload',
+            songToEdit: null
+        })
+    }
+
     render() {
         const data = this.props.songReducer.songList.map((data, index) => (
             {
                 songId: data.songId,
                 songName: data.songName,
-                uploadDate: data.uploadDate === null ? 'No Data' : data.uploadDate,
+                uploadDate: data.uploadDate === null ? 'No Data' : new Date(data.uploadDate).toLocaleDateString(),
                 songSrc: data.songSrc === null ? 'No Data' : data.songSrc,
-                briefDesciption: data.briefDesciption,
+                briefDesciption: data.briefDesciption == null ? 'No Data' : data.briefDesciption,
                 thumbnail: data.thumbnail === null ? 'No Data' : data.thumbnail,
                 checked: data.checked === true ? 'true' : 'false',
-                authors: 'No Data',
-                singers: 'No Data',
-                categories: 'No Data',
-                playLists: 'No Data'
+                // authors: 'No Data',
+                singers: data.singers,
+                categories: data.categories,
+                // playLists: 'No Data'
             }
         ))
         return (
             <div style={{
                 position: 'relative'
             }}>
+                <Button onClick={this.openUploadSongModal}
+                    style={{ marginLeft: 5 }} type="primary">Upload a song</Button>
                 <div style={{
                     position: "absolute",
                     top: '-45px',
@@ -233,21 +277,27 @@ class SongList extends React.Component {
                         loading={this.props.songReducer.isGettingSongList || this.props.songReducer.isloadingDelete}
                     />
                 </div>
+                <SongModal type={this.state.type} songToEdit={this.state.songToEdit}
+                    user={null} isShow={this.state.modalSongVisible} closeModal={this.closeModalSong} />
             </div>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    songReducer: state.songReducer
+    songReducer: state.songList
 })
 
 const mapDispathToProps = dispatch => {
     return {
-        getAllSongs: ()=> {
+        getAllSongs: () => {
             dispatch(actions.getAllSongs());
-        }
+        },
+        deleteSong: (songId) => {
+            dispatch(actions.deleteSong(songId))
+        },
+        openModal: (data) => {dispatch(actions.openModal(data))},
     }
 }
 
-export default connect(mapStateToProps,mapDispathToProps) (SongList);
+export default connect(mapStateToProps, mapDispathToProps)(SongList);
