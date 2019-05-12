@@ -49,7 +49,7 @@ class AppHeader2 extends React.Component{
                               </Dropdown>
                           </div> */}
                           <div className="header-account">
-                              <Dropdown overlay={adminAccDropdown(this.props.logOut)} trigger={['click']} placement="topRight">
+                              {user&&<Dropdown overlay={adminAccDropdown(this.props.logOut)} trigger={['click']} placement="topRight">
                                   <a className="ant-dropdown-link" href="ab">
                                   <Avatar size='large' style={{marginRight: '10px'}}
                                       src="https://png.pngtree.com/svg/20161027/631929649c.svg"
@@ -60,7 +60,7 @@ class AppHeader2 extends React.Component{
                                       </p>
                                   </div>
                                   </a>
-                              </Dropdown>
+                              </Dropdown>}
                           </div>
                       </div>
                   </div>

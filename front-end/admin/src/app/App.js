@@ -63,11 +63,12 @@ onCollapse = (collapsed) => {
 }
 
   render() {    
+    
     return (
      <Router history={history}>
      <div className="App">
         <Layout className="app-container" style={{minHeight: '100vh',width: '100vw',overflow: 'hidden'}}>
-        {!window.location.pathname.endsWith("login")&&
+        {
         <Sider
           collapsible
           collapsed={this.state.collapsed}
@@ -142,7 +143,7 @@ onCollapse = (collapsed) => {
         </Sider>}
         <Layout>
         {/* <AppHeaderContainer history={history} /> */}
-        {!window.location.pathname.endsWith("login")&&<AppHeader2 />}
+        {<AppHeader2 />}
           <Content className="app-content">
             <div className="container">
               <Switch>
