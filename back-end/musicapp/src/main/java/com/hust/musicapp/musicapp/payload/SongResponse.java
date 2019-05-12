@@ -138,6 +138,7 @@ public class SongResponse implements Serializable {
         songName=song.getSongName();
         songSrc=song.getSongSrc();
         thumbnail=song.getThumbnail();
+        briefDesciption=song.getBriefDesciption();
         categories=song.getCategories();
         uploadDate = song.getUploadDate();
         checked=song.isChecked();
