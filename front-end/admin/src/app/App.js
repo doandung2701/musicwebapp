@@ -87,43 +87,43 @@ onCollapse = (collapsed) => {
               </Menu.Item>
             <Menu.Item key="1">
             <Link to="/playlist">
-              <Icon type="pie-chart" />
+              <Icon type="ordered-list" />
               <span>PlayList</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="2">
             <Link to="/users">
-              <Icon type="pie-chart" />
+              <Icon type="user" />
               <span>Users</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="3">
             <Link to="/comments">
-              <Icon type="pie-chart" />
+              <Icon type="align-left" />
               <span>Comments</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="4">
             <Link to="/singers">
-              <Icon type="pie-chart" />
+              <Icon type="user" />
               <span>Singers</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="5">
               <Link to="/scoretypes">
-              <Icon type="pie-chart" />
+              <Icon type="star" />
               <span>Scoretypes</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="6">
               <Link to="/album">
-              <Icon type="pie-chart" />
+              <Icon type="book" />
               <span>Album</span>
               </Link>
             </Menu.Item>
             <Menu.Item key="7">
               <Link to="/authors">
-              <Icon type="pie-chart" />
+              <Icon type="user" />
               <span>Authors</span>
               </Link>
             </Menu.Item>
@@ -135,7 +135,7 @@ onCollapse = (collapsed) => {
             </Menu.Item>
             <Menu.Item key="9">
               <Link to="/songs">
-              <Icon type="pie-chart" />
+              <Icon type="play-circle" />
               <span>Songs</span>
               </Link>
             </Menu.Item>
