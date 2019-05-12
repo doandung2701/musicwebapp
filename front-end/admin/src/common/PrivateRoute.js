@@ -5,7 +5,7 @@ import {
   } from "react-router-dom";
 import { connect } from "react-redux";
 const mapStateToProps = (state) => ({
-  authenticated:state.authenReducer
+  authenticated:state.authenReducer.authenticated
 })
 
   

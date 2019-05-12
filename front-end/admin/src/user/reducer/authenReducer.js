@@ -23,6 +23,8 @@ export const authenReducer=(state=initialState,action)=>{
                 loading: true
             }
         case LOADING_CURRENT_USER_SUCCESS:
+        console.log(action.user);
+        
             return {
                 ...state,
                 loading: false,

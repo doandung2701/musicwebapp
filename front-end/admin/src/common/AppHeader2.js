@@ -1,18 +1,15 @@
 import React from 'react';
 import { Dropdown, Avatar, Badge, Icon, Layout, Menu } from 'antd';
-import App from '../app/App';
+import { connect } from 'react-redux'
+import { logout } from '../login/LoginAction';
 
-const adminAccDropdown = (
+const adminAccDropdown =(logOut)=> (
     <Menu>
-        <Menu.Item>
-            <Icon type="setting"/>
-            <span>Settings</span>
-        </Menu.Item>
         <Menu.Item>
             <Icon style={{padding: '0px'}}type="profile"/>
             <span >Profile</span>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item onClick={logOut}>
             <Icon type="logout"/>
             <span>Logout</span>
         </Menu.Item>
@@ -22,6 +19,9 @@ const adminAccDropdown = (
 
 class AppHeader2 extends React.Component{
     render(){
+        let {user}=this.props;
+        console.log(user);
+        
         return(
             <Layout >
             <Layout.Header style={{ background: '#fff', padding: '0px'}} className="header-ctn" >
@@ -49,14 +49,14 @@ class AppHeader2 extends React.Component{
                               </Dropdown>
                           </div> */}
                           <div className="header-account">
-                              <Dropdown overlay={adminAccDropdown} trigger={['click']} placement="topRight">
+                              <Dropdown overlay={adminAccDropdown(this.props.logOut)} trigger={['click']} placement="topRight">
                                   <a className="ant-dropdown-link" href="ab">
                                   <Avatar size='large' style={{marginRight: '10px'}}
                                       src="https://png.pngtree.com/svg/20161027/631929649c.svg"
                                       alt="" />
                                   <div className="header-account-right">
                                       <p>
-                                         Nguyen Truong Giang
+                                          {user?user.name:''}
                                       </p>
                                   </div>
                                   </a>
@@ -69,5 +69,14 @@ class AppHeader2 extends React.Component{
         )
     }
 }
+const mapStateToProps = (state) => ({
+    user:state.authenReducer.currentUser
+})
 
-export default AppHeader2;
+const mapDispatchToProps = dispatch=>{
+    return {
+        logOut:()=>dispatch(logout())
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AppHeader2);

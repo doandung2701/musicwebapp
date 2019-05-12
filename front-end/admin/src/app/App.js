@@ -17,6 +17,7 @@ import ScoreTypeListContainer from "../scoretype/ScoreTypeListContainer";
 import SingerListContainer from "../singer/SingerListContainer";
 import LoginContainer from "../login/LoginContainer";
 import AlbumListContainer from "../album/AlbumListContainer";
+import PrivateRoute from "../common/PrivateRoute";
 
 const { Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -37,6 +38,7 @@ class App extends Component {
   componentDidMount(){
     if(!window.location.pathname.endsWith("login"))
     document.getElementById("page-logo").style.backgroundImage = "center";
+    this.props.loadCurrentUserLogged();
 }
 
 onCollapse = (collapsed) => {
@@ -123,7 +125,7 @@ onCollapse = (collapsed) => {
           <Content className="app-content">
             <div className="container">
               <Switch>
-              <Route path="/" exact component={Dashboard} />
+              <PrivateRoute path="/" exact component={Dashboard}></PrivateRoute>
               <Route path="/login"
               render={(props) => <LoginContainer {...props} />}></Route>
                   {/* //cac route thi xu ly trong day */}
@@ -142,12 +144,12 @@ onCollapse = (collapsed) => {
                   component={NewPoll}
                   handleLogout={this.handleLogout}
                 /> */}
-                <Route path="/playlist"component={PlayList} />
-                <Route path="/users"component={Users} />
-                <Route path="/comments"component={Comments} />
-                <Route path="/singers" component={SingerListContainer}/>
-                <Route path="/scoretypes" component={ScoreTypeListContainer}/>
-                <Route path="/album" component={AlbumListContainer}/>
+                <PrivateRoute path="/playlist"component={PlayList} />
+                <PrivateRoute path="/users"component={Users} />
+                <PrivateRoute path="/comments"component={Comments} />
+                <PrivateRoute path="/singers" component={SingerListContainer}/>
+                <PrivateRoute path="/scoretypes" component={ScoreTypeListContainer}/>
+                <PrivateRoute path="/album" component={AlbumListContainer}/>
               </Switch>
             </div>
           </Content>
