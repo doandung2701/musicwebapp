@@ -7,14 +7,9 @@ import { getAllCategoriesApi } from '../../../Api/CategoryApi';
 import { message } from 'antd';
 import Axios from 'axios';
 import { updateFavCatApi } from '../../../Api/UserApi';
-
-import { UserTrackListFetchOnScrollContainer } from '../../../containers/FetchOnSrollContainer';
-import { wipeFetchOnScrollSongs, getSongByUserId } from '../../../actions/SongAction';
 import CreatePlayListModal from '../PlaylistPage/CreatePlayListModal';
 import { withTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
-import { UserTrackListLikeFetchOnScrollContainer } from '../../../containers/FetchOnSrollContainer';
-import { getLikeSongByUserId, wipeFetchOnScrollLikeSongs } from '../../../actions/SongAction';
 
 class UserProfilePage extends React.Component {
 
@@ -38,9 +33,8 @@ class UserProfilePage extends React.Component {
             this.setState({
                 categories: data.data
             })
-           
-        }
-    }
+    })
+}
 
     closeCreatePlaylistModal = () => {
         this.setState({
@@ -191,7 +185,7 @@ class UserProfilePage extends React.Component {
                             </ul>
                         </div>
                     <div className="tab-content">
-                       {<UserTrackListFetchOnScrollContainer me="songs"
+                       {track&&<UserTrackListFetchOnScrollContainer me="songs"
                                 addSongToQueue={this.props.addSongToQueue}
                                 func={getSongByUserId} singerId={currentUser.id}
                                 wipeFunc={wipeFetchOnScrollSongs} />}
@@ -203,15 +197,15 @@ class UserProfilePage extends React.Component {
                                 createPlayList={this.props.createPlayList}
                                 userId={currentUser.id}
                             />
-                            {<UserPlayList userId={currentUser.id}
+                            {playlist&&<UserPlayList userId={currentUser.id}
                                 deletePlayList={this.props.detetePlayList}
                                 openCreatePlaylistModal={this.openCreatePlaylistModal}
                                 getPlayListsByUserId={this.props.getPlayListsByUserId}
                                 playLists={this.props.playLists.playLists} />}
-                            <UserTrackListLikeFetchOnScrollContainer me="likeSongs"
+                            {like&&<UserTrackListLikeFetchOnScrollContainer me="likeSongs"
                                 addSongToQueue={this.props.addSongToQueue}
                                 func={getLikeSongByUserId} singerId={currentUser.id}
-                                wipeFunc={wipeFetchOnScrollLikeSongs} />
+                                wipeFunc={wipeFetchOnScrollLikeSongs} />}
 
 
 
@@ -236,6 +230,7 @@ class UserProfilePage extends React.Component {
                                 </div>
                             </form>
                         </div>}
+                    </div>
                     </div>
                 </Fragment>
             )

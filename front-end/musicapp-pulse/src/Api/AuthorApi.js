@@ -9,3 +9,12 @@ const axios = Axios.create({
 export const getAllAuthorsApi = ()=>{
     return axios.get("find-all");
 }
+
+export const getAuthorsPagingApi = (page)=>{
+    return axios.get('find-paging',{
+        params: {
+            page,
+            rows: 36
+        }
+    })
+}

@@ -225,7 +225,6 @@ class SongModal extends Component {
               let {t} = this.props;
 
         if (this.state.formDataThumbnail.value == null) {
-        if (file === null) {
             return {
                 validateStatus: 'error',
                 errorMsg: t('validate:image')+" "+t("validate:required")
@@ -248,12 +247,11 @@ class SongModal extends Component {
                 errorMsg: null,
             }
         }
-    }
+}
     validateSong(file) {
         let {t} = this.props;
 
         if (this.state.formDataSong.value == null) {
-        if (file === null) {
             return {
                 validateStatus: 'error',
                 errorMsg: t('song')+" "+t("validate:required")
@@ -271,6 +269,7 @@ class SongModal extends Component {
             }
         }
     }
+
     onSongRemove(file){
         
           this.setState({
@@ -298,6 +297,7 @@ class SongModal extends Component {
             (this.state.categories.value.length >= 1)&&
             (this.state.formDataSong.value!=null)&&
             (this.state.formDataThumbnail.value!=null)
+           
         );
     }
     handleSelectChange(event, validateFun, name) {
