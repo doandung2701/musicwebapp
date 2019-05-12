@@ -6,6 +6,9 @@ import { commentListReducer} from "../comments/CommentsReducer";
 import { userListReducer } from "../users/UsersReducer";
 import { playListListReducer, playListModalReducer} from '../playlist/PlayListReducer';
 import { albumsListReducer, AlbumModalReducer } from "../album/AlbumReducer";
+import { songListReducer, songModalReducer} from '../song/SongsReducer';
+import { authorListReducer, authorModalReducer } from '../author/AuthorsReducer';
+import { categoryListReducer, categoryModalReducer } from '../category/CategoryReducer';
 export const rootReducer=combineReducers({
     authenReducer:authenReducer,
     singerList: singerListReducer,
@@ -19,5 +22,12 @@ export const rootReducer=combineReducers({
     playListList: playListListReducer,
     playListModal: playListModalReducer,
     albumList:albumsListReducer,
-    albumModal:AlbumModalReducer
+    albumModal:AlbumModalReducer,
+    songList: songListReducer,
+    songModal: songModalReducer,
+    // songReducer: songListReducer,
+    authorList: authorListReducer,
+    authorModal: authorModalReducer,
+    categoryList: categoryListReducer,
+    categoryModal: categoryModalReducer
 })

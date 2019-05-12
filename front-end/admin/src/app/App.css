@@ -8,7 +8,11 @@ html,body
 }
 
 .app-content {
-    margin-top: 64px;   
+    margin-top: 64px; 
+  }
+
+  .ant-table-wrapper{
+    overflow-x: auto;
   }
 
   .logo {
@@ -134,4 +138,8 @@ html,body
 
  a.linking{
   color: #f7f7f7;
+ }
+
+ .ant-form-explain {
+   color: red;
  }

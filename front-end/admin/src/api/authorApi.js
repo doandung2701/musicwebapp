@@ -13,3 +13,34 @@ export const getAllAuthorsApi = () => {
         }
     });
 }
+
+export const deleteAuthorApi = (authorId) => {
+    console.log(authorId);
+    return axios.delete(`delete-author-admin?id=${authorId}`); //doc lại axios
+}
+
+export const createAuthorApi = (author) => {
+    let {authorName, thumbnail, briefDescription } = author;
+    let newAuthor = [{
+        authorName,
+        thumbnai: thumbnail,
+        briefDescription
+    }];
+    return axios.post("save-authors",newAuthor)
+}
+
+export const upImageAuthorApi = (thumbnail) => {
+    console.log(thumbnail);
+    return axios.post("save-author-thumbnail",thumbnail)
+}
+
+export const updateAuthorApi = (author) => {
+    let {authorId, authorName, thumbnail, briefDescription } = author;
+    let newAuthor = [{
+        authorId,
+        authorName,
+        thumbnai: thumbnail,
+        briefDescription
+    }];
+    return axios.put("save-authors",newAuthor)
+}

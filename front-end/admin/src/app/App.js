@@ -4,6 +4,9 @@ import { Route, Switch, Router } from "react-router-dom";
 import NotFound from "../common/NotFound";
 import PlayList from "../playlist/PlayList";
 import Comments from "../comments/CommentsList";
+import Authors from "../author/AuthorsList";
+import Category from "../category/CategoryList";
+import SongsList from "../song/SongsList";
 import Users from "../users/UsersList";
 import { Layout, notification, Menu, Icon } from "antd";
 import { history } from "../util/Helpers";
@@ -117,6 +120,24 @@ onCollapse = (collapsed) => {
               <span>Album</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="7">
+              <Link to="/authors">
+              <Icon type="pie-chart" />
+              <span>Authors</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="8">
+              <Link to="/category">
+              <Icon type="pie-chart" />
+              <span>Category</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="9">
+              <Link to="/songs">
+              <Icon type="pie-chart" />
+              <span>Songs</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </Sider>}
         <Layout>
@@ -150,6 +171,9 @@ onCollapse = (collapsed) => {
                 <PrivateRoute path="/singers" component={SingerListContainer}/>
                 <PrivateRoute path="/scoretypes" component={ScoreTypeListContainer}/>
                 <PrivateRoute path="/album" component={AlbumListContainer}/>
+                <PrivateRoute path="/authors" component={Authors}/>
+                <PrivateRoute path="/category" component={Category}/>
+                <PrivateRoute path="/songs" component={SongsList}/>
               </Switch>
             </div>
           </Content>
