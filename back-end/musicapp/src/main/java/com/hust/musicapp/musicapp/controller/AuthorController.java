@@ -51,7 +51,8 @@ public class AuthorController {
                                         @Nullable @RequestParam("direction") String direction) {
 
         Pageable pageable = PageableUtil.getPageable(page, rows, order, direction);
-        return ResponseEntity.ok(authorService.findAllWithPaging(pageable));
+        List<Author> response=authorService.findAllWithPaging(pageable);
+        return ResponseEntity.ok(response);
     }
     @GetMapping("/find-by-pageable")
     public ResponseEntity<?> findByPageable(@RequestParam String orderParam,Pageable pageable){

@@ -70,6 +70,8 @@ export const getAllSingersPaging = (page) => {
         setTimeout(async () => {
             try {
                 let data = await getSingersPagingApi(page);
+                console.log(data);
+                
                 dispatch(getAllSingersPagingSuccess(data.data));
             } catch (err) {
                 dispatch(getAllSingersPagingFail())

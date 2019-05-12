@@ -5,6 +5,7 @@ import {withTranslation} from 'react-i18next';
 class ArtistItem extends React.Component {
     render() {
         const {artist,t} = this.props;
+        console.log(artist);
         return (
             <div className="item">
                 <div className="item-media rounded ">

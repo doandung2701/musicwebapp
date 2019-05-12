@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 import { ACCESS_TOKEN } from '../../../constants/constants';
+import { message } from 'antd';
 
 class OAuth2RedirectHandler extends Component {
     getUrlParameter(name) {
@@ -13,7 +14,10 @@ class OAuth2RedirectHandler extends Component {
 
     render() {        
         const token = this.getUrlParameter('token');
-        const error = this.getUrlParameter('error');      
+        const error = this.getUrlParameter('error');  
+        console.log(token);
+        console.log(error);
+            
         if(token) {
             localStorage.setItem(ACCESS_TOKEN, token);
             this.props.loginSuccess();
@@ -25,9 +29,12 @@ class OAuth2RedirectHandler extends Component {
                 state: { from: this.props.location }
             }}/>; 
         } else {
+            message.error(error);
             this.props.loginError();
+            let fromLoc =  sessionStorage.getItem('from');
+            sessionStorage.removeItem('from');
             return <Redirect to={{
-                pathname: "/login",
+                pathname:  fromLoc?fromLoc:"/signin",
                 state: { 
                     from: this.props.location,
                     error: error 
