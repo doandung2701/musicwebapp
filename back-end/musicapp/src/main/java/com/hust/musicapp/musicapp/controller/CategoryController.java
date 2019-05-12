@@ -54,4 +54,12 @@ public class CategoryController {
         return ResponseEntity.ok("Delete successfully");
     }
 
+    @DeleteMapping("/delete-category-admin")
+    public ResponseEntity<?> deleteCategoryAdmin(@RequestParam("id") String id) {
+        Category p = categoryService.findById(id);
+        if (p != null) {
+            categoryService.delete(p);
+            return ResponseEntity.ok(p.getCategoryId());
+        } else return ResponseEntity.notFound().build();
+    }
 }

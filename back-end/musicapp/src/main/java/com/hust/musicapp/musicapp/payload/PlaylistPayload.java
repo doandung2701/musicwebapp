@@ -89,4 +89,7 @@ public class PlaylistPayload implements Serializable {
         this.thumbnail=playList.getThumbnail();
         this.createdDate = playList.getCreatedDate();
     }
+
+    public PlaylistPayload() {
+    }
 }

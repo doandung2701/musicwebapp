@@ -292,11 +292,11 @@ public class SongController {
     }
 
     @DeleteMapping("/delete-song")
-    public ResponseEntity<?> deleteSong(@RequestBody Song song) {
-        Song s = songService.findById(song.getSongId());
+    public ResponseEntity<?> deleteSong(@RequestParam("id") Long songId) {
+        Song s = songService.findById(songId);
         if (s != null) {
             songService.deleteSong(s);
-            return ResponseEntity.ok("Delete Sucessfully!");
+            return ResponseEntity.ok(s);
         } else return ResponseEntity.notFound().build();
     }
 

@@ -1,13 +1,17 @@
 package com.hust.musicapp.musicapp.controller;
 
+import com.hust.musicapp.musicapp.exception.FileStorageException;
 import com.hust.musicapp.musicapp.model.Author;
 import com.hust.musicapp.musicapp.service.AuthorService;
+import com.hust.musicapp.musicapp.service.FileStorageService;
 import com.hust.musicapp.musicapp.util.PageableUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -15,6 +19,9 @@ import java.util.List;
 @RequestMapping("/authors")
 @CrossOrigin("*")
 public class AuthorController {
+
+    @Autowired
+    FileStorageService fileStorageService;
 
     @Autowired
     private AuthorService authorService;
@@ -74,4 +81,28 @@ public class AuthorController {
         return ResponseEntity.ok("Delete successfully");
     }
 
+    @DeleteMapping("/delete-author-admin")
+    public ResponseEntity<?> deleteAuthorAdmin(@RequestParam("id") Long id) {
+        Author p = authorService.findById(id);
+        if (p != null) {
+            authorService.deleteAuthor(p);
+            return ResponseEntity.ok(p.getAuthorId());
+        } else return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/save-author-thumbnail")
+    public ResponseEntity<?> addAuthorThumbail(@RequestParam("file") MultipartFile file) {
+        System.out.println(file);
+        String fileName = "";
+        try {
+            fileName = fileStorageService.storeFile(file);
+
+        } catch (FileStorageException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                .path(fileName).toUriString();
+        return ResponseEntity.ok(fileUri);
+    }
 }
