@@ -19,6 +19,16 @@ public class PlayListServiceImp implements PlayListService {
     PlaylistRepo repo;
 
     @Override
+    public List<PlayList> findDistinctByIdIn(List<Long> ids) {
+        return repo.findDistinctByIdIn(ids);
+    }
+
+    @Override
+    public List<PlayList> saveAll(List<PlayList> playLists) {
+        return repo.saveAll(playLists);
+    }
+
+    @Override
     public PlayList findById(Long id) {
         return repo.findById(id).get();
     }

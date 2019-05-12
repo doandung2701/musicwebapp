@@ -2,8 +2,9 @@ import React, { Fragment } from 'react';
 import ColXs12TrackItem from '../../tracks/ColXs12TrackItem';
 import { getAllCategoriesApi } from '../../../Api/CategoryApi';
 import { getChartSongByCatIdApi } from '../../../Api/SongApi';
+import { withTranslation } from 'react-i18next';
 
-export default class ChartPage extends React.Component {
+class ChartPage extends React.Component {
 
   constructor(props) {
     super(props);
@@ -39,7 +40,7 @@ export default class ChartPage extends React.Component {
 
   getActiveCat = ()=>{
     if (this.state.active ===null){
-      return "All";
+      return this.props.t('all');
     }else {
       return this.state.active.categoryName;
     }
@@ -47,10 +48,11 @@ export default class ChartPage extends React.Component {
 
   render() {
     let { categories, songs ,active} = this.state;
+    let {t} = this.props;
     return (
       <Fragment>
         <div className="page-title m-b">
-          <h1 className="inline m-a-0">Charts</h1>
+          <h1 className="inline m-a-0">{t('charts')}</h1>
           <div className="dropdown inline">
             <button className="btn btn-sm no-bg h4 m-y-0 v-b dropdown-toggle text-primary" 
             data-toggle="dropdown">{this.getActiveCat()}</button>
@@ -63,7 +65,7 @@ export default class ChartPage extends React.Component {
               ))}
               <a onClick={()=>this.changeCategory(null,categories.length)}
               className="dropdown-item active">
-                All
+                {t('all')}
               </a>
             </div>
           </div>
@@ -77,3 +79,5 @@ export default class ChartPage extends React.Component {
     )
   }
 }
+
+export default withTranslation('common')(ChartPage);

@@ -1,9 +1,10 @@
 import  React from "react";
 import {Link} from 'react-router-dom';
+import {withTranslation} from 'react-i18next';
 
-export default class ArtistItem extends React.Component {
+class ArtistItem extends React.Component {
     render() {
-        const artist = this.props.artist;
+        const {artist,t} = this.props;
         return (
             <div className="item">
                 <div className="item-media rounded ">
@@ -15,10 +16,12 @@ export default class ArtistItem extends React.Component {
                     <div className="item-title text-ellipsis">
                         <Link onClick={this.props.onCloseSearch} 
                          to={`/artists-detail-${artist.id}`}>{artist.name}</Link>
-                        <div className="text-sm text-muted">{artist.songCount} songs</div>
+                        <div className="text-sm text-muted">{artist.songCount} {t('songs').toLowerCase()}</div>
                     </div>
                 </div>
             </div>
         )
     }
 }
+
+export default withTranslation('common')(ArtistItem);

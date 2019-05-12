@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import CommentItem from './CommentItem';
 import { Divider, message } from 'antd';
 import { history } from '../../../../helpers/helper';
+import {withTranslation} from 'react-i18next';
 
 class CommentsList extends React.Component {
 
@@ -21,7 +22,7 @@ class CommentsList extends React.Component {
 
     postComment = (userId, comment, e) => {
         if (userId < 0) {
-            if (window.confirm("Please login to post your comments.")) {
+            if (window.confirm(this.props.t("loginreq"))) {
                 history.push("/signin", {
                     commentCnt: this.state.cmtCnt,
                     from: this.props.location
@@ -32,7 +33,7 @@ class CommentsList extends React.Component {
             }
         } else {
             if (!comment.cmtCnt || comment.cmtCnt.length === 0)
-                message.error("Comment content must not be null", 3);
+                message.error(this.props.t("notnull"), 3);
             else {
                 this.props.postComment(comment);
                 sessionStorage.removeItem("cmtCnt");
@@ -55,19 +56,21 @@ class CommentsList extends React.Component {
 
     render() {
         let { comments } = this.props.comments;
+        let {t}= this.props;
         let comment = {...this.state,songId: this.props.songId,userId: this.props.userId};
         return (
             <Fragment>
-                <h5 className="m-b">Comments</h5>
+                <h5 className="m-b">{t('comments')}</h5>
                 <div className="streamline m-b m-l">
                     {comments.map((value) => (
                         <CommentItem postReply={this.props.postReply} userId={this.props.userId}
+                            t= {t}
                             id={value.commentId} songId={this.props.songId} location={this.props.location}
                             key={value.commentId} cmt={value} />
                     ))}
                 </div>
                 <Divider />
-                <p>Leave your comments here</p>
+                <p>{t('leavecmt')}</p>
                 <div className="box m-a-0 b-a collapse in"
                     aria-expanded="true" style={{
                         transition: '0.5s ease-in',
@@ -77,11 +80,11 @@ class CommentsList extends React.Component {
                         <textarea value={this.state.cmtCnt} onChange={this.handleInputChange}
                             name='cmtCnt'
                             className="form-control no-border"
-                            rows={3} placeholder="Type something..." />
+                            rows={3} placeholder={t('typesth')} />
                     </form>
                     <div className="box-footer clearfix">
                         <button onClick={() => this.postComment(this.props.userId, comment)}
-                            className="btn btn-info pull-right btn-sm">Post</button>
+                            className="btn btn-info pull-right btn-sm">{t('post')}</button>
                     </div>
                 </div>
             </Fragment>
@@ -89,4 +92,4 @@ class CommentsList extends React.Component {
     }
 }
 
-export default CommentsList;
+export default withTranslation('comment')(CommentsList);

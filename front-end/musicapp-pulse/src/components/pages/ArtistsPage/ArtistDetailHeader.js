@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
-import UserBgImg from '../../user/UserBackGroundImg';
+import React from 'react';
 
 class ArtistDetailHeader extends React.Component {
 
   render() {
-    let {id,name,thumbnail,songCount,description} = this.props.singer;
+    let {name,thumbnail,songCount,description} = this.props.singer;
+    let {t} = this.props;
     if (!description){
       description = 'A very talented singer';
     }
@@ -28,7 +28,7 @@ class ArtistDetailHeader extends React.Component {
                 <a className="btn btn-icon white rounded btn-share pull-right" 
                 data-toggle="modal" data-target="#share-modal"><i className="fa fa-share-alt" /></a>
                 <button className="btn-playpause text-primary m-r-sm" />
-                    <span> {this.props.albumCount} Albums, {songCount} Tracks</span>
+                    <span> {this.props.albumCount} {t('albums').toLowerCase()}, {songCount} {t('tracks').toLowerCase()}</span>
               </div>
               <div className="item-meta">
                 <a className="btn btn-xs rounded white">Pop</a> <a className="btn btn-xs rounded white">Happy</a>

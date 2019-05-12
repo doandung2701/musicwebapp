@@ -26,4 +26,5 @@ public interface SingerService {
 
     Long countDistinctById(Long id);
 
+
 }

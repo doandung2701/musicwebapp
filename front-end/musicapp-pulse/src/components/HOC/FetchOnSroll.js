@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 import LoadingIndicator from '../common/LoadingIndicator';
+import {withTranslation} from 'react-i18next';
 
 const fetchOnSroll = (Component) => {
-    return class extends React.Component {
+     class FetchOnScroll extends React.Component {
 
         constructor(props) {
             super(props);
@@ -53,15 +54,18 @@ const fetchOnSroll = (Component) => {
         }
 
         render() {
-            let { data, ...rest } = this.props;
+            let { data,t, ...rest } = this.props;
             return (
                 <Fragment >
-                    <Component list={data.list} {...rest} />
+                    {data.list.length === 0 ?
+                        <div style={{ marginLeft: '45%' }}>{t('nosongs')}</div> :
+                        <Component list={data.list} {...rest} />}
                     <LoadingIndicator height={100} width={100} isGetting={data.isGetting} />
                 </Fragment>
             )
         }
     }
+    return withTranslation('common')(FetchOnScroll);
 }
 
 export default fetchOnSroll;

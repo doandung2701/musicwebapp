@@ -64,13 +64,13 @@ public class Song implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "singer_song",joinColumns = @JoinColumn(name = "song_id"),inverseJoinColumns =
     @JoinColumn(name = "singer_id"))
-    @JsonIgnore
+//    @JsonIgnore
     private Set<Singer> singers;
 
     @ManyToMany
     @JoinTable(name = "category_song",joinColumns = @JoinColumn(name = "song_id"),inverseJoinColumns =
     @JoinColumn(name = "category_id"))
-   @JsonIgnore
+    @JsonIgnore
     private Set<Category> categories;
 
     @ManyToMany

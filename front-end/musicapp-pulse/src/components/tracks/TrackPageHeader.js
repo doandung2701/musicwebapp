@@ -35,7 +35,9 @@ class TrackPageHeader extends React.Component {
                 <div className="inline dropdown m-l-xs">
                   <a className="btn btn-icon rounded btn-more" data-toggle="dropdown">
                     <i className="fa fa-ellipsis-h" /></a>
-                  <TrackActionModalContainer onAddToQueue={() => this.props.addSongToQueue(song)} />
+                  <TrackActionModalContainer songIds = {[song.songId]}
+                  songSrcs = {[song.songSrc]}
+                  onAddToQueue={() => this.props.addSongToQueue(song)} />
                 </div>
               </div>
               <div className="item-meta">

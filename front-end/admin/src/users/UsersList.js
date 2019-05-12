@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import { Table, Popconfirm, Divider, Button, Input, Icon } from 'antd';
 import Highlighter from 'react-highlight-words';
 import * as actions from './UsersAction';
+import "./Users.css";
 
 class UserList extends React.Component {
     getColumnSearchProps = (dataIndex) => ({
@@ -157,7 +158,8 @@ class UserList extends React.Component {
         ))
         return (
             <div style={{
-                position: 'relative'
+                position: 'relative',
+                width: '98%'
             }}>
                 <div style={{
                     position: "absolute",
@@ -170,6 +172,7 @@ class UserList extends React.Component {
                         rowKey={record => record.id}
                         pagination={{ pageSize: 7 }}
                         loading={this.props.userReducer.isGettingUserList || this.props.userReducer.isloadingDelete}
+                        className="table-responsive"
                     />
                 </div>
             </div>
