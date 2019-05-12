@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Spin, Button, Form, Input, Select, Upload } from 'antd';
 import * as actionModal from "./PlayListAction";
-import * as actionSong from "../song/SongAction";
+import * as actionSong from "../song/SongsAction";
 import * as actionUser from "../users/UsersAction";
 import { dummyRequest } from '../helpers/helper';
 const FormItem = Form.Item;
@@ -150,7 +150,7 @@ class PlayListModal extends Component {
     }
     isFormInvalid() {
         return !(this.state.name.validateStatus === 'success' &&
-            this.state.description.validateStatus === 'success' && this.state.thumbnail.validateStatus
+            this.state.description.validateStatus === 'success' && this.state.thumbnail.validateStatus === 'success'
         );
     }
     handleOk = () => {
@@ -228,7 +228,7 @@ class PlayListModal extends Component {
         })
     }
     componentWillReceiveProps(nextProps) {
-        let { name, thumbnail, description, user, playListSong } = nextProps.playListModal.playList;
+        let { id ,name, thumbnail, description, user, playListSong } = nextProps.playListModal.playList;
         thumbnail = thumbnail == 'No Data' ? null : thumbnail;
         this.props.userList.userList.map((data, index) => {
             if (data.email == user) {
@@ -240,28 +240,30 @@ class PlayListModal extends Component {
         //         return `${data.songId}`;
         //     })
         // }
-        this.setState({
-            name: {
-                validateStatus: 'success',
-                errorMsg: null,
-                value: name
-            },
-            thumbnail: {
-                value: thumbnail,
-                validateStatus: 'success'
-            },
-            description: {
-                validateStatus: 'success',
-                errorMsg: null,
-                value: description
-            },
-            user: {
-                value: user
-            },
-            playListSong: {
-                value: playListSong
-            }
-        })
+        if (id !=0 ) {
+            this.setState({
+                name: {
+                    validateStatus: 'success',
+                    errorMsg: null,
+                    value: name
+                },
+                thumbnail: {
+                    value: thumbnail,
+                    validateStatus: 'success'
+                },
+                description: {
+                    validateStatus: 'success',
+                    errorMsg: null,
+                    value: description
+                },
+                user: {
+                    value: user
+                },
+                playListSong: {
+                    value: playListSong
+                }
+            })
+        }
     }
     render() {
         let { name, thumbnail, description, user, playListSong } = this.props.playListModal.playList;
