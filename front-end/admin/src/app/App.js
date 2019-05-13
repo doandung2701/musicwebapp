@@ -15,7 +15,6 @@ import AppHeaderContainer from "../common/AppHeaderContainer";
 import {Link} from 'react-router-dom';
 import Dashboard from '../dashboard/Dashboard';
 import AppHeader2 from "../common/AppHeader2";
-import ScoreTypeList from "../scoretype/ScoreTypeList";
 import ScoreTypeListContainer from "../scoretype/ScoreTypeListContainer";
 import SingerListContainer from "../singer/SingerListContainer";
 import LoginContainer from "../login/LoginContainer";
@@ -63,12 +62,11 @@ onCollapse = (collapsed) => {
 }
 
   render() {    
-    
     return (
      <Router history={history}>
      <div className="App">
         <Layout className="app-container" style={{minHeight: '100vh',width: '100vw',overflow: 'hidden'}}>
-        {
+        { 
         <Sider
           collapsible
           collapsed={this.state.collapsed}
@@ -79,19 +77,19 @@ onCollapse = (collapsed) => {
           theme="dark" style={{position: 'fixed',width: 200,marginTop: 60}}
                     inlineCollapsed={this.state.collapsed}
           defaultSelectedKeys={['1']} mode="inline">
-            <Menu.Item >
+            <Menu.Item key="1">
               <Link to="/">
                 <Icon type="dashboard" />
                  <span>Dashboard</span>
                </Link>
               </Menu.Item>
-            <Menu.Item key="1">
+            <Menu.Item key="2">
             <Link to="/playlist">
               <Icon type="ordered-list" />
               <span>PlayList</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key="2">
+            <Menu.Item key="10">
             <Link to="/users">
               <Icon type="user" />
               <span>Users</span>
@@ -175,6 +173,7 @@ onCollapse = (collapsed) => {
                 <PrivateRoute path="/authors" component={Authors}/>
                 <PrivateRoute path="/category" component={Category}/>
                 <PrivateRoute path="/songs" component={SongsList}/>
+                <Route component={NotFound}></Route>
               </Switch>
             </div>
           </Content>

@@ -182,7 +182,31 @@ class AlbumModal extends Component {
                 this.props.closeModal();
             })
         }
-
+        this.state = {
+            id: {
+                value: 0
+            },
+            albumName: {
+                value: ''
+            },
+            thumbnail: {
+                value: null,
+                src: null
+            },
+            songs: {
+                value: [],
+                default: []
+            },
+            singer: {
+                value: null,
+                default: {
+                    id: 0
+                }
+            },
+            dataSinger: [],
+            dataSong: [],
+            isLoading: false,
+        }
 
     }
     componentDidMount() {
@@ -232,6 +256,13 @@ class AlbumModal extends Component {
         })
 
 
+    }
+    handleRemoveImage=()=>{
+        this.setState({
+            thumbnail:{
+                value:null
+            }
+        })
     }
     handleInputChange(event, validationFun) {
         const target = event.target;
@@ -379,6 +410,7 @@ class AlbumModal extends Component {
                                                 }}
                                                 type="drag"
                                                 multiple={false}
+                                                onRemove={this.handleRemoveImage}
                                                 customRequest={dummyRequest}
                                                 onChange={(event) => this.handleFileChange(event, this.validateThumbnail, "thumbnail")} />
                                             {
