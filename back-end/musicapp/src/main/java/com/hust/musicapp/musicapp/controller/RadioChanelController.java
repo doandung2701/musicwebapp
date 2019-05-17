@@ -42,6 +42,22 @@ public class RadioChanelController {
 
     }
 
+    @PostMapping("/save-radio-file")
+    public ResponseEntity<?> addRadioThumbail(@RequestParam("file") MultipartFile file) {
+        System.out.println(file);
+        String fileName = "";
+        try {
+            fileName = fileStorageService.storeFile(file);
+
+        } catch (FileStorageException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String fileUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/uploads/")
+                .path(fileName).toUriString();
+        return ResponseEntity.ok(fileUri);
+    }
+
     @PutMapping("/update-radio-channel")
     public ResponseEntity<?> updateRadioChannel(@RequestBody RadioChanel request){
         if(request.getSongId()!=null){
