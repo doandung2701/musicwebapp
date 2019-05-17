@@ -1,9 +1,9 @@
 import {  CREATING_SINGER, CREATE_SINGER_SUCCESS, CREATE_SINGER_FAIL, DELETING_SINGER, DELETE_SINGER_SUCCESS, DELETE_SINGER_FAIL, UPDATING_SINGER, UPDATE_SINGER_SUCCESS, UPDATE_SINGER_FAIL, GETTING_SINGER_BY_ID, GET_SINGER_BY_ID_SUCCESS, GET_SINGER_BY_ID_FAIL, GETTING_SINGERS, GET_SINGERS_SUCCESS, GET_SINGERS_FAIL } from "../constants";
-import { getAllSingersApi, createSingerApi, deleteSingerApi, getSingerByIdApi, updateSingerApi } from "../api/singerApi";
+import { getAllSingersApi, createSingerApi, deleteSingerApi, getSingerByIdApi, updateSingerApi, uploadFileSinger } from "../api/singerApi";
 import { SINGER_SHOW_MODAL, SINGER_CLOSE_MODAL } from "./SingerConstants";
 export const openModal=(data={
     id: 0,
-    name: 0,
+    name: "",
     description: ""
 })=>({
     type:SINGER_SHOW_MODAL,
@@ -108,11 +108,21 @@ export const createSinger = (singer)=>{
     /*singer gửi lên có các thuộc tính trong class Singer ở backend */
     return dispatch=>{
         dispatch(creatingSinger());
-        createSingerApi(singer).then(data=>{
-            dispatch(createSingerSuccess(data.data));//trả về để hiển thị luôn, hoặc có thể fetch lại toàn bộ list nếu muốn
-        }).catch(error=>{
-            if (error.response){
-                dispatch(createSingerFail(error.response.data));
+        console.log(singer);
+        uploadFileSinger(singer.thumbnail).then((data) => {
+            singer.thumbnail = data.data;
+            createSingerApi(singer).then(data=>{
+                dispatch(createSingerSuccess(data.data));//trả về để hiển thị luôn, hoặc có thể fetch lại toàn bộ list nếu muốn
+            }).catch(error=>{
+                if (error.response){
+                    dispatch(createSingerFail(error.response.data));
+                }else{
+                    dispatch(createSingerSuccess("Unexpected error occured"));
+                }
+            })
+        }).catch((err) => {
+            if (err.response){
+                dispatch(createSingerFail(err.response.data));
             }else{
                 dispatch(createSingerSuccess("Unexpected error occured"));
             }
@@ -154,14 +164,31 @@ export const updateSinger = (singerId,singerDetail)=>{
     /*singerDetail gửi lên có các thuộc tính trong class Singer ở backend */
     return dispatch=>{
         dispatch(updatingSinger());
-        updateSingerApi(singerId,singerDetail).then(data=>{
-            dispatch(updateSingerSuccess(data.data));//trả về singer để hiển thị luôn, đỡ phải fetch lại
-        }).catch(error=>{
-            if (error.response){
-                dispatch(updateSingerFail(error.response.data));
-            }else{
-                dispatch(updateSingerFail("Unexpected error occured"));
-            }
-        })
+        console.log(typeof(singerDetail.thumbnail));
+        if(typeof(singerDetail.thumbnail) === "object") {
+            console.log("thumbnail");
+            uploadFileSinger(singerDetail.thumbnail).then((data) => {
+                singerDetail.thumbnail = data.data;
+                updateSingerApi(singerId,singerDetail).then(data=>{
+                    dispatch(updateSingerSuccess(data.data));//trả về singer để hiển thị luôn, đỡ phải fetch lại
+                }).catch(error=>{
+                    if (error.response){
+                        dispatch(updateSingerFail(error.response.data));
+                    }else{
+                        dispatch(updateSingerFail("Unexpected error occured"));
+                    }
+                })
+            })
+        } else {
+            updateSingerApi(singerId,singerDetail).then(data=>{
+                dispatch(updateSingerSuccess(data.data));//trả về singer để hiển thị luôn, đỡ phải fetch lại
+            }).catch(error=>{
+                if (error.response){
+                    dispatch(updateSingerFail(error.response.data));
+                }else{
+                    dispatch(updateSingerFail("Unexpected error occured"));
+                }
+            })
+        }
     }
 }

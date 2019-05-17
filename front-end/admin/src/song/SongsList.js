@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import { Table, Popconfirm, Divider, Button, Input, Icon } from 'antd';
 import Highlighter from 'react-highlight-words';
 import * as actions from './SongsAction';
-import SongModal from './SongModal';
+import SongModal from './SongsModal';
 import ListSinger from './ListSinger';
 import ListCategory from './ListCategory';
+import ListAuthor from './ListAuthor';
 
 class SongList extends React.Component {
 
@@ -73,7 +74,7 @@ class SongList extends React.Component {
         super(props);
         this.columns = [
             {
-                title: 'SONG Id',
+                title: 'SONG ID',
                 dataIndex: 'songId',
                 key: 'songId',
             },
@@ -85,7 +86,7 @@ class SongList extends React.Component {
                 sorter: (a, b) => a.songName.length - b.songName.length,
                 sortDirections: ['descend', 'ascend'],
                 ...this.getColumnSearchProps('songName'),
-                render: (text, record) => <a href="javascript:;" onClick={() => this.props.showListSongsOfSinger(record.id)}>{text}</a>,
+                render: (text, record) => <a href="javascript:;">{text}</a>,
                 // sorter: (a, b) => a.value - b.value,
             },
             {
@@ -172,6 +173,17 @@ class SongList extends React.Component {
                 render: (text, record) => <ListCategory listCategory={record.categories}/>,
                 // sorter: (a, b) => a.value - b.value,
             },
+            {
+                title: 'AUTHORS',
+                dataIndex: 'authors',
+                key: 'authors',
+                onFilter: (value, record) => record.authors.indexOf(value) === 0,
+                sorter: (a, b) => a.authors.length - b.authors.length,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('authors'),
+                render: (text, record) => <ListAuthor listAuthor={record.authors}/>,
+                // sorter: (a, b) => a.value - b.value,
+            },
             // {
             //     title: 'PLAYLISTS',
             //     dataIndex: 'playLists',
@@ -199,14 +211,14 @@ class SongList extends React.Component {
                     <span>
                         {this.props.songReducer.songList.length >= 1
                             ? (<Fragment>
-                                {/* <a href="javascript:;" onClick={()=>{this.setState({
+                                <a href="javascript:;" onClick={()=>{this.setState({
                                     type: 'edit',
                                     songToEdit: record,
                                     modalSongVisible: true
                                 }); 
-                                this.props.openModal({songId: record.songId, songName: record.songName, briefDesciption: record.briefDesciption, authors: record.authors, singers: record.singers,categories: record.categories})}}
+                                this.props.openModal({songId: record.songId, songName: record.songName, briefDesciption: record.briefDesciption, authors: record.authors, singers: record.singers,categories: record.categories, songSrc: record.songSrc, thumbnail: record.thumbnail})}}
                                 style={{ marginLeft: 5, marginRight: 5 }}
-                                >Edit</a> */}
+                                >Edit</a>
 
                                 <Popconfirm
                                     title="Sure to delete?" onConfirm={() => this.props.deleteSong(record.songId)}>
@@ -252,7 +264,7 @@ class SongList extends React.Component {
                 briefDesciption: data.briefDesciption == null ? 'No Data' : data.briefDesciption,
                 thumbnail: data.thumbnail === null ? 'No Data' : data.thumbnail,
                 checked: data.checked === true ? 'true' : 'false',
-                // authors: 'No Data',
+                authors: data.authors === null ? 'No Data' : data.authors,
                 singers: data.singers,
                 categories: data.categories,
                 // playLists: 'No Data'
@@ -272,7 +284,7 @@ class SongList extends React.Component {
                 </div>
                 <div>
                     <Table columns={this.columns} dataSource={data}
-                        rowKey={record => record.id}
+                        rowKey={record => record.songId}
                         pagination={{ pageSize: 7 }}
                         loading={this.props.songReducer.isGettingSongList || this.props.songReducer.isloadingDelete}
                     />

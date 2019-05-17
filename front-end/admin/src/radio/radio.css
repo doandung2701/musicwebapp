@@ -1,0 +1,13 @@
+.editable-row .ant-form-explain {
+    position: absolute;
+    font-size: 12px;
+    margin-top: -4px;
+}
+
+.mr-15 {
+    margin: 15px;
+}
+
+.pd-10 {
+    padding: 10px;
+}

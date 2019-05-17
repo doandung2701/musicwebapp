@@ -16,7 +16,6 @@ const adminAccDropdown =(logOut)=> (
 class AppHeader2 extends React.Component{
     render(){
         let {user}=this.props;
-        console.log(user);
         
         return(
             <Layout >

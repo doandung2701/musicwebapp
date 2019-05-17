@@ -1,5 +1,6 @@
 package com.hust.musicapp.musicapp.controller;
 
+import com.hust.musicapp.musicapp.model.Author;
 import com.hust.musicapp.musicapp.model.Song;
 import com.hust.musicapp.musicapp.payload.SongResponse;
 import com.hust.musicapp.musicapp.payload.SongUploadPayload;
@@ -27,10 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.core.io.Resource;
 
@@ -273,6 +271,19 @@ public class SongController {
     @PutMapping("/save-songs")
     public ResponseEntity<?> updateSong(@RequestBody List<Song> songs) {
         return ResponseEntity.ok(songService.saveAll(songs));
+    }
+
+    @PutMapping("/save-songs-admin/{id}")
+    public ResponseEntity<?> updateSongAdmin(@RequestBody SongUploadPayload song, @PathVariable Long id) {
+        Song songSave = songService.findById(id);
+        songSave.setSongName(song.getSongName());
+//        songSave.setThumbnail(song.getThumbnail());
+        songSave.setBriefDesciption(song.getBriefDesciption());
+        songSave.setAuthors(new HashSet<>(song.getAuthors()));
+        songSave.setSingers(new HashSet<>(song.getSingers()));
+        songSave.setCategories(new HashSet<>(song.getCategories()));
+//        songSave.setSongSrc(song.getSongSrc());
+        return ResponseEntity.ok(songService.save(songSave));
     }
 
     @PostMapping("/users/upload-song")

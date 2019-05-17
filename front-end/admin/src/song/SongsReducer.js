@@ -1,5 +1,6 @@
 import * as actionConstants from '../constants/index';
-import {SONG_SHOW_MODAL ,SONG_CLOSE_MODAL} from './SongsConstants'
+import {SONG_SHOW_MODAL ,SONG_CLOSE_MODAL} from './SongsConstants';
+import { openNotificationWithIcon } from "../common/notification";
 
 const initialStateModal = {
     song: {
@@ -22,7 +23,7 @@ export const songModalReducer = (state = initialStateModal, action) => {
             return {
                 ...state,
                 isShow: true,
-                playList: action.payload
+                song: action.payload
             }
         case SONG_CLOSE_MODAL:
             return {
@@ -99,11 +100,18 @@ export const songListReducer = (state = initialSate, action) => {
                 error: state.error
             }
         case actionConstants.UPLOAD_SONG_SUCCESS:
+        openNotificationWithIcon('success', 'Song', 'Upload Song success');
             return {
                 ...state,
                 songList: [action.song, ...state.songList]
             }
+        case actionConstants.UPLOAD_SONG_FAIL: 
+        openNotificationWithIcon('error', 'Song', 'Upload Song error');
+            return {
+                ...state,
+            }
         case actionConstants.DELETE_SONG_SUCCESS:
+            openNotificationWithIcon('success', 'Song', 'Delete Song success');
             let list = state.songList.filter(value => {
                 return value.songId !== action.song.songId
             })
@@ -111,7 +119,42 @@ export const songListReducer = (state = initialSate, action) => {
                 ...state,
                 songList: list
             }
-        default:
+        case actionConstants.DELETE_SONG_FAIL: 
+        openNotificationWithIcon('error', 'Song', 'DELETE Song error');
+            return {
+                ...state,
+            }
+        case actionConstants.UPDATE_SONG_SUCCESS:
+            openNotificationWithIcon('success', 'Song', 'Update Song success');
+            var index = state.songList.findIndex(item => item.songId == action.payload.songId);
+            let songListNew = state.songList;
+            songListNew[index] = action.payload;
+            return {
+                ...state,
+                playListList: songListNew
+            }
+        case actionConstants.UPDATE_SONG_FAIL: 
+        openNotificationWithIcon('error', 'Song', 'Update Song error');
+            return {
+                ...state,
+            }
+        case actionConstants.CREATING_PLAYLIST:
+            return {
+                ...state
+            }
+        case actionConstants.CREATE_PLAYLIST_SUCCESS:
+            openNotificationWithIcon('success', 'Song', 'Create Song success');
+            console.log(action.payload);
+            return {
+                ...state,
+                playListList: [...state.playListList, action.payload] //trả về mảng với list ban đầu với, phần tử mới thêm vào
+            }
+        case actionConstants.CREATE_PLAYLIST_FAIL:
+            return {
+                ...state,
+                error: action.error
+            }
+        default: 
             return state
     }
 }

@@ -24,11 +24,25 @@ export const uploadSongFile = (id, data) => {
     return axios.put(`${id}/upload-song`, data);
 }
 
+export const updateSong = (song, songId) => {
+    console.log(song);
+    return axios.put(`/save-songs-admin/${songId}`, song);
+}
+
 export const deleteSongApi = (id)=>{
     console.log("id",id)
     return axios.delete("delete-song",{
         params: {
             id 
+        }
+    })
+}
+
+
+export const getSongById = (id) => {
+    return axios.get(`/find-by-id/${id}`,{
+        headers: {
+            'Content-Security-Policy': 'default-src https:'
         }
     })
 }

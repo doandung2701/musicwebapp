@@ -76,7 +76,7 @@ class UserList extends React.Component {
                 sorter: (a, b) => a.name.length - b.name.length,
                 sortDirections: ['descend', 'ascend'],
                 ...this.getColumnSearchProps('name'),
-                render: (text, record) => <a href="javascript:;" onClick={() => this.props.showListSongsOfSinger(record.id)}>{text}</a>,
+                render: (text, record) => <a href="javascript:;">{text}</a>,
                 // sorter: (a, b) => a.value - b.value,
             },
             {

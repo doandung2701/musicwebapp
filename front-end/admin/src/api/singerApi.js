@@ -23,7 +23,7 @@ import { API_BASE_URL } from "../constants";
  }
 
  export const updateSingerApi = (singerId,singerDetail)=>{
-     return axios.put(`save/update-singer/${singerId}`,singerDetail);
+     return axios.put(`save/update-singer-all/${singerId}`,singerDetail);
  }
 
  export const deleteSingerApi = (id)=>{
@@ -35,4 +35,8 @@ import { API_BASE_URL } from "../constants";
  }
  export const getSongsOfSinger=(id)=>{
      return axios.get(`find/songs-by-id/${id}`);
+ }
+
+ export const uploadFileSinger=(file) => {
+     return axios.post(`save-singer-file`,file);
  }

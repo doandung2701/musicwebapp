@@ -7,6 +7,7 @@ import Comments from "../comments/CommentsList";
 import Authors from "../author/AuthorsList";
 import Category from "../category/CategoryList";
 import SongsList from "../song/SongsList";
+import RadiosList from "../radio/RadiosList";
 import Users from "../users/UsersList";
 import { Layout, notification, Menu, Icon } from "antd";
 import { history } from "../util/Helpers";
@@ -137,6 +138,12 @@ onCollapse = (collapsed) => {
               <span>Songs</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="11">
+              <Link to="/radios">
+              <Icon type="step-forward" />
+              <span>Radios</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </Sider>}
         <Layout>
@@ -173,6 +180,8 @@ onCollapse = (collapsed) => {
                 <PrivateRoute path="/authors" component={Authors}/>
                 <PrivateRoute path="/category" component={Category}/>
                 <PrivateRoute path="/songs" component={SongsList}/>
+                <PrivateRoute path="/radios" component={RadiosList}/>
+
                 <Route component={NotFound}></Route>
               </Switch>
             </div>

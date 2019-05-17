@@ -9,6 +9,7 @@ import { albumsListReducer, AlbumModalReducer } from "../album/AlbumReducer";
 import { songListReducer, songModalReducer} from '../song/SongsReducer';
 import { authorListReducer, authorModalReducer } from '../author/AuthorsReducer';
 import { categoryListReducer, categoryModalReducer } from '../category/CategoryReducer';
+import { radioListReducer, radioModalReducer } from '../radio/RadiosReducer';
 export const rootReducer=combineReducers({
     authenReducer:authenReducer,
     singerList: singerListReducer,
@@ -29,5 +30,7 @@ export const rootReducer=combineReducers({
     authorList: authorListReducer,
     authorModal: authorModalReducer,
     categoryList: categoryListReducer,
-    categoryModal: categoryModalReducer
+    categoryModal: categoryModalReducer,
+    radioList: radioListReducer,
+    radioModal: radioModalReducer 
 })

@@ -1,5 +1,6 @@
 package com.hust.musicapp.musicapp.payload;
 
+import com.hust.musicapp.musicapp.model.Author;
 import com.hust.musicapp.musicapp.model.Category;
 import com.hust.musicapp.musicapp.model.Singer;
 import com.hust.musicapp.musicapp.model.Song;
@@ -27,6 +28,7 @@ public class SongResponse implements Serializable {
 
     private boolean checked;
 
+    private Set<Author> authors;
 
     private Set<Singer> singers;
 
@@ -62,6 +64,14 @@ public class SongResponse implements Serializable {
 
     public String getSongSrc() {
         return songSrc;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 
     public void setSongSrc(String songSrc) {
@@ -140,6 +150,7 @@ public class SongResponse implements Serializable {
         thumbnail=song.getThumbnail();
         briefDesciption=song.getBriefDesciption();
         categories=song.getCategories();
+        authors= song.getAuthors();
         uploadDate = song.getUploadDate();
         checked=song.isChecked();
         singers=song.getSingers();

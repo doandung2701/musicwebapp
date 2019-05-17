@@ -124,7 +124,7 @@ class SongModal extends Component {
             categories:dataCategory.filter(data=>categories.value.includes(data.categoryId+"")),
             user: 4
         }
-
+        console.log(this.state);
         this.setState({
             isLoading:true
         })

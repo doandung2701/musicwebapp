@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Modal, Spin, Button, Form, Input } from 'antd';
+import { Modal, Spin, Button, Form, Input, Upload} from 'antd';
 import { closeModal, updateSinger, createSinger } from "./SingerAction";
+import { dummyRequest } from '../helpers/helper';
 const FormItem = Form.Item;
 
 class SingerModal extends Component {
@@ -14,12 +15,16 @@ class SingerModal extends Component {
             },
             description: {
                 value: ''
+            },
+            thumbnail: {
+                value: ''
             }
         }
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.validateName = this.validateName.bind(this);
         this.validateDescription = this.validateDescription.bind(this);
+        this.validateThumbnail = this.validateThumbnail.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
     }
     validateName(name) {
@@ -59,6 +64,31 @@ class SingerModal extends Component {
             }
         }
     }
+    validateThumbnail(file) {
+        if (file === null) {
+            return {
+                validateStatus: 'error',
+                errorMsg: `Image is required`
+            }
+        } else if (!(/\.(gif|jpg|jpeg|tiff|png)$/i).test(file.name)) {
+            return {
+                validationStatus: 'error',
+                errorMsg: `Image not using format`
+            }
+        }else if(file.size>=1048576){
+            return {
+                validationStatus: 'error',
+                errorMsg: `File size to big. file size < 1048576`
+            }
+        }
+        
+        else {
+            return {
+                validateStatus: 'success',
+                errorMsg: null,
+            }
+        }
+    }
     handleInputChange(event, validationFun) {
         const target = event.target;
         const inputName = target.name;
@@ -71,25 +101,41 @@ class SingerModal extends Component {
             }
         });
     }
+    handleFileChange(info,validationFun,name){
+        var reader=new FileReader();
+        reader.readAsDataURL(info.file.originFileObj)
+        var formData = new FormData();
+        formData.append("file", info.file.originFileObj);
+        console.log(formData);
+        this.setState({
+            [name]: {
+                value:formData,
+                ...validationFun(info.file)
+            }
+        })
+    }
     isFormInvalid() {
         return !(this.state.name.validateStatus === 'success' &&
-            this.state.description.validateStatus === 'success'
+            this.state.description.validateStatus === 'success' &&
+            this.state.thumbnail.validateStatus === 'success'
         );
     }
     handleOk = () => {
-        const {name,description}=this.state;
+        const {name,description, thumbnail}=this.state;
         const {id}=this.props.singerModal.singer;        
         if(id==0){
             var payload={
                 name:name.value,
-                description:description.value
+                description:description.value,
+                thumbnail: thumbnail.value
             }
             this.props.createSinger(payload);
         }else{
             var payload={
                 id:id,
                 name:name.value,
-                description:description.value
+                description:description.value,
+                thumbnail: thumbnail.value
             }
             this.props.updateSinger(id,payload);
         }
@@ -106,6 +152,28 @@ class SingerModal extends Component {
         })
         this.props.closeModal();
 
+    }
+    componentWillReceiveProps(nextProps) {
+        let { id ,name, thumbnail, description} = nextProps.singerModal.singer;
+        thumbnail = thumbnail == 'No Data' ? null : thumbnail;
+        if (id != 0) {
+            this.setState({
+                name: {
+                    validateStatus: 'success',
+                    errorMsg: null,
+                    value: name
+                },
+                thumbnail: {
+                    value: thumbnail,
+                    validateStatus: 'success'
+                },
+                description: {
+                    validateStatus: 'success',
+                    errorMsg: null,
+                    value: description
+                }
+            })
+        }
     }
     render() {
         const { name, description } = this.props.singerModal.singer;
@@ -151,6 +219,23 @@ class SingerModal extends Component {
                                     name="description"
                                     placeholder="Description about singer"
                                     onChange={(event) => this.handleInputChange(event, this.validateDescription)} />
+                            </FormItem>
+                            <FormItem label="Thumbnail" className="gutter-box" style={{marginBottom:0}}
+                                validateStatus={this.state.thumbnail.validateStatus}
+                                help={this.state.thumbnail.errorMsg}
+                                >
+                                <Upload
+                                 accept=".gif,.jpg,.jpeg,.tiff,.png"
+                                 style={{
+                                    fontSize: '52px',
+                                    color: 'grey',
+                                }}
+                                    type="drag"
+                                    multiple={false}
+                                    customRequest={dummyRequest}
+                                    onRemove={this.onImageRemove} 
+                                    onChange={(event) => this.handleFileChange(event, this.validateThumbnail,"thumbnail")} 
+                                    />
                             </FormItem>
                         </Form>
                     </Modal >
