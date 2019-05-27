@@ -5,10 +5,6 @@ import { logout } from '../login/LoginAction';
 
 const adminAccDropdown =(logOut)=> (
     <Menu>
-        <Menu.Item>
-            <Icon style={{padding: '0px'}}type="profile"/>
-            <span >Profile</span>
-        </Menu.Item>
         <Menu.Item onClick={logOut}>
             <Icon type="logout"/>
             <span>Logout</span>
@@ -20,7 +16,6 @@ const adminAccDropdown =(logOut)=> (
 class AppHeader2 extends React.Component{
     render(){
         let {user}=this.props;
-        console.log(user);
         
         return(
             <Layout >

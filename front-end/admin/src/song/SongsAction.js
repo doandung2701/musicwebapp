@@ -42,6 +42,20 @@ const uploadSongFail = (err) => ({
     err
 })
 
+const updatingSong = () => ({
+    type: actionConstants.UPDATING_SONG
+})
+
+const updateSongSuccess = (song) => ({
+    type: actionConstants.UPDATE_SONG_SUCCESS,
+    payload: song
+})
+
+const updateSongFail = (error) => ({
+    type: actionConstants.UPDATE_SONG_FAIL,
+    error
+})
+
 const deleteSongSuccess = (song)=>{
     return {
         type: actionConstants.DELETE_SONG_SUCCESS,
@@ -76,13 +90,86 @@ export const uploadSong = (data, image, song) => {
             let { songId } = response.data;
             songApi.uploadImageSong(songId, image).then(data => {
                 songApi.uploadSongFile(songId, song).then(response => {
-                    dispatch(uploadSongSuccess(response.data))
+                    songApi.getSongById(response.data.songId).then(data => {
+                        dispatch(uploadSongSuccess(data.data))
+                    })
                 })
             })
         }).catch(err => {
             dispatch(uploadSongFail(err))
         });
 
+    }
+}
+
+export const updateSong = (song, songId) => {
+    return dispatch => {
+        dispatch(updatingSong())
+        if (typeof(song.thumbnail) === "string" && typeof(song.songSrc) == "string") {
+            songApi.updateSong(song, songId).then(data => {
+                var newSong = {
+                    songId,
+                    ...song
+                };
+            dispatch(updateSongSuccess(newSong));
+            }).catch((error) => {
+                dispatch(updateSongFail(error))
+            })
+        } else if (typeof(song.thumbnail) === "object" && typeof(song.songSrc) == "object") {
+            songApi.uploadImageSong(songId,song.thumbnail).then((data) => {
+                song.thumbnail = data.data.thumbnail;
+                songApi.uploadSongFile(songId,song.songSrc).then((data1) => {
+                    song.songSrc = data1.data.songSrc;
+                    songApi.updateSong(song, songId).then(data => {
+                        var newSong = {
+                            songId,
+                            ...song
+                        };
+                        console.log(newSong);
+                    dispatch(updateSongSuccess(newSong));
+                    }).catch((error) => {
+                        dispatch(updateSongFail(error))
+                    })
+                }).catch((error) => {
+                    dispatch(updateSongFail(error))
+                })
+            }).catch((error) => {
+                dispatch(updateSongFail(error))
+            })
+        } else if (typeof(song.thumbnail) === "object") {
+            songApi.uploadImageSong(songId, song.thumbnail).then(data => {
+                song.thumbnail = data.data.thumbnail;
+                songApi.updateSong(song, songId).then(data => {
+                    var newSong = {
+                        songId,
+                        ...song
+                    };
+                    console.log(newSong);
+                dispatch(updateSongSuccess(newSong));
+                }).catch((error) => {
+                    dispatch(updateSongFail(error))
+                })
+            }).catch((error) => {
+                dispatch(updateSongFail(error))
+            })
+        } else{
+            console.log(typeof(song.thumbnail));
+            songApi.uploadSongFile(songId, song.songSrc).then(data => {
+                song.songSrc = data.data.songSrc;
+                songApi.updateSong(song, songId).then(data => {
+                    var newSong = {
+                        songId,
+                        ...song
+                    };
+                    console.log(newSong);
+                dispatch(updateSongSuccess(newSong));
+                }).catch((error) => {
+                    dispatch(updateSongFail(error))
+                })
+            }).catch((error) => {
+                dispatch(updateSongFail(error))
+            })
+        }
     }
 }
 

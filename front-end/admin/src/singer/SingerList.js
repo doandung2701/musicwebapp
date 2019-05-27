@@ -74,7 +74,7 @@ class SingerList extends React.Component {
                 sorter: (a, b) => a.name.length - b.name.length,
                 sortDirections: ['descend', 'ascend'],
                 ...this.getColumnSearchProps('name'),
-                render: (text, record) => <a href="javascript:;" onClick={() => this.props.showListSongsOfSinger(record.id)}>{text}</a>,
+                render: (text, record) => <a href="javascript:;">{text}</a>,
                 // sorter: (a, b) => a.value - b.value,
             },
             {
@@ -85,6 +85,17 @@ class SingerList extends React.Component {
                 sorter: (a, b) => a.description.length - b.description.length,
                 sortDirections: ['descend', 'ascend'],
                 ...this.getColumnSearchProps('description'),
+                // sorter: (a, b) => a.value - b.value,
+            },
+            {
+                title: 'Thumbnail',
+                dataIndex: 'thumbnail',
+                key: 'thumbnail',
+                onFilter: (value, record) => record.thumbnail.indexOf(value) === 0,
+                sorter: (a, b) => a.thumbnail.length - b.thumbnail.length,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('thumbnail'),
+                render: (text, record) => <a href={record.thumbnail} target="_blank">View Thumbnail</a>,
                 // sorter: (a, b) => a.value - b.value,
             },
             {
@@ -100,7 +111,7 @@ class SingerList extends React.Component {
                             ) : null}
                         <Divider type="vertical" />
                         <Button type="primary" onClick={() => {
-                            this.props.openModal({ id: record.id, name: record.name, description: record.description })
+                            this.props.openModal({ id: record.id, name: record.name, description: record.description, thumbnail: record.thumbnail })
                         }}>Edit</Button>
                     </span>
                 ),
@@ -119,7 +130,8 @@ class SingerList extends React.Component {
             {
                 id: data.id,
                 name: data.name,
-                description: data.description
+                description: data.description,
+                thumbnail: data.thumbnail == null ? 'No data' : data.thumbnail
             }
         ))
         return (

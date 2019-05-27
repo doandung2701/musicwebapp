@@ -46,17 +46,17 @@ class Dashboard extends React.Component{
                     </div>
                     <div className="statistic-card"  style={{backgroundColor: 'crimson'}}>
                         <Statistic className="card" value={numOfSongs} title={<div className= "card-header" >
-                        <Icon type="shopping-cart" /> &nbsp;Songs</div>} />
+                        <Icon type="play-circle" /> &nbsp;Songs</div>} />
                     </div>
                     <div className="statistic-card" style={{backgroundColor: '#147EFB'}}>
                         <Statistic className="card" value={numOfComments}
                         title={<div className= "card-header" >
-                        <Icon type="dollar" /> &nbsp;Comments</div>}/>
+                        <Icon type="align-left" /> &nbsp;Comments</div>}/>
                     </div>
                     <div className="statistic-card" style={{backgroundColor: '#CC660E'}}>
                     <Statistic className="card" value={numOfSingers} 
                         title={<div className= "card-header" >
-                        <Icon type="shopping" /> &nbsp;Singers</div>}/>
+                        <Icon type="user" /> &nbsp;Singers</div>}/>
                     </div>
                 </div>
             </div>

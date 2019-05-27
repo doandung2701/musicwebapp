@@ -269,7 +269,49 @@ class SongModal extends Component {
             }
         }
     }
+    componentDidUpdate(prevProps, prevState) {
+      if(prevProps.isShow!=this.props.isShow&&this.props.isShow==true){
 
+        this.setState({
+            songName: {
+                value: ''
+            },
+            briefDesciption: {
+                value: ''
+            },
+            authors: {
+                value: []
+            },
+            singers: {
+                value: []
+            },
+            categories: {
+                value: []
+            },
+            formDataSong: {
+                value: null
+            },
+            formDataThumbnail: {
+                value: null
+            },
+            dataAuthor: [],
+            dataSinger: [],
+            dataCategory: [],
+            isLoading:false,
+        })
+
+        Promise.all([getAllAuthorsApi(), getAllSinger(), getAllCategoriesApi()]).then(data => {
+
+            this.setState({
+                dataAuthor: data[0].data,
+                dataSinger: data[1].data,
+                dataCategory: data[2].data
+            })
+        })
+            
+      }
+    }
+    
     onSongRemove(file){
         
           this.setState({

@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { Modal, Spin, Button, Form, Input, Select, Upload, Row, Col, } from 'antd';
 import * as actionModal from "./SongsAction";
 import { dummyRequest } from '../helpers/helper';
-import { uploadSong } from './SongsAction';
+import { uploadSong, updateSong } from './SongsAction';
 import * as actionAuthor from '../author/AuthorsAction';
 import * as actionSinger from '../singer/SingerAction';
 import * as actionCategory from '../category/CategoryAction';
+import * as songApi from '../api/songApi';
 import { stat } from 'fs';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -22,7 +23,7 @@ class SongsModal extends Component {
         this.props.getAllCategory();
         this.state = {
             songName: {
-                value: ""
+                value: ''
             },
             briefDesciption: {
                 value: ''
@@ -175,7 +176,6 @@ class SongsModal extends Component {
         const target = event.target;
         const inputName = target.name;
         const inputValue = target.value;
-
         this.setState({
             [inputName]: {
                 value: inputValue,
@@ -186,39 +186,53 @@ class SongsModal extends Component {
     isFormInvalid() {
         return !(this.state.songName.validateStatus === 'success' &&
             this.state.briefDescription.validateStatus === 'success' && this.state.thumbnail.validateStatus === 'success' && this.state.song.validateStatus === 'success'
+            && this.state.songSrc.validateStatus === "success"
             && (this.state.authors.value.length >= 1) &&
             (this.state.singers.value.length >= 1) &&
             (this.state.categories.value.length >= 1) 
         );
     }
     handleOk = () => {
-        console.log(this.isFormInvalid());
-        // this.findAllListSong();
-        // let {name,thumbnail,description,user,playListSong}=this.state;
-        // playListSong = this.findAllListSong();
-        // const {id}=this.props.playListModal.playList;
-        // if(id==0){
-        //     var payload={
-        //         name:name.value,
-        //         thumbnail: thumbnail.value,
-        //         description: description.value,
-        //         user: user.value,
-        //         songs: playListSong
-        //     }
-        //     console.log(payload);
-        //     // this.props.createPlayList(payload);
-        // }else{
-        //     var payload={
-        //         id: id,
-        //         name:name.value,
-        //         thumbnail: thumbnail.value,
-        //         description: description.value,
-        //         user: user.value,
-        //         songs: playListSong
-        //     }
-        //     console.log(payload);
-        //     // this.props.updatePlayList(payload);
-        // }
+        console.log(this.state);
+        let {songName,thumbnail,briefDesciption, songSrc,authors,singers, categories}=this.state;
+        const {songId}=this.props.songModal.song;
+        if(songId==0){
+            var payload={
+                songName:songName.value,
+                // thumbnail: thumbnail.value,
+                briefDesciption: briefDesciption.value,
+                checked: true,
+                // songSrc: songSrc.value,
+                authors: this.props.authorList.authorList.filter(data => authors.value.includes(data.authorId+"")),
+                singers: this.props.singerList.singerList.filter(data=>singers.value.includes(data.id+"")),
+                categories: this.props.categoryList.categoryList.filter(data=>categories.value.includes(data.categoryId+"")),
+                user: 1
+            }
+            console.log(payload);
+            this.props.uploadSong(payload, thumbnail.value, songSrc.value);
+        }else{
+            var payload={
+                songName:songName.value,
+                thumbnail: thumbnail.value,
+                briefDesciption: briefDesciption.value,
+                songSrc: songSrc.value,
+                authors: this.props.authorList.authorList.filter(data => authors.value.includes(data.authorId+"")),
+                singers: this.props.singerList.singerList.filter(data=>singers.value.includes(data.id+"")),
+                categories: this.props.categoryList.categoryList.filter(data=>categories.value.includes(data.categoryId+"")),
+                user: 1 
+            }
+            songApi.getSongById(songId).then((data) => {
+                payload = {
+                    ...payload,
+                    uploadDate: data.data.uploadDate,
+                    listenCount: data.data.listenCount,
+                    checked: data.data.checked,
+                    likeCount: data.data.likeCount,
+                    likeUserIds: data.data.likeUserIds
+                }
+                this.props.updateSong(payload,songId);
+            })
+        }
         this.handleCancel();
     }
     handleCancel = () => {
@@ -273,8 +287,17 @@ class SongsModal extends Component {
         })
     }
     componentWillReceiveProps(nextProps) {
-        let { songId ,songName, thumbnail, briefDescription, authors, singers, categories, songSrc } = nextProps.songModal.song;
+        let { songId ,songName, thumbnail, briefDesciption, singers, categories, songSrc, authors } = nextProps.songModal.song;
         thumbnail = thumbnail == 'No Data' ? null : thumbnail;
+        singers = singers.map((data) => {
+            return data.id+"";
+        })
+        categories = categories.map((data) => {
+            return data.categoryId;
+        })
+        authors = authors.map((data) => {
+            return data.authorId+"";
+        })
         // this.props.userList.userList.map((data, index) => {
         //     if (data.email == user) {
         //         user = data;
@@ -296,10 +319,10 @@ class SongsModal extends Component {
                     value: thumbnail,
                     validateStatus: 'success'
                 },
-                briefDescription: {
+                briefDesciption: {
                     validateStatus: 'success',
                     errorMsg: null,
-                    value: briefDescription
+                    value: briefDesciption
                 },
                 authors: {
                     validateStatus: 'success',
@@ -318,6 +341,43 @@ class SongsModal extends Component {
                 },
                 songSrc: {
                     validateStatus: 'success',
+                    errorMsg: null,
+                    value: songSrc
+                }
+            })
+        }else {
+            this.setState({
+                songName: {
+                    validateStatus: '',
+                    errorMsg: null,
+                    value: songName
+                },
+                thumbnail: {
+                    value: thumbnail,
+                    validateStatus: ''
+                },
+                briefDesciption: {
+                    validateStatus: '',
+                    errorMsg: null,
+                    value: briefDesciption
+                },
+                authors: {
+                    validateStatus: '',
+                    errorMsg: null,
+                    value: authors
+                },
+                categories: {
+                    validateStatus: '',
+                    errorMsg: null,
+                    value: categories
+                },
+                singers: {
+                    validateStatus: '',
+                    errorMsg: null,
+                    value: singers
+                },
+                songSrc: {
+                    validateStatus: '',
                     errorMsg: null,
                     value: songSrc
                 }
@@ -388,7 +448,7 @@ class SongsModal extends Component {
                                         value={this.state.briefDesciption.value}
                                         size="large"
                                         name="briefDesciption"
-                                        placeholder="Description"
+                                        placeholder="Desciption"
                                         onChange={(event) => this.handleInputChange(event, this.validateDescription)} />
                                 </FormItem>
                             </Col>
@@ -402,6 +462,7 @@ class SongsModal extends Component {
                                         mode="multiple"
                                         name="authors"
                                         placeholder="Authors"
+                                        defaultValue={this.state.authors.value}
                                         onChange={this.handleChangeSelectAuthor} >
                                         {this.props.authorList.authorList.map(data => (
                                             <Option key={data.authorId}>
@@ -437,6 +498,7 @@ class SongsModal extends Component {
                                 mode="multiple"
                                 name="categories"
                                 placeholder="Categories"
+                                defaultValue={this.state.categories.value}
                                 onChange={this.handleChangeSelectCategory} >
                                 {this.props.categoryList.categoryList.map(data => (
                                     <Option key={data.categoryId}>
@@ -464,7 +526,7 @@ class SongsModal extends Component {
                                         multiple={false}
                                         customRequest={dummyRequest}
                                         onRemove={this.onSongRemove} 
-                                onChange={(event) => this.handleFileChange(event, this.validateSong,"formDataSong")} />
+                                onChange={(event) => this.handleFileChange(event, this.validateSong,"songSrc")} />
                         </FormItem>
                         </Col>
                         <Col span={12} className="gutter-row">
@@ -481,7 +543,7 @@ class SongsModal extends Component {
                                 multiple={false}
                                 customRequest={dummyRequest}
                                 onRemove={this.onImageRemove} 
-                                onChange={(event) => this.handleFileChange(event, this.validateThumbnail,"formDataThumbnail")} />
+                                onChange={(event) => this.handleFileChange(event, this.validateThumbnail,"thumbnail")} />
                         </FormItem>
                         </Col>
                         </Row>
@@ -509,6 +571,7 @@ const mapDispatchToProps = dispatch => {
         getAllAuthors: () => dispatch(actionAuthor.getAllAuthors()),
         getAllSingers: () => dispatch(actionSinger.getAllSingers()),
         getAllCategory: () => dispatch(actionCategory.getAllCategory()),
+        updateSong: (song, songId) => dispatch(updateSong(song,songId))
     }
 }
 const WrappedNormalSongsForm = Form.create({ name: 'SongsForm' })(SongsModal);

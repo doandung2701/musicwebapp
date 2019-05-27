@@ -1,7 +1,7 @@
 import { Modal, Button } from 'antd';
 import React from 'react';
 
-class ListSinger extends React.Component {
+class ListCategory extends React.Component {
   state = { visible: false }
 
   showModal = () => {
@@ -25,10 +25,10 @@ class ListSinger extends React.Component {
   }
 
   showSinger = () => {
-    let text = this.props.listSinger == undefined ? [] : this.props.listSinger.map((data, index) => {
+    let text = this.props.listAuthor == undefined ? [] : this.props.listAuthor.map((data, index) => {
         return (<div key={index}>
-            <span>{data.id}: {data.name} - </span> 
-            <a href={data.thumbnail == null ? '' : data.thumbnail} target="_blank">Link Thumbnail</a>
+            <span>{data.authorId}: {data.authorName} - </span> 
+            <a href={data.thumbnai == null ? '' : data.thumbnai} target="_blank">Link Thumbnail</a>
         </div>)
     });
     return text
@@ -38,10 +38,10 @@ class ListSinger extends React.Component {
     return (
       <div>
         <Button type="clicked" onClick={this.showModal}>
-          View Singers
+          View Authors
         </Button>
         <Modal
-          title="List Singer"
+          title="List Authors"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -53,4 +53,4 @@ class ListSinger extends React.Component {
   }
 }
 
-export default ListSinger;
+export default ListCategory;

@@ -1,11 +1,11 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { Table, Popconfirm, Divider, Button, Input, Icon } from 'antd';
 import Highlighter from 'react-highlight-words';
-import * as actions from './CommentsAction';
-import {connect} from 'react-redux';
+import * as actions from './RadiosAction';
+import RadioModal from './RadioModal';
 
-class CommentsList extends React.Component {
-
+class RadioList extends React.Component {
     getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({
             setSelectedKeys, selectedKeys, confirm, clearFilters,
@@ -65,87 +65,94 @@ class CommentsList extends React.Component {
         super(props);
         this.columns = [
             {
-                title: 'COMMENT ID',
-                dataIndex:'commentId',
-                key: 'commentId',
-            }, 
-            {
-                title: 'COMMENT',
-                dataIndex: 'commentCnt',
-                key: 'commentCnt',
-                onFilter: (value, record) => record.commentCnt.indexOf(value) === 0,
-                sorter: (a, b) => a.commentCnt.length - b.commentCnt.length,
+                title: 'Song ID',
+                dataIndex: 'songId',
+                key: 'songId',
+            }, {
+                title: 'Song Name',
+                dataIndex: 'songName',
+                key: 'songName',
+                onFilter: (value, record) => record.songName.indexOf(value) === 0,
+                sorter: (a, b) => a.songName.length - b.songName.length,
                 sortDirections: ['descend', 'ascend'],
-                ...this.getColumnSearchProps('commentCnt'),
-                render: (text, record) => <a href="javascript:;">{text}</a>,
+                ...this.getColumnSearchProps('songName'),
                 // sorter: (a, b) => a.value - b.value,
             },
             {
-                title: 'COMMNET DATE',
-                dataIndex: 'commentDate',
-                key: 'commentDate',
-                onFilter: (value, record) => record.commentDate.indexOf(value) === 0,
-                sorter: (a, b) => a.commentDate.length - b.commentDate.length,
+                title: 'Song Src',
+                dataIndex: 'songSrc',
+                key: 'songSrc',
+                onFilter: (value, record) => record.songSrc.indexOf(value) === 0,
+                sorter: (a, b) => a.songSrc.length - b.songSrc.length,
                 sortDirections: ['descend', 'ascend'],
-                ...this.getColumnSearchProps('commentDate'),
+                ...this.getColumnSearchProps('songSrc'),
+                render: (text, record) => <a href={record.songSrc} target="_blank">Link Song</a>,
                 // sorter: (a, b) => a.value - b.value,
             },
-            // {
-            //     title: 'PARENT COMMNET',
-            //     dataIndex: 'parentCmt',
-            //     key: 'parentCmt',
-            //     onFilter: (value, record) => record.parentCmt.indexOf(value) === 0,
-            //     sorter: (a, b) => a.parentCmt.length - b.parentCmt.length,
-            //     sortDirections: ['descend', 'ascend'],
-            //     ...this.getColumnSearchProps('parentCmt'),
-            //     // sorter: (a, b) => a.value - b.value,
-            // },
+            {
+                title: 'Thumbnail',
+                dataIndex: 'thumbnail',
+                key: 'thumbnail',
+                onFilter: (value, record) => record.thumbnail.indexOf(value) === 0,
+                sorter: (a, b) => a.thumbnail.length - b.thumbnail.length,
+                sortDirections: ['descend', 'ascend'],
+                ...this.getColumnSearchProps('thumbnail'),
+                render: (text, record) => <a href={record.thumbnail} target="_blank">View Thumbnail</a>,
+                // sorter: (a, b) => a.value - b.value,
+            },
             {
                 title: 'operation',
                 dataIndex: 'operation',
                 render: (text, record) => (
                     <span>
-                        {this.props.commentReducer.commentList.length >= 1
+                        {this.props.radioList.radioList.length >= 1
                             ? (
-                                <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteComment(record.commentId)}>
+                                <Popconfirm title="Sure to delete?" onConfirm={() => this.props.deleteRadio(record.songId)}>
                                     <a href="javascript:;">Delete</a>
                                 </Popconfirm>
                             ) : null}
+                            <Divider type="vertical" />
+                            <Button type="primary" onClick={() => {
+                                this.props.openModal({ songId: record.songId, songName: record.songName, thumbnail: record.thumbnail, songSrc: record.songSrc}) // sua lai cho nay
+                            }}>Edit</Button>
                     </span>
                 ),
             }
         ]
             ;
-        this.props.getAllComments();
+        this.props.getAllRadios();
         this.state = {
             searchText: '',
         };
     }
     render() {
-    
-        const data = this.props.commentReducer.commentList.map((data, index) => (
+        const data = this.props.radioList.radioList.map((data, index) => (
             {
-                commentId: data.commentId,
-                commentCnt: data.commentCnt,
-                commentDate: new Date(data.commentDate).toLocaleDateString(),
-                parentCmt: data.parentCmt
+                songId: data.songId,
+                songName: data.songName,
+                songSrc: data.songSrc == null ? 'No Data' : data.songSrc,
+                thumbnail: data.thumbnail == null ? 'No Data' : data.thumbnail
             }
         ))
         return (
             <div style={{
-                position: 'relative'
+                position: 'relative',
+                width: '98%'
             }}>
                 <div style={{
                     position: "absolute",
                     top: '-45px',
                     right: '10px',
                 }}>
+                    <Button type="primary" onClick={() => this.props.openModal()}>Create</Button>
                 </div>
                 <div>
                     <Table columns={this.columns} dataSource={data}
-                        rowKey={record => record.id}
+                        rowKey={record => record.songId}
                         pagination={{ pageSize: 7 }}
+                        loading={this.props.radioList.isGettingRadioList || this.props.radioList.isloadingDelete}
                     />
+                    <RadioModal />
                 </div>
             </div>
         )
@@ -153,18 +160,19 @@ class CommentsList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    commentReducer: state.commentReducer
+    radioList: state.radioList
 })
 
-const mapDispatchToProps = dispatch => {
+const mapDispathToProps = dispatch => {
     return {
-        getAllComments: () => {
-            dispatch(actions.getAllComments());
+        getAllRadios: ()=> {
+            dispatch(actions.getAllRadios());
         },
-        deleteComment: (comment) => {
-            dispatch(actions.deleteComment(comment));
-        }
+        deleteRadio: (radioId)=> {
+            dispatch(actions.deleteRadio(radioId));
+        },
+        openModal: (data) => {dispatch(actions.openModal(data));},
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(CommentsList);
+export default connect(mapStateToProps,mapDispathToProps) (RadioList);

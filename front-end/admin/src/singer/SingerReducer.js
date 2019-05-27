@@ -6,9 +6,10 @@ import { openNotificationWithIcon } from "../common/notification";
 var initialStateModal = {
     isShow: false,
     singer: {
-        id: 0,
+        id: '',
         name: "",
-        description: ""
+        description: "",
+        thumbnail: ""
     },
     isLoading: false,
     error: null

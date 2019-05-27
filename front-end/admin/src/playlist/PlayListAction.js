@@ -133,6 +133,7 @@ export const updatePlayList = (playlistDetail) => {
         //     }
         // })
         if (typeof(playlistDetail.thumbnail) == "object") {
+            console.log("thumbnail");
             playListApi.upImagePlayListApi(playlistDetail.thumbnail).then((rs) => {
                 playlistDetail.thumbnail = rs.data;
                 playListApi.updatePlayListApi(playlistDetail).then((data) => {
