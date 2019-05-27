@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import { changePlayerStatus, changeAudioSrc, toggleRepeat } from './PlayerAction';
+import { changePlayerStatus, changeAudioSrc, toggleRepeat} from './PlayerAction';
 import FooterPlayer from './FooterPlayer';
 
 let mapStateToProps = state=>({
@@ -16,7 +16,7 @@ let mapDispatchToProps = dispatch =>({
     },
     toggleRepeat: ()=>{
         dispatch(toggleRepeat())
-    }
+    },
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(FooterPlayer);

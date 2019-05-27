@@ -3,7 +3,8 @@ import SideNavAccountSection from './SideNavAccountSection';
 import { NavLink } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import ReactCountryFlag from "react-country-flag";
-import { Radio } from 'antd';
+import { findAllRadioChanelsApi } from '../../Api/radioApi';
+import { playTrack } from '../../helpers/helper';
 
 const lang = [
   { code: 'gb', text: "English" },
@@ -14,7 +15,8 @@ const lang = [
 class SideNav extends React.Component {
 
   state = {
-    lang: localStorage.getItem('lang')?localStorage.getItem('lang'):"vn"
+    lang: localStorage.getItem('lang') ? localStorage.getItem('lang') : "vn",
+    chanel: []
   }
 
   changeLanguage = (code) => {
@@ -22,16 +24,28 @@ class SideNav extends React.Component {
       lang: code
     })
     this.props.i18n.changeLanguage(code);
-    localStorage.setItem('lang',code);
+    localStorage.setItem('lang', code);
+  }
+
+  componentDidMount = async () => {
+    try {
+      const chanel = await findAllRadioChanelsApi();
+      this.setState({
+        chanel: chanel.data
+      })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   render() {
-    const { authentication, t, changeAudioSrc } = this.props;
+    const { authentication, t, addSongToQueue } = this.props;
     let { currentUser = {
       imageUrl: '/images/a14.jpg',
       name: 'Some name'
     } } = authentication;
-    console.log(this.props)
+    const { chanel } = this.state;
+    console.log(chanel)
     return (
       <Fragment>
         {/* <!-- aside --> */}
@@ -102,18 +116,45 @@ class SideNav extends React.Component {
                       <span className="nav-text">{t('artist')}</span>
                     </NavLink>
                   </li>
-                  <li>
-                    <a  onClick={()=>
-                      changeAudioSrc({songSrc: 'http://streaming.radionomy.com/JamendoLounge',
-                      songName: 'Radio',thumbnail: "/images/a1.jpg"})}>
+                  {/* <li>
+                    <a onClick={() =>
+                      changeAudioSrc({
+                        songSrc: 'http://streaming.radionomy.com/JamendoLounge',
+                        songName: 'Radio', thumbnail: "/images/a1.jpg"
+                      })}>
                       <span className="nav-icon">
                         <i className="fa fa-rss" />
                       </span>
                       <span className="nav-text">{t('radio')}</span>
                     </a>
+                  </li> */}
+                  <li>
+                    <a data-toggle="dropdown">
+                      <span className="nav-icon">
+                        <i className="fa fa-rss" />
+                      </span>
+                      <span className="nav-text">{t('radio')}</span>
+                    </a>
+                    <div
+                    className="dropdown-menu w dropdown-menu-scale ">
+                      {chanel.map(value => (
+                        <div  style={{paddingLeft: 3}} key={value.songId}>
+                          <a style={{paddingLeft: 7}}
+                            className="dropdown-item text-ellipsis" title={value.songName}
+                            onClick={() => {
+                              addSongToQueue(value);
+                              playTrack.bind(this)(value)
+                            }}>
+                            <img style={{marginRight: 7}}
+                             src={value.thumbnail} height="15px" width="15px" alt="" />
+                            {value.songName}
+                          </a>
+                        </div>
+                      ))}
+                    </div>
                   </li>
                   <li>
-                    <a href="#" onClick={this.props.onOpenSearch}>
+                    <a onClick={this.props.onOpenSearch}>
                       <span className="nav-icon">
                         <i className="material-icons">
                           search

@@ -40,7 +40,7 @@ class TrackItem extends React.Component {
                         onAddToQueue={() => this.props.addSongToQueue(track)} />
                     </div>}
                     <div className="item-title text-ellipsis">
-                        <Link className="text-muted"
+                        <Link className="text-muted" title={track.songName}
                             to={`/${this.props.type}${track.songId}`}
                             onClick={this.props.onCloseSearch}>{track.songName}</Link>
                     </div>

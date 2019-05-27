@@ -121,7 +121,10 @@ class UserProfileHeader extends React.Component {
                                 <div className="item-action m-b">
                                     <a className="btn btn-sm rounded primary" onClick={this.openUploadSongModal}>
                                     {t('upload')}</a>
-                                    <a href="#" className="btn btn-sm rounded white">{t('edit')}</a>
+                                    <a onClick={()=>{
+                                        document.getElementsByName('profile')[0].click();
+                                    }}
+                                    className="btn btn-sm rounded white">{t('edit')}</a>
                                 </div>
                                 <div className="block clearfix m-b">
                                     <span>{this.props.playLists.length}</span>&nbsp;

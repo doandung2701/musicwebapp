@@ -86,7 +86,8 @@ class UserProfilePage extends React.Component {
             favoriteCategory.map(data => {
                 listKey.push(data.categoryId);
             })
-            return (<select onChange={this.handleChangeSelectCa} defaultValue={listKey} multiple name="favoriteCategory" className="form-control c-select">
+            return (<select style={{overflow: 'auto'}}
+            onChange={this.handleChangeSelectCa} defaultValue={listKey} multiple name="favoriteCategory" className="form-control c-select">
                 {this.state.categories.map(data => (
                     <option
                         key={data.categoryId} value={data.categoryId}>{data.categoryName}</option>
@@ -159,6 +160,7 @@ class UserProfilePage extends React.Component {
         return (
             <Fragment>
                 <UserProfileHeader t={t}
+                onChangeTab = {this.changeTab}
                         playLists={this.props.playLists.playLists}
                         currentUser={currentUser}
                         changeAva={this.props.changeAva}

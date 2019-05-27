@@ -53,7 +53,7 @@ class App extends Component {
     const {currentUser} = this.props.authentication;
     return (
       <Fragment>
-        <div className="app dk" id="app">
+        <div className="app dk" id="app" >
           {location !== '/signin' && location !== '/signup' && <SideNavContainer
             onCloseSearch={this.onCloseSearch}
             onOpenSearch={this.onOpenSearch} />}

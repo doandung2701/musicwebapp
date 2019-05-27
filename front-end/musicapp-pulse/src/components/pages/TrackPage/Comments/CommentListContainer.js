@@ -7,7 +7,7 @@ var mapStateToProps = state =>{
     return{
         comments: state.comments,
         isLoggedIn: state.authentication.authenticated,
-        userId : state.authentication.currentUser?state.authentication.currentUser.id:-1
+        userId : state.authentication.currentUser?state.authentication.currentUser.id:-1,
     }
 }
 

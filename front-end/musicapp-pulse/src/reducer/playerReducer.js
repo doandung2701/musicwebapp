@@ -10,15 +10,17 @@ import {
 } from "../constants/constants";
 import { findSongIndexInQueue } from "../helpers/helper";
 
+const nowPlaying ={
+    // songSrc: 'http://streaming.radionomy.com/JamendoLounge',
+    songSrc: 'http://listen.radionomy.com/100-hit-radio',
+    songId: '',
+    songName: 'Radio',
+    singers: [],
+    thumbnail: '/images/a14.jpg',
+};
 let initialState = {
     playerStatus: PLAYER_PAUSE,
-    nowPlaying: {
-        songSrc: 'http://streaming.radionomy.com/JamendoLounge',
-        songId: '',
-        songName: 'Radio',
-        singers: [],
-        thumbnail: '/images/a14.jpg',
-    },
+    nowPlaying,
     queue: [],
     repeat: false
 }
@@ -43,7 +45,7 @@ export const playerReducer = (state = initialState, action) => {
         case CHANGE_AUDIO_SRC:
             return {
                 ...state,
-                nowPlaying: { ...action.src }
+                nowPlaying: { ...action.src },
             }
         case ADD_SONG_TO_QUEUE:
             if (findSongIndexInQueue(action.src, state.queue) < 0)

@@ -39,7 +39,7 @@ class UserTrackItem extends React.Component {
 							onAddToQueue={() => this.props.addSongToQueue(track)} />
 						</div>
 						<div className="item-title text-ellipsis">
-							<Link to={`/track${track.songId}`}>{track.songName}</Link>
+							<Link title={track.songName} to={`/track${track.songId}`}>{track.songName}</Link>
 						</div>
 						<div className="item-author text-sm text-ellipsis hide">
 							{track.singers && track.singers.length > 0 ?

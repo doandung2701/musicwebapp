@@ -13,6 +13,9 @@ export default class FooterPlayer extends React.Component {
         this.player = React.createRef();
         this.rail = React.createRef();
         document.onmousemove = this.moveMouseChangeVol;
+        this.state = {
+            currentVol: 100
+        }
 
     }
 
@@ -39,7 +42,7 @@ export default class FooterPlayer extends React.Component {
                     this.formatTime(this.player.current.duration) ?
                         this.formatTime(this.player.current.duration) :
                         '<img alt="" height="30px" src="/images/Infinity-10s-50px.gif"/>';
-                this.props.changePlayerStatus(PLAYER_PAUSE);
+                // this.props.changePlayerStatus(PLAYER_PAUSE);
                 mejsError.style.display = "none";
                 this.rail.current.style.width = "0%";
             }
@@ -49,11 +52,13 @@ export default class FooterPlayer extends React.Component {
         }
 
         this.player.current.oncanplaythrough = () => {
-            let el = document.getElementsByClassName("mejs-button mejs-playpause-button")[0];
-            if (el) {
-                el.click();
-                increaseListenCountApi(this.props.player.nowPlaying.songId);
-            }
+            // let el = document.getElementsByClassName("mejs-button mejs-playpause-button")[0];
+            // if (el) {
+            //     el.click();
+            //     increaseListenCountApi(this.props.player.nowPlaying.songId);
+            // }
+            this.play();
+            increaseListenCountApi(this.props.player.nowPlaying.songId);
         }
         this.player.current.onended = () => {
             clearInterval(this.playerProgress);
@@ -135,17 +140,18 @@ export default class FooterPlayer extends React.Component {
         currentVol.style.height = y + "px";
         currentVol.style.top = 100 - y + 8 + "px";
         this.player.current.volume = y / 100;
+        this.setState({
+            currentVol: this.player.current.volume
+        })
     }
 
     play = () => {
         let player = this.player.current;
-        if (player.readyState === 4) {
             if (player.paused || player.ended) {
                 player.play();
             } else {
                 player.pause();
             }
-        }
     }
 
     toggleTrackList = () => {
@@ -205,7 +211,7 @@ export default class FooterPlayer extends React.Component {
             this.props.changeAudioSrc(queue[curr - 1]);
     }
 
-    downloadSong = async (audioSrc)=>{
+    downloadSong = async (audioSrc) => {
         let pathname = window.location.pathname;
         if (!this.props.authenticated) {
             if (window.confirm("Please login to use this feature")) {
@@ -222,6 +228,7 @@ export default class FooterPlayer extends React.Component {
         let audioSrc = this.props.player.nowPlaying.songSrc;
         let status = this.props.player.playerStatus;
         let player = this.props.player;
+        const { currentVol: vol } = this.state;
         return (
             <div className="app-footer app-player grey bg">
                 <div className="playlist mep-tracks-count-3 has-artwork is-tracklist-closed"
@@ -240,7 +247,7 @@ export default class FooterPlayer extends React.Component {
                                     <button style={{
                                         color: 'white',
                                         border: 'none', background: 'transparent', cursor: 'pointer', marginRight: 10
-                                    }} className="btn btn-icon rounded btn-favorite" onClick={()=>this.downloadSong(audioSrc)}>
+                                    }} className="btn btn-icon rounded btn-favorite" onClick={() => this.downloadSong(audioSrc)}>
                                         <i className="fa fa-download" />
                                     </button>
                                 </div>
@@ -280,7 +287,9 @@ export default class FooterPlayer extends React.Component {
                                     <span className="mejs-currenttime">00:00</span>
                                     <span className="mejs-time-separator"> / </span>
                                     <span className="mejs-duration">00:00</span></div>
-                                <div className="mejs-button mejs-volume-button mejs-mute"
+                                <div className={`mejs-button mejs-volume-button mejs-${
+                                    vol === 0 ? 'unmute' : 'mute'
+                                    }`}
                                     id="mejs-volume-button" draggable="false"
                                     onMouseOver={this.openVolumeSilder}
                                     onMouseLeave={this.closeVolumeSilder}
