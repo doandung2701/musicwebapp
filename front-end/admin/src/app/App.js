@@ -181,7 +181,6 @@ onCollapse = (collapsed) => {
                 <PrivateRoute path="/category" component={Category}/>
                 <PrivateRoute path="/songs" component={SongsList}/>
                 <PrivateRoute path="/radios" component={RadiosList}/>
-
                 <Route component={NotFound}></Route>
               </Switch>
             </div>
